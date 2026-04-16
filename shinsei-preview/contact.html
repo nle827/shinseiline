@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Shinsei Line</title>
+  <link rel="stylesheet" href="shinsei-preview.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="product.html" class="nav-link">Shop</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+      </nav>
+      <a href="index.html" class="header-logo">
+        <img src="assets/SHINSEI LINE LOGO PNG WHITE-02.png" alt="Shinsei Line" class="logo-img logo-img--light">
+        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img logo-img--dark">
+      </a>
+      <div class="header-actions">
+        <button class="search-trigger" aria-label="Search">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+        </button>
+        <button class="cart-trigger" onclick="toggleCart()">Cart</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="contact-page">
+      <div class="contact-inner">
+
+        <div class="contact-header">
+          <span class="contact-eyebrow">Get in touch</span>
+          <h1 class="contact-heading">Contact</h1>
+        </div>
+
+        <div class="contact-info">
+          <p class="contact-intro">For wholesale inquiries, press, or general correspondence — reach us below. We respond within 2 business days.</p>
+          <a href="mailto:hello@shinseiline.com" class="contact-email">hello@shinseiline.com</a>
+        </div>
+
+        <form class="contact-form" onsubmit="handleContactSubmit(event)">
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" autocomplete="name">
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+          <div class="form-field">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject">
+          </div>
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary">Send message</button>
+        </form>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-kanji">新生</span>
+        <span class="footer-tagline">Quiet Authority. Intentional Restraint.</span>
+      </div>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="#">Privacy</a>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-meta">© 2026 Shinsei Line. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-panel">
+      <div class="cart-panel-header">
+        <span class="cart-panel-title">Cart</span>
+        <button class="cart-close" onclick="toggleCart()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+      <div class="cart-panel-body">
+        <div class="cart-empty"><p>Your cart is empty.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="shinsei-preview.js"></script>
+</body>
+</html>
