@@ -317,28 +317,45 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   color: var(--ink-light);
 }
 
-/* --- Featured Product --- */
-.featured-product { padding: var(--space-xl) var(--space-md); }
+/* --- Product Grid --- */
+.product-grid-section { padding: var(--space-xl) var(--space-md); }
 
-.featured-product-inner {
+.product-grid {
   max-width: var(--max-w);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: var(--space-lg);
-  align-items: center;
-}
-
-.featured-product-media {
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  background: #F0F0F0;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-md);
   justify-content: center;
 }
 
-.fp-placeholder {
+/* 4+ products: left-aligned normal grid */
+.product-grid:has(> .product-card:nth-child(4)) {
+  justify-content: flex-start;
+}
+
+.product-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  flex: 0 0 calc(25% - var(--space-md) * 3 / 4);
+  min-width: 0;
+}
+
+.product-card-media {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: transparent;
+  border: 1px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.product-card:hover .product-card-media { transform: scale(1.03); }
+
+.product-card-placeholder {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.12em;
@@ -346,13 +363,14 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   color: var(--ink-light);
 }
 
-.featured-product-info {
+.product-card-info {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 6px;
+  padding-top: var(--space-sm);
 }
 
-.fp-label {
+.product-card-label {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.16em;
@@ -360,9 +378,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   color: var(--ink-light);
 }
 
-.fp-title { font-size: clamp(1.8rem, 3vw, 2.5rem); font-style: italic; }
-.fp-price { font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.08em; color: var(--ink-mid); }
-.fp-desc { font-size: 0.95rem; color: var(--ink-mid); line-height: 1.7; max-width: 42ch; }
+.product-card-title { font-size: 1.1rem; font-style: italic; }
+.product-card-price { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; color: var(--ink-mid); }
 
 /* --- Product Detail --- */
 .product-detail { padding: var(--space-lg) var(--space-md); }
@@ -577,7 +594,9 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-  .featured-product-inner, .product-detail-inner, .about-body, .contact-inner { grid-template-columns: 1fr; }
+  .product-detail-inner, .about-body, .contact-inner { grid-template-columns: 1fr; }
+  .product-card { flex: 0 0 calc(50% - var(--space-md) / 2); }
+  .product-grid { justify-content: flex-start; }
   .hero-inner { flex-direction: column; align-items: flex-start; gap: var(--space-md); }
   .hero-cta { align-self: flex-start; }
   .product-gallery { position: static; }
