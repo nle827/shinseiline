@@ -4,10 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Structured Overcoat — Shinsei Line</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=IBM+Plex+Mono:wght@400&display=swap">
   <link rel="stylesheet" href="shinsei-preview.css">
+  <link rel="stylesheet" href="shinsei-home.css">
 </head>
-<body>
+<body class="home-page pdp-page">
 
+  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <nav class="header-nav">
@@ -17,8 +22,7 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <a href="index.html" class="header-logo">
-        <img src="assets/SHINSEI LINE LOGO PNG WHITE-02.png" alt="Shinsei Line" class="logo-img logo-img--light">
-        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img logo-img--dark">
+        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
       <div class="header-actions">
         <button class="search-trigger" aria-label="Search">
@@ -27,59 +31,95 @@
         <button class="cart-trigger" onclick="toggleCart()">Cart</button>
       </div>
     </div>
+    <div class="header-line-stripe" aria-hidden="true"></div>
   </header>
 
   <main id="main-content">
-    <section class="product-detail">
-      <div class="product-detail-inner">
+    <section class="pdp-layout">
 
-        <!-- Gallery -->
-        <div class="product-gallery">
-          <div class="product-gallery-main">
-            <span class="hero-void-label">Product image</span>
+      <!-- LEFT: construction details -->
+      <div class="pdp-construction">
+        <div class="pdp-construction-inner">
+
+          <div class="pdp-construction-block">
+            <span class="pdp-construction-label">Material</span>
+            <p>Fine wool outerwear weight. Melton, gabardine, or wool-blend twill. Unstructured lining.</p>
           </div>
-          <div class="product-gallery-thumbs">
-            <div class="gallery-thumb active"></div>
-            <div class="gallery-thumb"></div>
-            <div class="gallery-thumb"></div>
+
+          <div class="pdp-construction-block">
+            <span class="pdp-construction-label">Construction</span>
+            <p>European overcoat construction fused with Japanese kosode shoulder treatment. Drop shoulder silhouette. Single-button closure.</p>
           </div>
+
+          <div class="pdp-construction-block">
+            <span class="pdp-construction-label">Fit</span>
+            <p>Unisex. Oversized through the body and sleeve. Length falls below the knee.</p>
+          </div>
+
+          <div class="pdp-construction-block">
+            <span class="pdp-construction-label">Edition</span>
+            <p>No. 001 — SS26. Limited to 50 units globally. No restock.</p>
+          </div>
+
+          <div class="pdp-construction-block">
+            <span class="pdp-construction-label">Origin</span>
+            <p>Sampled and produced in Guangzhou. Overseen at every stage.</p>
+          </div>
+
         </div>
+      </div>
 
-        <!-- Info -->
-        <div class="product-info">
-          <div class="product-info-top">
-            <span class="product-label">No. 001 — Outerwear</span>
-            <h1 class="product-title">The Structured Overcoat</h1>
-            <p class="product-price">$—</p>
+      <!-- MIDDLE: stacked images — scroll through naturally -->
+      <div class="pdp-gallery-track">
+        <div class="pdp-stack-img">
+          <img src="assets/kagemi mockup.png" alt="Kagemi — Front" draggable="false">
+        </div>
+        <div class="pdp-stack-img">
+          <img src="assets/Gemini_Generated_Image_wum8wwum8wwum8ww.png" alt="Kagemi — Detail" draggable="false">
+        </div>
+        <div class="pdp-stack-img">
+          <img src="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png" alt="Kagemi — Editorial" draggable="false">
+        </div>
+      </div>
+
+      <!-- RIGHT: product info -->
+      <div class="pdp-info">
+        <div class="pdp-info-inner">
+
+          <div class="pdp-info-top">
+            <span class="pdp-label">No. 001 — Outerwear</span>
+            <h1 class="pdp-title">Kagemi</h1>
+            <p class="pdp-subtitle">The Structured Overcoat</p>
+            <p class="pdp-price">$485.00</p>
           </div>
 
           <!-- Variants -->
-          <div class="product-variants">
-            <div class="variant-group">
-              <span class="variant-label">Size</span>
-              <div class="variant-options">
-                <button class="variant-btn active" onclick="selectVariant(this, 'size')">XS</button>
-                <button class="variant-btn" onclick="selectVariant(this, 'size')">S</button>
-                <button class="variant-btn" onclick="selectVariant(this, 'size')">M</button>
-                <button class="variant-btn" onclick="selectVariant(this, 'size')">L</button>
-                <button class="variant-btn" onclick="selectVariant(this, 'size')">XL</button>
+          <div class="pdp-variants">
+            <div class="pdp-variant-group">
+              <span class="pdp-variant-label">Size</span>
+              <div class="pdp-variant-options">
+                <button class="pdp-variant-btn pdp-variant-btn--active" onclick="selectVariant(this, 'size')">XS</button>
+                <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">S</button>
+                <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">M</button>
+                <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">L</button>
+                <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">XL</button>
               </div>
             </div>
           </div>
 
           <!-- Add to cart -->
-          <div class="product-actions">
-            <button class="btn btn--primary btn--full" onclick="addToCart()">Add to cart</button>
+          <div class="pdp-actions">
+            <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
           </div>
 
           <!-- Description -->
-          <div class="product-description">
+          <div class="pdp-description">
             <p>Fine wool outerwear. European overcoat construction with Japanese kosode shoulder treatment. Unstructured lining. Drop shoulder silhouette.</p>
-            <p style="margin-top: 16px;">Produced in a single run of 50 units. No restock.</p>
+            <p>Produced in a single run of 50 units. No restock.</p>
           </div>
 
           <!-- Accordions -->
-          <div class="product-accordions">
+          <div class="pdp-accordions">
             <div class="accordion">
               <button class="accordion-trigger" onclick="toggleAccordion(this)">
                 <span>Construction</span>
@@ -108,46 +148,53 @@
               </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
+
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <span class="footer-kanji">新生</span>
-        <span class="footer-tagline">Quiet Authority. Intentional Restraint.</span>
+        <span class="footer-wordmark">SHINSEI LINE</span>
+        <span class="footer-tagline">新生ライン — Renewal. New Life.</span>
       </div>
-      <div class="footer-links">
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="product.html">No. 001</a>
         <a href="about.html">About</a>
-        <a href="#">Privacy</a>
-        <a href="#">Shipping</a>
-        <a href="#">Returns</a>
         <a href="contact.html">Contact</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Shinsei Line. All rights reserved.</span>
+        <span>Limited to 50 units globally. No restock.</span>
       </div>
-      <div class="footer-meta">© 2026 Shinsei Line. All rights reserved.</div>
     </div>
   </footer>
 
+  <!-- CART DRAWER -->
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-overlay" onclick="toggleCart()"></div>
     <div class="cart-panel">
       <div class="cart-panel-header">
-        <span class="cart-panel-title">Cart</span>
+        <span class="cart-panel-title">CART</span>
         <button class="cart-close" onclick="toggleCart()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
         </button>
       </div>
       <div class="cart-panel-body" id="cart-body">
         <div class="cart-empty">
-          <p>Your cart is empty.</p>
+          <p>YOUR CART IS EMPTY</p>
+          <a href="product.html" class="btn cart-browse-btn">BROWSE LINES</a>
         </div>
       </div>
     </div>
   </div>
 
   <script src="shinsei-preview.js"></script>
+  <script src="shinsei-home.js"></script>
 </body>
 </html>

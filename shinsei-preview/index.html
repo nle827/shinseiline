@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shinsei Line — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=IBM+Plex+Mono:wght@400&display=swap">
   <link rel="stylesheet" href="shinsei-preview.css">
+  <link rel="stylesheet" href="shinsei-home.css">
 </head>
-<body>
+<body class="home-page">
 
   <!-- HEADER -->
   <header class="site-header">
@@ -18,8 +22,7 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <a href="index.html" class="header-logo">
-        <img src="assets/SHINSEI LINE LOGO PNG WHITE-02.png" alt="Shinsei Line" class="logo-img logo-img--light">
-        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img logo-img--dark">
+        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
       <div class="header-actions">
         <button class="search-trigger" aria-label="Search">
@@ -28,97 +31,157 @@
         <button class="cart-trigger" onclick="toggleCart()">Cart</button>
       </div>
     </div>
+    <div class="header-line-stripe" aria-hidden="true"></div>
   </header>
 
   <main id="main-content">
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-media">
-        <img src="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png" alt="The Structured Overcoat" class="hero-image">
+    <!-- HERO STAGE -->
+    <div class="hero-stage">
+
+      <!-- City clock: Los Angeles -->
+      <div class="city-clock" id="clock-los">
+        <svg class="clock-face" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1"/>
+          <line class="clock-hand-h" x1="24" y1="24" x2="24" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line class="clock-hand-m" x1="24" y1="24" x2="24" y2="7"  stroke="currentColor" stroke-width="1"   stroke-linecap="round"/>
+          <line class="clock-hand-s" x1="24" y1="24" x2="24" y2="5"  stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="city-clock-label">LOS</span>
+        <span class="city-clock-time" id="time-los"></span>
+        <span class="city-clock-date" id="date-los"></span>
       </div>
-      <div class="hero-inner">
-        <div class="hero-content">
-          <span class="hero-eyebrow">SHINSEI LINE — 001</span>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-overlay-text">
           <h1 class="hero-heading">KAGEMI</h1>
-          <p class="hero-subheading">Fine wool construction</p>
+          <div class="hero-overlay-rule" aria-hidden="true"></div>
+          <p class="hero-subline">LINE 01 / LONG OVERCOAT / SS26</p>
         </div>
-        <div class="hero-cta">
-          <a href="product.html" class="btn btn--ghost">View Now</a>
-        </div>
+      </section><!-- /.hero -->
+
+      <!-- City clock: Tokyo -->
+      <div class="city-clock" id="clock-tyo">
+        <svg class="clock-face" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1"/>
+          <line class="clock-hand-h" x1="24" y1="24" x2="24" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line class="clock-hand-m" x1="24" y1="24" x2="24" y2="7"  stroke="currentColor" stroke-width="1"   stroke-linecap="round"/>
+          <line class="clock-hand-s" x1="24" y1="24" x2="24" y2="5"  stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="city-clock-label">TYO</span>
+        <span class="city-clock-time" id="time-tyo"></span>
+        <span class="city-clock-date" id="date-tyo"></span>
       </div>
-    </section>
 
-    <!-- PRODUCT GRID -->
-    <section class="product-grid-section">
-      <div class="product-grid">
+    </div><!-- /.hero-stage -->
 
-        <a href="product.html" class="product-card">
-          <div class="product-card-media">
-            <span class="product-card-placeholder">Product image</span>
-          </div>
-          <div class="product-card-info">
-            <span class="product-card-label">No. 001</span>
-            <h2 class="product-card-title">The Structured Overcoat</h2>
-            <p class="product-card-price">$—</p>
-          </div>
-        </a>
+    <!-- LINE SELECTOR -->
+    <div class="line-selector" role="tablist" aria-label="Select a line">
+      <div class="line-selector-inner">
 
-        <a href="product.html" class="product-card">
-          <div class="product-card-media">
-            <span class="product-card-placeholder">Product image</span>
-          </div>
-          <div class="product-card-info">
-            <span class="product-card-label">No. 002</span>
-            <h2 class="product-card-title">The Structured Overcoat</h2>
-            <p class="product-card-price">$—</p>
-          </div>
-        </a>
+        <!-- Track -->
+        <div class="ls-track" aria-hidden="true">
+          <div class="ls-track-fill"></div>
+        </div>
 
-        <a href="product.html" class="product-card">
-          <div class="product-card-media">
-            <span class="product-card-placeholder">Product image</span>
+        <!-- Node: LINE 01 — active -->
+        <button class="ls-node ls-node--active" role="tab" aria-selected="true" data-line="01" data-name="KAGEMI" data-sub="LINE 01 / LONG OVERCOAT / SS26" data-img="assets/kagemi mockup.png" data-hero="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png">
+          <div class="ls-node-ring" aria-hidden="true"></div>
+          <div class="ls-node-dot" aria-hidden="true"></div>
+          <div class="ls-node-label">
+            <span class="ls-node-id">LINE 01</span>
+            <span class="ls-node-name">KAGEMI</span>
           </div>
-          <div class="product-card-info">
-            <span class="product-card-label">No. 003</span>
-            <h2 class="product-card-title">The Structured Overcoat</h2>
-            <p class="product-card-price">$—</p>
-          </div>
-        </a>
+        </button>
 
-        <a href="product.html" class="product-card">
-          <div class="product-card-media">
-            <span class="product-card-placeholder">Product image</span>
-          </div>
-          <div class="product-card-info">
-            <span class="product-card-label">No. 004</span>
-            <h2 class="product-card-title">The Structured Overcoat</h2>
-            <p class="product-card-price">$—</p>
-          </div>
-        </a>
+        <!-- Chevron -->
+        <div class="ls-chevron" aria-hidden="true">»</div>
 
-        <a href="product.html" class="product-card">
-          <div class="product-card-media">
-            <span class="product-card-placeholder">Product image</span>
+        <!-- Node: LINE 02 — active -->
+        <button class="ls-node" role="tab" aria-selected="false" data-line="02" data-name="LINE 02" data-sub="LINE 02 / SS26" data-img="assets/AI MOCKUP.png" data-hero="assets/AI MOCKUP.png">
+          <div class="ls-node-dot" aria-hidden="true"></div>
+          <div class="ls-node-label">
+            <span class="ls-node-id">LINE 02</span>
+            <span class="ls-node-name">———</span>
           </div>
-          <div class="product-card-info">
-            <span class="product-card-label">No. 005</span>
-            <h2 class="product-card-title">The Structured Overcoat</h2>
-            <p class="product-card-price">$—</p>
-          </div>
-        </a>
+        </button>
 
-        <a href="product.html" class="product-card">
-          <div class="product-card-media">
-            <span class="product-card-placeholder">Product image</span>
-          </div>
-          <div class="product-card-info">
-            <span class="product-card-label">No. 006</span>
-            <h2 class="product-card-title">The Structured Overcoat</h2>
-            <p class="product-card-price">$—</p>
-          </div>
-        </a>
+        <!-- Chevron -->
+        <div class="ls-chevron" aria-hidden="true">»</div>
 
+        <!-- Node: LINE 03 — locked -->
+        <button class="ls-node ls-node--locked" role="tab" aria-selected="false" data-line="03" disabled>
+          <div class="ls-node-dot" aria-hidden="true"></div>
+          <div class="ls-node-label">
+            <span class="ls-node-id">LINE 03</span>
+            <span class="ls-node-name">———</span>
+          </div>
+        </button>
+
+      </div>
+    </div><!-- /.line-selector -->
+
+    <!-- PRODUCT LINES -->
+    <section class="featured-product product-lines-section">
+      <div class="product-lines-inner">
+
+        <div class="lines-header">
+          <span class="lines-header-label">CURRENT LINES</span>
+          <span class="lines-header-status">01 ACTIVE</span>
+        </div>
+
+        <div class="lines-grid">
+
+          <!-- CARD 1 — LINE 01 ACTIVE -->
+          <div class="line-card line-card--active">
+            <div class="line-card-media card-gallery" data-current="0">
+              <img src="assets/kagemi mockup.png" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false">
+              <img src="assets/Gemini_Generated_Image_wum8wwum8wwum8ww.png" alt="Kagemi — Detail" class="line-card-img card-gallery-img" draggable="false">
+              <div class="card-gallery-track" aria-hidden="true">
+                <div class="card-gallery-rail">
+                  <div class="card-gallery-node card-gallery-node--active" data-index="0"></div>
+                  <div class="card-gallery-node" data-index="1"></div>
+                </div>
+              </div>
+            </div>
+            <div class="line-card-body">
+              <div class="line-card-body-meta">
+                <span class="line-card-name">Kagemi</span>
+                <span class="line-card-price">$485.00</span>
+              </div>
+              <a href="product.html" class="line-card-cta">ADD TO CART</a>
+            </div>
+          </div>
+
+          <!-- CARD 2 — LINE 02 -->
+          <div class="line-card line-card--upcoming">
+            <div class="line-card-media">
+            </div>
+            <div class="line-card-body">
+              <div class="line-card-body-meta">
+                <span class="line-card-name">———</span>
+                <span class="line-card-price">$—</span>
+              </div>
+              <span class="line-card-cta line-card-cta--disabled">ANNOUNCED 2026</span>
+            </div>
+          </div>
+
+          <!-- CARD 3 — LINE 03 -->
+          <div class="line-card line-card--locked">
+            <div class="line-card-media line-card-media--empty"></div>
+            <div class="line-card-body">
+              <div class="line-card-body-meta">
+                <span class="line-card-name">———</span>
+                <span class="line-card-price">$—</span>
+              </div>
+              <span class="line-card-cta line-card-cta--disabled">NOT YET AVAILABLE</span>
+            </div>
+          </div>
+
+        </div><!-- /.lines-grid -->
       </div>
     </section>
 
@@ -128,17 +191,19 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <span class="footer-kanji">新生</span>
-        <span class="footer-tagline">Quiet Authority. Intentional Restraint.</span>
+        <span class="footer-wordmark">SHINSEI LINE</span>
+        <span class="footer-tagline">新生ライン — Renewal. New Life.</span>
       </div>
-      <div class="footer-links">
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="product.html">No. 001</a>
         <a href="about.html">About</a>
-        <a href="#">Privacy</a>
-        <a href="#">Shipping</a>
-        <a href="#">Returns</a>
         <a href="contact.html">Contact</a>
+      </nav>
+      <div class="footer-meta">
+        <span>© 2026 Shinsei Line. All rights reserved.</span>
+        <span>Limited to 50 units globally. No restock.</span>
       </div>
-      <div class="footer-meta">© 2026 Shinsei Line. All rights reserved.</div>
     </div>
   </footer>
 
@@ -147,20 +212,21 @@
     <div class="cart-overlay" onclick="toggleCart()"></div>
     <div class="cart-panel">
       <div class="cart-panel-header">
-        <span class="cart-panel-title">Cart</span>
+        <span class="cart-panel-title">CART</span>
         <button class="cart-close" onclick="toggleCart()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
         </button>
       </div>
       <div class="cart-panel-body">
         <div class="cart-empty">
-          <p>Your cart is empty.</p>
-          <a href="product.html" class="btn btn--secondary">Shop the collection</a>
+          <p>YOUR CART IS EMPTY</p>
+          <a href="product.html" class="btn cart-browse-btn">BROWSE LINES</a>
         </div>
       </div>
     </div>
   </div>
 
   <script src="shinsei-preview.js"></script>
+  <script src="shinsei-home.js"></script>
 </body>
 </html>
