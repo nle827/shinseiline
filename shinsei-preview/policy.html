@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy — Shinsei Line</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=IBM+Plex+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="shinsei-preview.css">
+  <link rel="stylesheet" href="shinsei-home.css">
+</head>
+<body class="home-page">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <a href="index.html" class="header-logo">
+        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
+      </a>
+      <div class="header-actions">
+        <button class="search-trigger" aria-label="Search" onclick="toggleSearch()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+        </button>
+        <button class="cart-trigger" onclick="toggleCart()">Cart <span class="cart-count"></span></button>
+      </div>
+    </div>
+    <div class="header-line-stripe" aria-hidden="true"></div>
+  </header>
+
+  <main id="main-content">
+    <section class="policy-page">
+      <div class="policy-inner">
+
+        <div class="policy-body">
+
+          <!-- SHIPPING -->
+          <div class="policy-section">
+            <h2 class="policy-section-title">Shipping</h2>
+            <div class="policy-section-body">
+              <p>Drop 01 is a preorder. All orders placed during the first drop are made to order. Production and delivery timelines for this release are stated on the product page and confirmed at checkout. Those timelines supersede the general terms below.</p>
+              <p>Production and shipping timelines vary by drop. Specific lead times are published on each product page prior to purchase and confirmed in your order summary. By placing an order, you acknowledge the stated timeline for that release.</p>
+              <p>Orders ship to all 50 US states. Tracking information is provided via email once your order has been dispatched.</p>
+              <p>Shinsei Line ships to select countries outside the United States. Available destinations are shown at checkout. International customers are responsible for all applicable import duties, customs fees, and local taxes. These charges are not included in the order total and are collected at the point of delivery by the carrier or customs authority.</p>
+              <p>Production timelines are estimates. Delays may occur due to manufacturing, logistics, or circumstances outside our control. We will communicate material changes to your estimated delivery via email.</p>
+              <p>Orders are shipped to the address provided at checkout. Shinsei Line is not responsible for undelivered packages resulting from incorrect or incomplete address information. Contact us before dispatch if a correction is needed.</p>
+            </div>
+          </div>
+
+          <!-- RETURNS & EXCHANGES -->
+          <div class="policy-section">
+            <h2 class="policy-section-title">Returns &amp; Exchanges</h2>
+            <div class="policy-section-body">
+              <p>All sales are final. Shinsei Line does not accept returns or issue refunds.</p>
+              <p>Drop 01 orders are made to order. By placing an order you are confirming your size selection and accepting the final sale terms stated at checkout.</p>
+              <p>If your item arrives with a manufacturing defect or was shipped incorrectly, contact us at <a href="mailto:shinseilineofficial@gmail.com">shinseilineofficial@gmail.com</a> within 7 days of delivery with your order number and photographs of the issue. We will review each case and, where a defect is confirmed, arrange a replacement or resolution at our discretion.</p>
+              <p>Items must be reported in their original unaltered condition to be considered for defect review.</p>
+            </div>
+          </div>
+
+          <!-- PRIVACY POLICY -->
+          <div class="policy-section">
+            <h2 class="policy-section-title">Privacy Policy</h2>
+            <div class="policy-section-body">
+              <p>This policy describes how Shinsei Line collects, uses, and handles your personal information when you visit our website or place an order.</p>
+              <p>We collect your name, email address, shipping address, and payment information when you place an order. We collect your email address if you sign up for brand communications. We collect browser, device, and usage data automatically via cookies and analytics tools.</p>
+              <p>We use this information to process and fulfill your order, to communicate order status and shipping updates, to send brand communications where you have opted in, and to improve site performance.</p>
+              <p>We do not sell your personal information. We share data only with service providers necessary to operate the business — including payment processors, shipping carriers, and email platforms — who are contractually bound to handle it appropriately.</p>
+              <p>Our site uses cookies for functionality and analytics. You may disable cookies in your browser settings; doing so may affect certain site features.</p>
+              <p>We retain your information for as long as necessary to fulfill orders, comply with legal obligations, and resolve disputes.</p>
+              <p>Depending on your location, you may have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us at <a href="mailto:shinseilineofficial@gmail.com">shinseilineofficial@gmail.com</a>.</p>
+              <p>We may update this policy from time to time. Continued use of the site following an update constitutes acceptance of the revised terms.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="policy.html">Policy</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="footer-brand">
+      </div>
+      <div class="footer-meta">
+        <span>© 2026 Shinsei Line. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-panel">
+      <div class="cart-panel-header">
+        <span class="cart-panel-title">CART</span>
+        <button class="cart-close" onclick="toggleCart()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+      <div class="cart-panel-body" id="cart-body">
+        <div class="cart-empty">
+          <p>YOUR CART IS EMPTY</p>
+          <a href="shop.html" class="btn cart-browse-btn">BROWSE LINES</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="search-overlay">
+    <button class="search-overlay-close" onclick="toggleSearch()">Close</button>
+    <div class="search-overlay-inner">
+      <form class="search-overlay-form" onsubmit="submitSearch(event)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+        <input type="text" id="search-overlay-input" placeholder="Search products..." autocomplete="off">
+        <button type="submit" aria-label="Submit search">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="7" x2="13" y2="7"/><polyline points="7,1 13,7 7,13"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="shinsei-preview.js"></script>
+  <script src="shinsei-home.js"></script>
+</body>
+</html>

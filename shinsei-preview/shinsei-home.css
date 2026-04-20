@@ -154,6 +154,7 @@
 /* ── Main: offset for 72px header ──────────────────────── */
 .home-page #main-content {
   padding-top: 48px;
+  padding-bottom: var(--space-xl);
   min-height: calc(100vh - 72px);
 }
 
@@ -952,10 +953,10 @@ circle.map-node--locked {
 
 /* Disabled CTA state */
 .line-card-cta--disabled {
-  border-color: var(--border);
-  color: var(--text-ghost);
-  cursor: default;
-  pointer-events: none;
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  cursor: pointer;
+  pointer-events: all;
 }
 .line-card-cta--disabled::before {
   display: none;
@@ -963,7 +964,8 @@ circle.map-node--locked {
 
 /* Locked card */
 .line-card--locked {
-  opacity: 0.5;
+  opacity: 1;
+  pointer-events: auto;
 }
 .line-card-media--empty {
   aspect-ratio: 9/16;
@@ -1260,7 +1262,7 @@ circle.map-node--locked {
   letter-spacing: -0.02em;
   color: var(--text-primary);
   line-height: 1;
-  margin: 0 0 0 0;
+  margin: 10px 0 0 0;
 }
 
 .pdp-subtitle {
@@ -1269,7 +1271,7 @@ circle.map-node--locked {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-secondary);
-  margin: 2px 0 0 0;
+  margin: 8px 0 0 0;
 }
 
 .pdp-price {
@@ -1277,7 +1279,7 @@ circle.map-node--locked {
   font-size: 11px;
   letter-spacing: 0.08em;
   color: var(--text-primary);
-  margin: 0 0 0 0;
+  margin: 16px 0 0 0;
 }
 
 /* Variant selector */
@@ -1327,6 +1329,23 @@ circle.map-node--locked {
   color: var(--text-primary);
 }
 
+/* Size error flash */
+.pdp-variant-group.pdp-variant-error .pdp-variant-label {
+  color: #c0392b;
+  transition: color 0.2s;
+}
+.pdp-variant-group.pdp-variant-error .pdp-variant-options {
+  outline: 1px solid #c0392b;
+  outline-offset: 3px;
+}
+
+/* Out of stock size */
+.pdp-variant-btn--oos {
+  opacity: 0.3;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
 /* Add to cart */
 .pdp-actions {
   margin: 0;
@@ -1343,6 +1362,71 @@ circle.map-node--locked {
   text-transform: uppercase;
   color: var(--text-primary);
   cursor: pointer;
+}
+
+/* Request Access */
+.pdp-unavailable-label {
+  font-family: var(--font-ui);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+}
+
+.pdp-access-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdp-access-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdp-access-fields input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  padding: 8px 0;
+  background: transparent;
+  outline: none;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.pdp-access-fields input::placeholder {
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+
+.pdp-access-fields input:focus {
+  border-color: var(--text-primary);
+}
+
+.pdp-access-note {
+  font-family: var(--font-ui);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.pdp-access-confirmed-msg {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 0 0 6px;
 }
 
 /* Description */
@@ -1363,8 +1447,8 @@ circle.map-node--locked {
 
 /* ── Footer ─────────────────────────────────────────────────── */
 .home-page .site-footer {
-  background: var(--bg-dark);
-  border-top: 1px solid #1A1A1A;
+  background: transparent;
+  border-top: none;
   padding: 0;
   position: relative;
 }
@@ -1478,7 +1562,7 @@ circle.map-node--locked {
 /* ── Footer ─────────────────────────────────────────────────── */
 .site-footer {
   border-top: 1px solid var(--border);
-  background: var(--bg-primary);
+  background: transparent;
   padding: 56px 0 40px;
 }
 
@@ -1495,15 +1579,18 @@ circle.map-node--locked {
 .footer-brand {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer-wordmark {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.1em;
   color: var(--text-primary);
+  text-align: center;
+  display: block;
 }
 
 .footer-tagline {
@@ -1516,9 +1603,10 @@ circle.map-node--locked {
 
 .footer-nav {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  gap: 32px;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .footer-nav a {
@@ -1540,6 +1628,7 @@ circle.map-node--locked {
   flex-direction: column;
   gap: 8px;
   align-items: flex-end;
+  justify-content: center;
 }
 
 .footer-meta span {

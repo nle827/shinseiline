@@ -18,17 +18,17 @@
       <nav class="header-nav">
         <a href="index.html" class="nav-link active">Home</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="product.html" class="nav-link">Shop</a>
+        <a href="shop.html" class="nav-link">Shop</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <a href="index.html" class="header-logo">
         <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
       <div class="header-actions">
-        <button class="search-trigger" aria-label="Search">
+        <button class="search-trigger" aria-label="Search" onclick="toggleSearch()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
         </button>
-        <button class="cart-trigger" onclick="toggleCart()">Cart</button>
+        <button class="cart-trigger" onclick="toggleCart()">Cart <span class="cart-count"></span></button>
       </div>
     </div>
     <div class="header-line-stripe" aria-hidden="true"></div>
@@ -87,12 +87,12 @@
           <div class="ls-track-fill"></div>
         </div>
 
-        <!-- Node: LINE 01 — active -->
+        <!-- Node: SHOT 01 -->
         <button class="ls-node ls-node--active" role="tab" aria-selected="true" data-line="01" data-name="KAGEMI" data-sub="LINE 01 / LONG OVERCOAT / SS26" data-img="assets/kagemi mockup.png" data-hero="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png">
           <div class="ls-node-ring" aria-hidden="true"></div>
           <div class="ls-node-dot" aria-hidden="true"></div>
           <div class="ls-node-label">
-            <span class="ls-node-id">LINE 01</span>
+            <span class="ls-node-id">01</span>
             <span class="ls-node-name">KAGEMI</span>
           </div>
         </button>
@@ -100,24 +100,24 @@
         <!-- Chevron -->
         <div class="ls-chevron" aria-hidden="true">»</div>
 
-        <!-- Node: LINE 02 — active -->
-        <button class="ls-node" role="tab" aria-selected="false" data-line="02" data-name="LINE 02" data-sub="LINE 02 / SS26" data-img="assets/AI MOCKUP.png" data-hero="assets/AI MOCKUP.png">
+        <!-- Node: SHOT 02 -->
+        <button class="ls-node" role="tab" aria-selected="false" data-line="02" data-name="KAGEMI" data-sub="LINE 01 / CONSTRUCTION / FRONT" data-img="assets/AI MOCKUP.png" data-hero="assets/AI MOCKUP.png">
           <div class="ls-node-dot" aria-hidden="true"></div>
           <div class="ls-node-label">
-            <span class="ls-node-id">LINE 02</span>
-            <span class="ls-node-name">———</span>
+            <span class="ls-node-id">02</span>
+            <span class="ls-node-name">KAGEMI</span>
           </div>
         </button>
 
         <!-- Chevron -->
         <div class="ls-chevron" aria-hidden="true">»</div>
 
-        <!-- Node: LINE 03 — locked -->
+        <!-- Node: SHOT 03 -->
         <button class="ls-node ls-node--locked" role="tab" aria-selected="false" data-line="03" disabled>
           <div class="ls-node-dot" aria-hidden="true"></div>
           <div class="ls-node-label">
-            <span class="ls-node-id">LINE 03</span>
-            <span class="ls-node-name">———</span>
+            <span class="ls-node-id">03</span>
+            <span class="ls-node-name">KAGEMI</span>
           </div>
         </button>
 
@@ -137,7 +137,7 @@
 
           <!-- CARD 1 — LINE 01 ACTIVE -->
           <div class="line-card line-card--active">
-            <div class="line-card-media card-gallery" data-current="0">
+            <a href="product.html?img=assets%2Fkagemi%20mockup.png" class="line-card-media card-gallery" data-current="0" style="display:block;" data-product-image="assets/kagemi mockup.png">
               <img src="assets/kagemi mockup.png" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false">
               <img src="assets/Gemini_Generated_Image_wum8wwum8wwum8ww.png" alt="Kagemi — Detail" class="line-card-img card-gallery-img" draggable="false">
               <div class="card-gallery-track" aria-hidden="true">
@@ -146,38 +146,38 @@
                   <div class="card-gallery-node" data-index="1"></div>
                 </div>
               </div>
-            </div>
+            </a>
             <div class="line-card-body">
               <div class="line-card-body-meta">
                 <span class="line-card-name">Kagemi</span>
                 <span class="line-card-price">$485.00</span>
               </div>
-              <a href="product.html" class="line-card-cta">ADD TO CART</a>
+              <a href="product.html?img=assets%2Fkagemi%20mockup.png" class="line-card-cta">VIEW NOW</a>
             </div>
           </div>
 
           <!-- CARD 2 — LINE 02 -->
           <div class="line-card line-card--upcoming">
-            <div class="line-card-media">
-            </div>
+            <a href="product.html?available=false" class="line-card-media" style="display:block;">
+            </a>
             <div class="line-card-body">
               <div class="line-card-body-meta">
                 <span class="line-card-name">———</span>
                 <span class="line-card-price">$—</span>
               </div>
-              <span class="line-card-cta line-card-cta--disabled">ANNOUNCED 2026</span>
+              <a href="product.html?available=false" class="line-card-cta line-card-cta--disabled">PREVIEW</a>
             </div>
           </div>
 
           <!-- CARD 3 — LINE 03 -->
           <div class="line-card line-card--locked">
-            <div class="line-card-media line-card-media--empty"></div>
+            <a href="product.html?available=soldout" class="line-card-media" style="display:flex; min-height:300px;"></a>
             <div class="line-card-body">
               <div class="line-card-body-meta">
                 <span class="line-card-name">———</span>
                 <span class="line-card-price">$—</span>
               </div>
-              <span class="line-card-cta line-card-cta--disabled">NOT YET AVAILABLE</span>
+              <a href="product.html?available=soldout" class="line-card-cta line-card-cta--disabled">PREVIEW</a>
             </div>
           </div>
 
@@ -190,19 +190,16 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-wordmark">SHINSEI LINE</span>
-        <span class="footer-tagline">新生ライン — Renewal. New Life.</span>
-      </div>
       <nav class="footer-nav">
         <a href="index.html">Home</a>
-        <a href="product.html">No. 001</a>
+        <a href="policy.html">Policy</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </nav>
+      <div class="footer-brand">
+      </div>
       <div class="footer-meta">
         <span>© 2026 Shinsei Line. All rights reserved.</span>
-        <span>Limited to 50 units globally. No restock.</span>
       </div>
     </div>
   </footer>
@@ -223,6 +220,20 @@
           <a href="product.html" class="btn cart-browse-btn">BROWSE LINES</a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="search-overlay">
+    <button class="search-overlay-close" onclick="toggleSearch()">Close</button>
+    <div class="search-overlay-inner">
+      <form class="search-overlay-form" onsubmit="submitSearch(event)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+        <input type="text" id="search-overlay-input" placeholder="Search products..." autocomplete="off">
+        <button type="submit" aria-label="Submit search">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="7" x2="13" y2="7"/><polyline points="7,1 13,7 7,13"/></svg>
+        </button>
+      </form>
     </div>
   </div>
 

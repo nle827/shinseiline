@@ -4,29 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact — Shinsei Line</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=IBM+Plex+Mono:wght@400&display=swap">
   <link rel="stylesheet" href="shinsei-preview.css">
+  <link rel="stylesheet" href="shinsei-home.css">
 </head>
-<body>
+<body class="home-page">
 
+  <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <nav class="header-nav">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="product.html" class="nav-link">Shop</a>
+        <a href="shop.html" class="nav-link">Shop</a>
         <a href="contact.html" class="nav-link active">Contact</a>
       </nav>
       <a href="index.html" class="header-logo">
-        <img src="assets/SHINSEI LINE LOGO PNG WHITE-02.png" alt="Shinsei Line" class="logo-img logo-img--light">
-        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img logo-img--dark">
+        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
       <div class="header-actions">
-        <button class="search-trigger" aria-label="Search">
+        <button class="search-trigger" aria-label="Search" onclick="toggleSearch()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
         </button>
-        <button class="cart-trigger" onclick="toggleCart()">Cart</button>
+        <button class="cart-trigger" onclick="toggleCart()">Cart <span class="cart-count"></span></button>
       </div>
     </div>
+    <div class="header-line-stripe" aria-hidden="true"></div>
   </header>
 
   <main id="main-content">
@@ -34,19 +39,17 @@
       <div class="contact-inner">
 
         <div class="contact-header">
-          <span class="contact-eyebrow">Get in touch</span>
           <h1 class="contact-heading">Contact</h1>
         </div>
 
         <div class="contact-info">
-          <p class="contact-intro">For wholesale inquiries, press, or general correspondence — reach us below. We respond within 2 business days.</p>
-          <a href="mailto:hello@shinseiline.com" class="contact-email">hello@shinseiline.com</a>
+          <a href="mailto:shinseilineofficial@gmail.com" class="contact-email">shinseilineofficial@gmail.com</a>
         </div>
 
         <form class="contact-form" onsubmit="handleContactSubmit(event)">
           <div class="form-field">
             <label for="name">Name</label>
-            <input type="text" id="name" name="name" autocomplete="name">
+            <input type="text" id="name" name="name" autocomplete="name" required>
           </div>
           <div class="form-field">
             <label for="email">Email</label>
@@ -54,51 +57,70 @@
           </div>
           <div class="form-field">
             <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject">
+            <input type="text" id="subject" name="subject" required>
           </div>
           <div class="form-field">
             <label for="message">Message</label>
-            <textarea id="message" name="message" rows="6"></textarea>
+            <textarea id="message" name="message" rows="6" required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary">Send message</button>
+          <button type="submit" class="btn btn--secondary" style="align-self: center; min-width: 200px;">Send message</button>
         </form>
 
       </div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-kanji">新生</span>
-        <span class="footer-tagline">Quiet Authority. Intentional Restraint.</span>
-      </div>
-      <div class="footer-links">
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="policy.html">Policy</a>
         <a href="about.html">About</a>
-        <a href="#">Privacy</a>
-        <a href="#">Shipping</a>
-        <a href="#">Returns</a>
         <a href="contact.html">Contact</a>
+      </nav>
+      <div class="footer-brand">
       </div>
-      <div class="footer-meta">© 2026 Shinsei Line. All rights reserved.</div>
+      <div class="footer-meta">
+        <span>© 2026 Shinsei Line. All rights reserved.</span>
+      </div>
     </div>
   </footer>
 
+  <!-- CART DRAWER -->
   <div class="cart-drawer" id="cart-drawer">
     <div class="cart-overlay" onclick="toggleCart()"></div>
     <div class="cart-panel">
       <div class="cart-panel-header">
-        <span class="cart-panel-title">Cart</span>
+        <span class="cart-panel-title">CART</span>
         <button class="cart-close" onclick="toggleCart()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
         </button>
       </div>
       <div class="cart-panel-body">
-        <div class="cart-empty"><p>Your cart is empty.</p></div>
+        <div class="cart-empty">
+          <p>YOUR CART IS EMPTY</p>
+          <a href="product.html" class="btn cart-browse-btn">BROWSE LINES</a>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="search-overlay">
+    <button class="search-overlay-close" onclick="toggleSearch()">Close</button>
+    <div class="search-overlay-inner">
+      <form class="search-overlay-form" onsubmit="submitSearch(event)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+        <input type="text" id="search-overlay-input" placeholder="Search products..." autocomplete="off">
+        <button type="submit" aria-label="Submit search">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="7" x2="13" y2="7"/><polyline points="7,1 13,7 7,13"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <script src="shinsei-preview.js"></script>
+  <script src="shinsei-home.js"></script>
 </body>
 </html>

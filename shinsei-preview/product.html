@@ -18,17 +18,17 @@
       <nav class="header-nav">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About</a>
-        <a href="product.html" class="nav-link active">Shop</a>
+        <a href="shop.html" class="nav-link active">Shop</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <a href="index.html" class="header-logo">
         <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
       <div class="header-actions">
-        <button class="search-trigger" aria-label="Search">
+        <button class="search-trigger" aria-label="Search" onclick="toggleSearch()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
         </button>
-        <button class="cart-trigger" onclick="toggleCart()">Cart</button>
+        <button class="cart-trigger" onclick="toggleCart()">Cart <span class="cart-count"></span></button>
       </div>
     </div>
     <div class="header-line-stripe" aria-hidden="true"></div>
@@ -37,7 +37,7 @@
   <main id="main-content">
     <section class="pdp-layout">
 
-      <!-- LEFT: construction details -->
+      <!-- LEFT: details column -->
       <div class="pdp-construction">
         <div class="pdp-construction-inner">
 
@@ -77,9 +77,8 @@
         <div class="pdp-info-inner">
 
           <div class="pdp-info-top">
-            <span class="pdp-label">No. 001 — Outerwear</span>
+            <span class="pdp-label">Shinsei Line 001 — No. 001</span>
             <h1 class="pdp-title">Kagemi</h1>
-            <p class="pdp-subtitle">The Structured Overcoat</p>
             <p class="pdp-price">$485.00</p>
           </div>
 
@@ -88,7 +87,7 @@
             <div class="pdp-variant-group">
               <span class="pdp-variant-label">Size</span>
               <div class="pdp-variant-options">
-                <button class="pdp-variant-btn pdp-variant-btn--active" onclick="selectVariant(this, 'size')">XS</button>
+                <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">XS</button>
                 <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">S</button>
                 <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">M</button>
                 <button class="pdp-variant-btn" onclick="selectVariant(this, 'size')">L</button>
@@ -98,28 +97,98 @@
           </div>
 
           <!-- Add to cart -->
-          <div class="pdp-actions">
+          <div class="pdp-actions" id="pdp-actions-available">
             <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
+          </div>
+
+          <!-- Request Access (shown when product is unavailable) -->
+          <div class="pdp-actions pdp-request-access" id="pdp-actions-unavailable" style="display:none;">
+            <p class="pdp-unavailable-label">Not yet available</p>
+            <form class="pdp-access-form" onsubmit="submitRequestAccess(event)">
+              <div class="pdp-access-fields">
+                <input type="email" id="access-email" placeholder="Email address" autocomplete="email">
+                <input type="tel" id="access-phone" placeholder="Phone (optional)" autocomplete="tel">
+              </div>
+              <button type="submit" class="pdp-add-to-cart">REQUEST ACCESS</button>
+              <p class="pdp-access-note">We'll notify you when this line becomes available.</p>
+            </form>
+            <div class="pdp-access-confirmed" id="pdp-access-confirmed" style="display:none;">
+              <p class="pdp-access-confirmed-msg">Request received.</p>
+              <p class="pdp-access-note">You'll be among the first to know.</p>
+            </div>
+          </div>
+
+          <!-- Notify Me (shown when product is sold out) -->
+          <div class="pdp-actions pdp-request-access" id="pdp-actions-soldout" style="display:none;">
+            <p class="pdp-unavailable-label">Sold out</p>
+            <form class="pdp-access-form" onsubmit="submitNotifyMe(event)">
+              <div class="pdp-access-fields">
+                <input type="email" id="notify-email" placeholder="Email address" autocomplete="email">
+                <input type="tel" id="notify-phone" placeholder="Phone (optional)" autocomplete="tel">
+              </div>
+              <button type="submit" class="pdp-add-to-cart">NOTIFY ME</button>
+              <p class="pdp-access-note">We'll reach out if this line is restocked.</p>
+            </form>
+            <div class="pdp-access-confirmed" id="pdp-notify-confirmed" style="display:none;">
+              <p class="pdp-access-confirmed-msg">You're on the list.</p>
+              <p class="pdp-access-note">We'll be in touch if a restock happens.</p>
+            </div>
           </div>
 
           <!-- Accordions -->
           <div class="pdp-accordions">
             <div class="accordion">
               <button class="accordion-trigger" onclick="toggleAccordion(this)">
-                <span>Construction</span>
-                <span class="accordion-icon">+</span>
-              </button>
-              <div class="accordion-body">
-                <p>Structured unisex long overcoat. European overcoat construction fused with Japanese kosode shoulder treatment. Fine wool — melton, gabardine, or twill at outerwear weight.</p>
-              </div>
-            </div>
-            <div class="accordion">
-              <button class="accordion-trigger" onclick="toggleAccordion(this)">
                 <span>Sizing</span>
                 <span class="accordion-icon">+</span>
               </button>
               <div class="accordion-body">
-                <p>Unisex sizing. Please refer to the size guide for detailed measurements. Limited to 50 units globally.</p>
+                <table class="size-chart">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>XS</th>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>L</th>
+                      <th>XL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="size-chart-dim">Chest</td>
+                      <td>38 in</td>
+                      <td>40 in</td>
+                      <td>42 in</td>
+                      <td>44 in</td>
+                      <td>46 in</td>
+                    </tr>
+                    <tr>
+                      <td class="size-chart-dim">Shoulder</td>
+                      <td>17 in</td>
+                      <td>18 in</td>
+                      <td>19 in</td>
+                      <td>20 in</td>
+                      <td>21 in</td>
+                    </tr>
+                    <tr>
+                      <td class="size-chart-dim">Length</td>
+                      <td>50 in</td>
+                      <td>51 in</td>
+                      <td>52 in</td>
+                      <td>53 in</td>
+                      <td>54 in</td>
+                    </tr>
+                    <tr>
+                      <td class="size-chart-dim">Sleeve</td>
+                      <td>24 in</td>
+                      <td>25 in</td>
+                      <td>26 in</td>
+                      <td>27 in</td>
+                      <td>28 in</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div class="accordion">
@@ -142,19 +211,16 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-wordmark">SHINSEI LINE</span>
-        <span class="footer-tagline">新生ライン — Renewal. New Life.</span>
-      </div>
       <nav class="footer-nav">
         <a href="index.html">Home</a>
-        <a href="product.html">No. 001</a>
+        <a href="policy.html">Policy</a>
         <a href="about.html">About</a>
         <a href="contact.html">Contact</a>
       </nav>
+      <div class="footer-brand">
+      </div>
       <div class="footer-meta">
         <span>© 2026 Shinsei Line. All rights reserved.</span>
-        <span>Limited to 50 units globally. No restock.</span>
       </div>
     </div>
   </footer>
@@ -175,6 +241,20 @@
           <a href="product.html" class="btn cart-browse-btn">BROWSE LINES</a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="search-overlay">
+    <button class="search-overlay-close" onclick="toggleSearch()">Close</button>
+    <div class="search-overlay-inner">
+      <form class="search-overlay-form" onsubmit="submitSearch(event)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+        <input type="text" id="search-overlay-input" placeholder="Search products..." autocomplete="off">
+        <button type="submit" aria-label="Submit search">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="7" x2="13" y2="7"/><polyline points="7,1 13,7 7,13"/></svg>
+        </button>
+      </form>
     </div>
   </div>
 
