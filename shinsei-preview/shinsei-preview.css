@@ -461,6 +461,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 .product-accordions { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
 
+.pdp-accordions { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
+
 .accordion { border-bottom: 1px solid var(--border); }
 
 .accordion-trigger {
@@ -468,9 +470,9 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-sm) 0;
+  padding: 8px 0;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;
@@ -482,10 +484,10 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 .accordion-body {
   display: none;
-  padding-bottom: var(--space-md);
-  font-size: 0.9rem;
+  padding-bottom: 8px;
+  font-size: 0.85rem;
   color: var(--ink-mid);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 .accordion-body.open { display: block; }
 

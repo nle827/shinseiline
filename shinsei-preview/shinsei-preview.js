@@ -31,10 +31,10 @@ function toggleAccordion(trigger) {
 
 // --- Variant selection ---
 function selectVariant(btn, group) {
-  const parent = btn.closest('.variant-options');
+  const parent = btn.closest('.pdp-variant-options');
   if (!parent) return;
-  parent.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  parent.querySelectorAll('.pdp-variant-btn').forEach(b => b.classList.remove('pdp-variant-btn--active'));
+  btn.classList.add('pdp-variant-btn--active');
 }
 
 // --- Simulated add to cart ---
