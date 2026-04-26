@@ -1,0 +1,48 @@
+<section class="contact-page">
+  <div class="contact-inner">
+
+    <div class="contact-header">
+      <h1 class="contact-heading">Contact</h1>
+    </div>
+
+    <div class="contact-info">
+      <a href="mailto:shinseilineofficial@gmail.com" class="contact-email">shinseilineofficial@gmail.com</a>
+    </div>
+
+    {%- form 'contact' -%}
+      {%- if form.posted_successfully? -%}
+        <div class="contact-success">
+          <p>Message received. We will be in touch.</p>
+        </div>
+      {%- endif -%}
+
+      <div class="contact-form">
+        <div class="form-field">
+          <label for="ContactForm-name">Name</label>
+          <input type="text" id="ContactForm-name" name="contact[name]" autocomplete="name" required value="{{ form.name | escape }}">
+        </div>
+        <div class="form-field">
+          <label for="ContactForm-email">Email</label>
+          <input type="email" id="ContactForm-email" name="contact[email]" autocomplete="email" required value="{{ form.email | escape }}">
+        </div>
+        <div class="form-field">
+          <label for="ContactForm-subject">Subject</label>
+          <input type="text" id="ContactForm-subject" name="contact[body][subject]" required value="{{ form.body | escape }}">
+        </div>
+        <div class="form-field">
+          <label for="ContactForm-message">Message</label>
+          <textarea id="ContactForm-message" name="contact[body]" rows="6" required>{{ form.body | escape }}</textarea>
+        </div>
+        <button type="submit" class="btn btn--secondary" style="align-self: center; min-width: 200px;">Send message</button>
+      </div>
+    {%- endform -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": []
+}
+{% endschema %}

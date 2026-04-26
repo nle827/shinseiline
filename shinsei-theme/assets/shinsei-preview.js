@@ -53,14 +53,6 @@ function toggleMobileNav() {
 document.addEventListener('DOMContentLoaded', function() {
   updateCartBadge();
 
-  // Mark out-of-stock size buttons
-  document.querySelectorAll('.pdp-variant-btn').forEach(btn => {
-    const size = btn.textContent.trim();
-    if ((STOCK[size] ?? 0) === 0) {
-      btn.classList.add('pdp-variant-btn--oos');
-      btn.disabled = true;
-    }
-  });
   const input = document.getElementById('shop-search-input');
   if (input) {
     const params = new URLSearchParams(window.location.search);
@@ -89,51 +81,57 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// --- Cart State ---
-let cartItems = JSON.parse(localStorage.getItem('shinsei-cart') || '[]');
+// --- Shopify AJAX Cart ---
 
-function saveCart() {
-  localStorage.setItem('shinsei-cart', JSON.stringify(cartItems));
+function formatMoney(cents) {
+  return '$' + (cents / 100).toFixed(2);
+}
+
+async function fetchCart() {
+  const res = await fetch('/cart.js');
+  return res.json();
 }
 
 function updateCartBadge() {
-  const count = cartItems.reduce((sum, item) => sum + item.qty, 0);
-  document.querySelectorAll('.cart-count').forEach(el => {
-    el.textContent = count > 0 ? count : '';
-    el.style.display = count > 0 ? 'inline-flex' : 'none';
+  fetchCart().then(cart => {
+    const count = cart.item_count;
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count > 0 ? count : '';
+      el.style.display = count > 0 ? 'inline-flex' : 'none';
+    });
   });
 }
 
-function renderCart() {
+async function renderCart() {
   const body = document.getElementById('cart-body');
   if (!body) return;
 
-  if (cartItems.length === 0) {
+  const cart = await fetchCart();
+
+  if (cart.item_count === 0) {
     body.innerHTML = `
       <div class="cart-empty">
         <p>YOUR CART IS EMPTY</p>
-        <a href="shop.html" class="btn cart-browse-btn">BROWSE LINES</a>
+        <a href="/collections/all" class="btn cart-browse-btn">BROWSE LINES</a>
       </div>`;
     return;
   }
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
-
   body.innerHTML = `
     <div class="cart-items">
-      ${cartItems.map((item, i) => `
+      ${cart.items.map(item => `
         <div class="cart-item">
-          <div class="cart-item-thumb">${item.image ? `<img src="${item.image}" alt="${item.name}">` : ''}</div>
+          <div class="cart-item-thumb">${item.featured_image ? `<img src="${item.featured_image.url}" alt="${item.product_title}">` : ''}</div>
           <div class="cart-item-info">
-            <span class="cart-item-name">${item.name}</span>
-            <span class="cart-item-meta">${item.size ? 'Size: ' + item.size + ' — ' : ''}$${item.price.toFixed(2)}</span>
+            <span class="cart-item-name">${item.product_title}</span>
+            <span class="cart-item-meta">${item.variant_title && item.variant_title !== 'Default Title' ? 'Size: ' + item.variant_title + ' — ' : ''}${formatMoney(item.price)}</span>
           </div>
           <div class="cart-item-qty">
-            <button class="cart-qty-btn" onclick="changeQty(${i}, -1)">−</button>
-            <span class="cart-qty-value">${item.qty}</span>
-            <button class="cart-qty-btn" onclick="changeQty(${i}, 1)">+</button>
+            <button class="cart-qty-btn" onclick="changeQty('${item.key}', ${item.quantity - 1})">−</button>
+            <span class="cart-qty-value">${item.quantity}</span>
+            <button class="cart-qty-btn" onclick="changeQty('${item.key}', ${item.quantity + 1})">+</button>
           </div>
-          <button class="cart-remove" onclick="removeFromCart(${i})" aria-label="Remove">
+          <button class="cart-remove" onclick="removeFromCart('${item.key}')" aria-label="Remove">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><line x1="1" y1="1" x2="9" y2="9" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="1" x2="1" y2="9" stroke="currentColor" stroke-width="1.5"/></svg>
           </button>
         </div>`).join('')}
@@ -141,25 +139,75 @@ function renderCart() {
     <div class="cart-footer">
       <div class="cart-subtotal">
         <span class="cart-subtotal-label">SUBTOTAL</span>
-        <span class="cart-subtotal-value">$${subtotal.toFixed(2)}</span>
+        <span class="cart-subtotal-value">${formatMoney(cart.total_price)}</span>
       </div>
-      <button class="cart-checkout-btn" disabled>CHECKOUT — COMING SOON</button>
+      <a href="/checkout" class="cart-checkout-btn">CHECKOUT</a>
     </div>`;
 }
 
-function removeFromCart(index) {
-  cartItems.splice(index, 1);
-  saveCart();
+async function removeFromCart(key) {
+  await fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: key, quantity: 0 })
+  });
   updateCartBadge();
   renderCart();
 }
 
-function changeQty(index, delta) {
-  cartItems[index].qty += delta;
-  if (cartItems[index].qty <= 0) cartItems.splice(index, 1);
-  saveCart();
+async function changeQty(key, newQty) {
+  if (newQty <= 0) { removeFromCart(key); return; }
+  await fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: key, quantity: newQty })
+  });
   updateCartBadge();
   renderCart();
+}
+
+async function addToCart() {
+  const activeBtn = document.querySelector('.pdp-variant-btn--active');
+
+  if (!activeBtn) {
+    const sizeGroup = document.querySelector('.pdp-variant-group');
+    if (sizeGroup) {
+      sizeGroup.classList.add('pdp-variant-error');
+      setTimeout(() => sizeGroup.classList.remove('pdp-variant-error'), 2000);
+    }
+    return;
+  }
+
+  const variantId = parseInt(activeBtn.dataset.variantId);
+  const btn = document.querySelector('.pdp-add-to-cart');
+
+  const res = await fetch('/cart/add.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: variantId, quantity: 1 })
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = err.description || 'MAX QTY REACHED';
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1800);
+    }
+    return;
+  }
+
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = 'Added';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 600);
+  }
+
+  updateCartBadge();
+  await renderCart();
+  toggleCart();
 }
 
 // --- Cart Drawer ---
@@ -195,74 +243,6 @@ function selectVariant(btn, group) {
   if (!parent) return;
   parent.querySelectorAll('.pdp-variant-btn').forEach(b => b.classList.remove('pdp-variant-btn--active'));
   btn.classList.add('pdp-variant-btn--active');
-}
-
-// --- Store tile image when navigating to product page ---
-document.addEventListener('click', function(e) {
-  const card = e.target.closest('[data-product-image]');
-  if (card) sessionStorage.setItem('pdp-tile-image', card.dataset.productImage);
-});
-
-// --- Stock per size (simulate inventory) ---
-const STOCK = { XS: 3, S: 8, M: 12, L: 7, XL: 4 };
-
-// --- Simulated add to cart ---
-function addToCart() {
-  const title = document.querySelector('.pdp-title')?.textContent?.trim() || 'Product';
-  const priceText = document.querySelector('.pdp-price')?.textContent?.trim() || '$0.00';
-  const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
-  const activeSize = document.querySelector('.pdp-variant-btn--active')?.textContent?.trim() || '';
-  const urlImg = new URLSearchParams(window.location.search).get('img');
-  const image = urlImg || sessionStorage.getItem('pdp-tile-image') || document.querySelector('.pdp-stack-img img, .pdp-gallery img')?.src || '';
-
-  // Mandatory size check
-  if (!activeSize) {
-    const sizeGroup = document.querySelector('.pdp-variant-group');
-    if (sizeGroup) {
-      sizeGroup.classList.add('pdp-variant-error');
-      setTimeout(() => sizeGroup.classList.remove('pdp-variant-error'), 2000);
-    }
-    return;
-  }
-
-  // Stock check
-  const inCart = cartItems.filter(i => i.name === title && i.size === activeSize).reduce((s, i) => s + i.qty, 0);
-  const stock = STOCK[activeSize] ?? 0;
-  if (inCart >= stock) {
-    const btn = event?.target || document.querySelector('.pdp-add-to-cart');
-    if (btn) {
-      const orig = btn.textContent;
-      btn.textContent = stock === 0 ? 'OUT OF STOCK' : 'MAX QTY REACHED';
-      btn.disabled = true;
-      setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1800);
-    }
-    return;
-  }
-
-  const existing = cartItems.find(item => item.name === title && item.size === activeSize);
-  if (existing) {
-    existing.qty += 1;
-  } else {
-    cartItems.push({ name: title, price, size: activeSize, qty: 1, image });
-  }
-  saveCart();
-  updateCartBadge();
-
-  const btn = event?.target || document.querySelector('.pdp-add-to-cart');
-  if (btn) {
-    const original = btn.textContent;
-    btn.textContent = 'Added';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = original;
-      btn.disabled = false;
-      renderCart();
-      toggleCart();
-    }, 600);
-  } else {
-    renderCart();
-    toggleCart();
-  }
 }
 
 // --- Contact form simulation ---

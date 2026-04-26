@@ -1,0 +1,160 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign available = product.available
+  assign url_param = request.path
+-%}
+
+<section class="pdp-layout">
+
+  <!-- LEFT: construction details -->
+  <div class="pdp-construction">
+    <div class="pdp-construction-inner">
+
+      <div class="pdp-construction-block">
+        <span class="pdp-construction-label">Material</span>
+        <p>Fine wool outerwear weight. Melton, gabardine, or wool-blend twill. Unstructured lining.</p>
+      </div>
+
+      <div class="pdp-construction-block">
+        <span class="pdp-construction-label">Construction</span>
+        <p>European overcoat construction fused with Japanese kosode shoulder treatment. Drop shoulder silhouette. Single-button closure.</p>
+      </div>
+
+      <div class="pdp-construction-block">
+        <span class="pdp-construction-label">Fit</span>
+        <p>Unisex. Oversized through the body and sleeve. Length falls below the knee.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MIDDLE: image stack -->
+  <div class="pdp-gallery-track">
+    {%- for image in product.images -%}
+      <div class="pdp-stack-img">
+        <img src="{{ image | image_url: width: 900 }}" alt="{{ image.alt | default: product.title }}" draggable="false">
+      </div>
+    {%- else -%}
+      <div class="pdp-stack-img pdp-stack-img--placeholder"></div>
+    {%- endfor -%}
+  </div>
+
+  <!-- RIGHT: product info -->
+  <div class="pdp-info">
+    <div class="pdp-info-inner">
+
+      <div class="pdp-info-top">
+        <span class="pdp-label">Shinsei Line — No. 001</span>
+        <h1 class="pdp-title">{{ product.title }}</h1>
+        <p class="pdp-price">{{ product.price | money }}</p>
+      </div>
+
+      <!-- Variants -->
+      <div class="pdp-variants">
+        <div class="pdp-variant-group">
+          <span class="pdp-variant-label">Size</span>
+          <div class="pdp-variant-options">
+            {%- for variant in product.variants -%}
+              <button
+                class="pdp-variant-btn{% unless variant.available %} pdp-variant-btn--oos{% endunless %}"
+                data-variant-id="{{ variant.id }}"
+                data-variant-title="{{ variant.title }}"
+                data-inventory="{{ variant.inventory_quantity }}"
+                onclick="selectVariant(this, 'size')"
+                {% unless variant.available %}disabled{% endunless %}
+              >{{ variant.title }}</button>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- Add to cart (normal available product) -->
+      <div class="pdp-actions" id="pdp-actions-available">
+        <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
+      </div>
+
+      <!-- Request Access (unavailable) -->
+      <div class="pdp-actions pdp-request-access" id="pdp-actions-unavailable" style="display:none;">
+        <p class="pdp-unavailable-label">Not yet available</p>
+        <form class="pdp-access-form" onsubmit="submitRequestAccess(event)">
+          <div class="pdp-access-fields">
+            <input type="email" id="access-email" placeholder="Email address" autocomplete="email">
+            <input type="tel" id="access-phone" placeholder="Phone (optional)" autocomplete="tel">
+          </div>
+          <button type="submit" class="pdp-add-to-cart">REQUEST ACCESS</button>
+          <p class="pdp-access-note">We'll notify you when this line becomes available.</p>
+        </form>
+        <div class="pdp-access-confirmed" id="pdp-access-confirmed" style="display:none;">
+          <p class="pdp-access-confirmed-msg">Request received.</p>
+          <p class="pdp-access-note">You'll be among the first to know.</p>
+        </div>
+      </div>
+
+      <!-- Notify Me (sold out) -->
+      <div class="pdp-actions pdp-request-access" id="pdp-actions-soldout" style="display:none;">
+        <p class="pdp-unavailable-label">Sold out</p>
+        <form class="pdp-access-form" onsubmit="submitNotifyMe(event)">
+          <div class="pdp-access-fields">
+            <input type="email" id="notify-email" placeholder="Email address" autocomplete="email">
+            <input type="tel" id="notify-phone" placeholder="Phone (optional)" autocomplete="tel">
+          </div>
+          <button type="submit" class="pdp-add-to-cart">NOTIFY ME</button>
+          <p class="pdp-access-note">We'll reach out if this line is restocked.</p>
+        </form>
+        <div class="pdp-access-confirmed" id="pdp-notify-confirmed" style="display:none;">
+          <p class="pdp-access-confirmed-msg">You're on the list.</p>
+          <p class="pdp-access-note">We'll be in touch if a restock happens.</p>
+        </div>
+      </div>
+
+      <!-- Accordions -->
+      <div class="pdp-accordions">
+        <div class="accordion">
+          <button class="accordion-trigger" onclick="toggleAccordion(this)">
+            <span>Sizing</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <table class="size-chart">
+              <thead>
+                <tr><th></th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="size-chart-dim">Chest</td><td>38 in</td><td>40 in</td><td>42 in</td><td>44 in</td><td>46 in</td></tr>
+                <tr><td class="size-chart-dim">Shoulder</td><td>17 in</td><td>18 in</td><td>19 in</td><td>20 in</td><td>21 in</td></tr>
+                <tr><td class="size-chart-dim">Length</td><td>50 in</td><td>51 in</td><td>52 in</td><td>53 in</td><td>54 in</td></tr>
+                <tr><td class="size-chart-dim">Sleeve</td><td>24 in</td><td>25 in</td><td>26 in</td><td>27 in</td><td>28 in</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="accordion">
+          <button class="accordion-trigger" onclick="toggleAccordion(this)">
+            <span>Shipping & Returns</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <p>All orders ship within 10–14 business days of production confirmation. Returns accepted within 14 days of delivery in original, unworn condition.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- Expose variant data to JS -->
+<script>
+  window.SHOPIFY_VARIANTS = {{ product.variants | json }};
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

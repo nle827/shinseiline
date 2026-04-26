@@ -21,6 +21,11 @@
         <a href="shop.html" class="nav-link active">Shop</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
+      <button class="hamburger-btn" aria-label="Menu" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <a href="index.html" class="header-logo">
         <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
@@ -33,6 +38,16 @@
     </div>
     <div class="header-line-stripe" aria-hidden="true"></div>
   </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
+    <nav class="mobile-nav-links">
+      <a href="index.html" class="mobile-nav-link" onclick="toggleMobileNav()">Home</a>
+      <a href="about.html" class="mobile-nav-link" onclick="toggleMobileNav()">About</a>
+      <a href="shop.html" class="mobile-nav-link" onclick="toggleMobileNav()">Shop</a>
+      <a href="contact.html" class="mobile-nav-link" onclick="toggleMobileNav()">Contact</a>
+    </nav>
+  </div>
 
   <main id="main-content">
     <section class="pdp-layout">

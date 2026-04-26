@@ -21,6 +21,11 @@
         <a href="shop.html" class="nav-link">Shop</a>
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
+      <button class="hamburger-btn" aria-label="Menu" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <a href="index.html" class="header-logo">
         <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
       </a>
@@ -33,6 +38,16 @@
     </div>
     <div class="header-line-stripe" aria-hidden="true"></div>
   </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
+    <nav class="mobile-nav-links">
+      <a href="index.html" class="mobile-nav-link active" onclick="toggleMobileNav()">Home</a>
+      <a href="about.html" class="mobile-nav-link" onclick="toggleMobileNav()">About</a>
+      <a href="shop.html" class="mobile-nav-link" onclick="toggleMobileNav()">Shop</a>
+      <a href="contact.html" class="mobile-nav-link" onclick="toggleMobileNav()">Contact</a>
+    </nav>
+  </div>
 
   <main id="main-content">
 
@@ -55,6 +70,7 @@
 
       <!-- HERO -->
       <section class="hero">
+        <img class="hero-mobile-img" src="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png" alt="Kagemi" aria-hidden="true">
         <div class="hero-overlay-text">
           <h1 class="hero-heading">KAGEMI</h1>
           <div class="hero-overlay-rule" aria-hidden="true"></div>
@@ -88,7 +104,7 @@
         </div>
 
         <!-- Node: SHOT 01 -->
-        <button class="ls-node ls-node--active" role="tab" aria-selected="true" data-line="01" data-name="KAGEMI" data-sub="LINE 01 / LONG OVERCOAT / SS26" data-img="assets/kagemi mockup.png" data-hero="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png">
+        <button class="ls-node ls-node--active" role="tab" aria-selected="true" data-line="01" data-name="KAGEMI" data-sub="LINE 01 / LONG OVERCOAT / SS26" data-img="assets/kagemi mockup.png" data-hero="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png" data-hero-mobile="assets/Gemini_Generated_Image_ooyxwbooyxwbooyx.png">
           <div class="ls-node-ring" aria-hidden="true"></div>
           <div class="ls-node-dot" aria-hidden="true"></div>
           <div class="ls-node-label">
@@ -101,7 +117,7 @@
         <div class="ls-chevron" aria-hidden="true">»</div>
 
         <!-- Node: SHOT 02 -->
-        <button class="ls-node" role="tab" aria-selected="false" data-line="02" data-name="KAGEMI" data-sub="LINE 01 / CONSTRUCTION / FRONT" data-img="assets/AI MOCKUP.png" data-hero="assets/AI MOCKUP.png">
+        <button class="ls-node" role="tab" aria-selected="false" data-line="02" data-name="KAGEMI" data-sub="LINE 01 / CONSTRUCTION / FRONT" data-img="assets/AI MOCKUP.png" data-hero="assets/AI MOCKUP.png" data-hero-mobile="assets/AI MOCKUP.png">
           <div class="ls-node-dot" aria-hidden="true"></div>
           <div class="ls-node-label">
             <span class="ls-node-id">02</span>
@@ -113,7 +129,7 @@
         <div class="ls-chevron" aria-hidden="true">»</div>
 
         <!-- Node: SHOT 03 -->
-        <button class="ls-node ls-node--locked" role="tab" aria-selected="false" data-line="03" disabled>
+        <button class="ls-node" role="tab" aria-selected="false" data-line="03" data-name="KAGEMI" data-sub="LINE 01 / STORE CONCEPT / SS26" data-img="assets/Shinsei Line Store Concept.png" data-hero="assets/Shinsei Line Store Concept.png" data-hero-mobile="assets/Shinsei Line Store Concept.png">
           <div class="ls-node-dot" aria-hidden="true"></div>
           <div class="ls-node-label">
             <span class="ls-node-id">03</span>

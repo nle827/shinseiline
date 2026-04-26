@@ -1,39 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ request.locale.iso_code }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — Shinsei Line</title>
+  <title>{{ page_title }} — Shinsei Line</title>
+
+  {% render 'meta-tags' %}
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=IBM+Plex+Mono:wght@400&display=swap">
-  <link rel="stylesheet" href="shinsei-preview.css">
-  <link rel="stylesheet" href="shinsei-home.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Space+Mono:wght@400&display=swap">
+
+  {{ 'shinsei-preview.css' | asset_url | stylesheet_tag }}
+  {{ 'shinsei-home.css' | asset_url | stylesheet_tag }}
+
+  {{ content_for_header }}
 </head>
-<body class="home-page">
+<body class="{% if request.page_type == 'index' %}home-page{% elsif request.page_type == 'product' %}home-page pdp-page{% endif %}">
 
   <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
       <nav class="header-nav">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="about.html" class="nav-link active">About</a>
-        <a href="shop.html" class="nav-link">Shop</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="{{ routes.root_url }}" class="nav-link{% if request.page_type == 'index' %} active{% endif %}">Home</a>
+        <a href="/pages/about" class="nav-link{% if request.path == '/pages/about' %} active{% endif %}">About</a>
+        <a href="{{ routes.all_products_collection_url }}" class="nav-link{% if request.page_type == 'collection' %} active{% endif %}">Shop</a>
+        <a href="/pages/contact" class="nav-link{% if request.path == '/pages/contact' %} active{% endif %}">Contact</a>
       </nav>
       <button class="hamburger-btn" aria-label="Menu" aria-expanded="false" onclick="toggleMobileNav()">
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <a href="index.html" class="header-logo">
-        <img src="assets/SHINSEI_LINE_LOGO_PNG-01.png" alt="Shinsei Line" class="logo-img">
+      <a href="{{ routes.root_url }}" class="header-logo">
+        <img src="{{ 'SHINSEI_LINE_LOGO_PNG-01.png' | asset_url }}" alt="Shinsei Line" class="logo-img">
       </a>
       <div class="header-actions">
         <button class="search-trigger" aria-label="Search" onclick="toggleSearch()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
         </button>
-        <button class="cart-trigger" onclick="toggleCart()">Cart <span class="cart-count"></span></button>
+        <button class="cart-trigger" onclick="toggleCart()">Cart <span class="cart-count">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span></button>
       </div>
     </div>
     <div class="header-line-stripe" aria-hidden="true"></div>
@@ -42,41 +48,27 @@
   <!-- MOBILE NAV OVERLAY -->
   <div class="mobile-nav-overlay" id="mobile-nav" aria-hidden="true">
     <nav class="mobile-nav-links">
-      <a href="index.html" class="mobile-nav-link" onclick="toggleMobileNav()">Home</a>
-      <a href="about.html" class="mobile-nav-link active" onclick="toggleMobileNav()">About</a>
-      <a href="shop.html" class="mobile-nav-link" onclick="toggleMobileNav()">Shop</a>
-      <a href="contact.html" class="mobile-nav-link" onclick="toggleMobileNav()">Contact</a>
+      <a href="{{ routes.root_url }}" class="mobile-nav-link{% if request.page_type == 'index' %} active{% endif %}" onclick="toggleMobileNav()">Home</a>
+      <a href="/pages/about" class="mobile-nav-link{% if request.path == '/pages/about' %} active{% endif %}" onclick="toggleMobileNav()">About</a>
+      <a href="{{ routes.all_products_collection_url }}" class="mobile-nav-link{% if request.page_type == 'collection' %} active{% endif %}" onclick="toggleMobileNav()">Shop</a>
+      <a href="/pages/contact" class="mobile-nav-link{% if request.path == '/pages/contact' %} active{% endif %}" onclick="toggleMobileNav()">Contact</a>
     </nav>
   </div>
 
   <main id="main-content">
-    <section class="about-page">
-      <div class="about-inner">
-
-        <div class="about-body">
-          <div class="about-image-block"></div>
-          <div class="about-text">
-            <p>Shinsei Line is a luxury apparel label built around a single proposition: that clothing can carry institutional weight without noise.</p>
-            <p>The name — 新生 — means renewal, or new life. It draws from the visual language of Japanese transit infrastructure: the roundel, the interval, the deliberate mark. Quiet Authority. Intentional Restraint. Access over Availability.</p>
-            <p>The debut piece is a structured unisex long overcoat. European construction. Japanese shoulder reference. Fine wool. 50 units. No restock.</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
+    {{ content_for_layout }}
   </main>
 
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-inner">
       <nav class="footer-nav">
-        <a href="index.html">Home</a>
-        <a href="policy.html">Policy</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+        <a href="{{ routes.root_url }}">Home</a>
+        <a href="/pages/policy">Policy</a>
+        <a href="/pages/about">About</a>
+        <a href="/pages/contact">Contact</a>
       </nav>
-      <div class="footer-brand">
-      </div>
+      <div class="footer-brand"></div>
       <div class="footer-meta">
         <span>© 2026 Shinsei Line. All rights reserved.</span>
       </div>
@@ -93,10 +85,10 @@
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="1" x2="1" y2="13" stroke="currentColor" stroke-width="1.5"/></svg>
         </button>
       </div>
-      <div class="cart-panel-body">
+      <div class="cart-panel-body" id="cart-body">
         <div class="cart-empty">
           <p>YOUR CART IS EMPTY</p>
-          <a href="product.html" class="btn cart-browse-btn">BROWSE LINES</a>
+          <a href="{{ routes.all_products_collection_url }}" class="btn cart-browse-btn">BROWSE LINES</a>
         </div>
       </div>
     </div>
@@ -106,9 +98,9 @@
   <div class="search-overlay" id="search-overlay">
     <button class="search-overlay-close" onclick="toggleSearch()">Close</button>
     <div class="search-overlay-inner">
-      <form class="search-overlay-form" onsubmit="submitSearch(event)">
+      <form class="search-overlay-form" action="{{ routes.search_url }}" method="get">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
-        <input type="text" id="search-overlay-input" placeholder="Search products..." autocomplete="off">
+        <input type="text" name="q" id="search-overlay-input" placeholder="Search products..." autocomplete="off">
         <button type="submit" aria-label="Submit search">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="0" y1="7" x2="13" y2="7"/><polyline points="7,1 13,7 7,13"/></svg>
         </button>
@@ -116,7 +108,10 @@
     </div>
   </div>
 
-  <script src="shinsei-preview.js"></script>
-  <script src="shinsei-home.js"></script>
+  {{ 'shinsei-preview.js' | asset_url | script_tag }}
+  {% if request.page_type == 'index' or request.page_type == 'product' %}
+    {{ 'shinsei-home.js' | asset_url | script_tag }}
+  {% endif %}
+
 </body>
 </html>

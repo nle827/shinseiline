@@ -1,0 +1,156 @@
+Website Preview to Shopify Storefront Process
+
+1. Purpose
+Build a static client preview first, get design approval, then convert the approved preview into a Shopify theme with minimal drift.
+
+2. Core Workflow
+
+Phase 1: Brand and System Definition
+- Create one master context document with:
+  - Brand statement
+  - Values
+  - What the brand is not
+  - Color tokens
+  - Typography rules
+  - Spacing tokens
+  - Component behavior rules
+  - Motion rules
+  - Voice and copy tone
+  - Explicit exclusions (things that should never be added)
+- Treat this document as non-negotiable guidance for all design and code decisions.
+
+Phase 2: Static Preview Build
+- Build a plain HTML, CSS, and JavaScript preview site.
+- Keep pages flat and explicit:
+  - Home
+  - Product detail
+  - About
+  - Contact
+- Use real visual assets and realistic copy placeholders.
+- Simulate interactions such as cart drawer, variant selection, and accordions locally.
+- Avoid framework overhead at this stage to keep iteration fast.
+
+Phase 3: Client Review and Lock
+- Review preview with the client.
+- Collect feedback in rounds.
+- Apply changes only in preview until approved.
+- Freeze structure and styling before Shopify conversion.
+
+Phase 4: Shopify Conversion
+- Port approved preview into Shopify theme structure.
+- Keep HTML class names and hierarchy as close as possible to preview.
+- Replace static values with Liquid and Shopify data:
+  - Static image paths to asset_url
+  - Static product info to product objects and money filters
+  - Static links to Shopify route and product URLs
+- Move repeated page shell into theme layout and shared snippets.
+- Add section schema only where merchant editing is required.
+
+Phase 5: Sync Discipline
+- Maintain parallel updates between preview and theme during active development.
+- If a UI change happens in preview CSS or JS, mirror equivalent change in theme assets.
+- Keep naming, spacing, and component behavior consistent.
+
+Phase 6: QA and Deploy
+- Validate:
+  - Desktop and mobile layout
+  - Interaction behavior
+  - Theme editor compatibility
+  - Asset loading
+  - Accessibility basics
+- Push to development theme first when possible.
+- Push to live only after confirmation.
+
+3. Recommended Folder Strategy
+- One preview folder for static design source
+- One Shopify theme folder for Liquid implementation
+- Shared naming conventions between both for easy mapping
+
+4. Mapping Rules Between Preview and Shopify
+- Shared CSS in preview maps to theme assets CSS
+- Page-specific CSS and JS maps to theme assets equivalents
+- Repeated header and footer from preview map to layout and snippets
+- Home sections in preview map to main home Liquid section
+- Static image src paths map to Shopify asset filters
+- Hardcoded product content maps to Shopify product variables
+
+5. Efficiency Rules for AI-Assisted Work
+- Always provide full project context up front.
+- Keep one canonical design system file and reference it every session.
+- Use explicit do and do not rules.
+- Require mirrored edits between preview and theme when relevant.
+- Keep prompts scoped to one objective per request.
+- Ask AI to report exact files changed and why.
+
+6. Prompt Template for Copilot or Claude
+
+You are helping me run a two-track workflow:
+1) static client preview
+2) Shopify theme conversion
+
+Project intent:
+Build and refine a static preview first, then port approved design into Shopify with minimal visual or structural drift.
+
+Operating rules:
+- Read and obey the brand/system context document first.
+- Keep visual language, spacing, typography, and copy tone consistent with that document.
+- Do not introduce frameworks or unnecessary dependencies.
+- Keep preview and theme files synchronized when changes affect both.
+- Preserve class naming and DOM structure between preview and Shopify where possible.
+
+Implementation rules:
+- Preview uses static asset paths.
+- Shopify version uses Liquid asset and data bindings.
+- Repeated global markup should live in layout and snippets.
+- Page sections should be converted into Shopify sections with schema only where needed.
+- Do not add features outside scope.
+
+Output format required:
+- List exactly what was changed
+- List which files were touched
+- Explain why each change was made
+- Note any assumptions
+- Note any remaining risks or follow-up checks
+
+Current task:
+[Insert current task here]
+
+7. Session Prompt for Fast Iteration
+Use this at the start of each new AI chat:
+
+You are continuing an existing preview to Shopify workflow.
+Use the existing brand system and project conventions.
+Do not redesign outside brief.
+Keep changes minimal and precise.
+If a change affects both preview and theme, update both.
+Then summarize edits by file and behavior impact.
+
+Task:
+[Insert one concrete task]
+
+8. Practical Review Checklist
+- Brand consistency maintained
+- Typography rules preserved
+- Color token usage respected
+- Spacing token usage respected
+- Mobile layout validated
+- Interaction behavior validated
+- Preview and Shopify parity maintained
+- No out-of-scope feature additions
+- Deployment target confirmed before push
+
+9. Common Failure Modes to Prevent
+- Starting Shopify conversion before preview approval
+- Letting preview and theme drift apart
+- Hardcoding content in Liquid templates that should be dynamic
+- Introducing visual styles outside design tokens
+- Adding trendy UI patterns that conflict with brand intent
+- Mixing multiple goals in a single AI prompt
+
+10. Suggested Process Cadence
+- Define system once
+- Build quickly in static preview
+- Approve and lock
+- Convert structurally, not creatively
+- Keep parity through mirrored edits
+- Validate, then deploy

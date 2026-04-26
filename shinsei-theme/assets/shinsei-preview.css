@@ -817,7 +817,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 .cart-subtotal { display: flex; justify-content: space-between; align-items: center; }
 .cart-subtotal-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: #555555; }
 .cart-subtotal-value { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.08em; color: #111111; }
-.cart-checkout-btn { width: 100%; padding: 14px; background: var(--ink); color: #FFFFFF; border: 1px solid var(--ink); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: not-allowed; opacity: 0.45; }
+.cart-checkout-btn { display: block; width: 100%; padding: 14px; background: var(--ink); color: #FFFFFF !important; border: 1px solid var(--ink); font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-align: center; text-decoration: none; transition: background 0.2s; }
+.cart-checkout-btn:hover { background: var(--accent); border-color: var(--accent); }
 
 /* Cart count badge */
 .cart-count {
@@ -851,8 +852,12 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
+  /* Header */
+  .header-inner { padding: 0 var(--space-sm); }
   .header-nav { display: none; }
   .hamburger-btn { display: flex; }
+
+  /* Layouts */
   .product-detail-inner, .about-body, .contact-inner { grid-template-columns: 1fr; }
   .product-card { flex: 0 0 calc(50% - var(--space-md) / 2); }
   .product-grid { justify-content: flex-start; }
@@ -861,4 +866,44 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   .product-gallery { position: static; }
   .contact-header { grid-column: 1; }
   .contact-form { grid-column: 1; grid-row: auto; }
+
+  /* PDP */
+  .product-detail-inner { gap: var(--space-md); }
+  .pdp-variants { flex-wrap: wrap; }
+
+  /* About — center image + text on mobile */
+  .about-body { justify-items: center; text-align: center; }
+  .about-image-block { width: 100%; max-width: 280px; }
+  .about-text { align-items: center; }
+
+  /* About/Policy/Contact top padding */
+  .about-page, .policy-page, .contact-page { padding-top: calc(var(--header-h) + var(--space-md)); }
+
+  /* Cart */
+  .cart-item-grid { gap: var(--space-sm); }
+}
+
+@media (max-width: 480px) {
+  /* Logo shrink */
+  .logo-img { height: 44px; }
+
+  /* Product cards single column */
+  .product-card { flex: 0 0 100%; }
+
+  /* Buttons full width */
+  .pdp-atc-btn, .btn { width: 100%; text-align: center; }
+
+  /* Contact form */
+  .contact-form { padding: 0; }
+
+  /* Policy sections */
+  .policy-section { margin-bottom: var(--space-md); }
+
+  /* Section padding reduction */
+  .about-page .about-inner,
+  .policy-page .policy-inner,
+  .contact-page .contact-inner {
+    padding-left: var(--space-sm);
+    padding-right: var(--space-sm);
+  }
 }

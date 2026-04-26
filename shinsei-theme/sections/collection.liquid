@@ -1,0 +1,124 @@
+<div class="shop-page">
+
+  <!-- Top bar -->
+  <div class="shop-header">
+    <span class="shop-title">All Lines</span>
+    <form class="shop-search" action="{{ routes.search_url }}" method="get">
+      <input type="hidden" name="type" value="product">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+      <input type="text" name="q" placeholder="Search" autocomplete="off">
+    </form>
+    <div class="shop-sort">
+      <label for="shop-sort-select">Sort</label>
+      <select id="shop-sort-select" onchange="sortCollection(this.value)">
+        <option value="manual">Featured</option>
+        <option value="price-ascending">Price: Low to High</option>
+        <option value="price-descending">Price: High to Low</option>
+        <option value="title-ascending">Name: A–Z</option>
+      </select>
+    </div>
+    <span class="shop-count">{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</span>
+  </div>
+
+  <div class="shop-body">
+
+    <!-- Filters sidebar -->
+    <aside class="shop-filters">
+      <div class="filter-group open">
+        <button class="filter-group-trigger" onclick="this.closest('.filter-group').classList.toggle('open')">
+          <span>Category</span>
+          <span class="filter-icon">+</span>
+        </button>
+        <div class="filter-group-body">
+          <div class="filter-option">
+            <input type="checkbox" id="cat-outerwear" checked>
+            <label for="cat-outerwear">Outerwear</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group open">
+        <button class="filter-group-trigger" onclick="this.closest('.filter-group').classList.toggle('open')">
+          <span>Size</span>
+          <span class="filter-icon">+</span>
+        </button>
+        <div class="filter-group-body">
+          <div class="filter-size-grid">
+            <button class="filter-size-btn" onclick="this.classList.toggle('active')">XS</button>
+            <button class="filter-size-btn" onclick="this.classList.toggle('active')">S</button>
+            <button class="filter-size-btn" onclick="this.classList.toggle('active')">M</button>
+            <button class="filter-size-btn" onclick="this.classList.toggle('active')">L</button>
+            <button class="filter-size-btn" onclick="this.classList.toggle('active')">XL</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product grid -->
+    <div class="shop-grid">
+      {%- for product in collection.products -%}
+        <a href="{{ product.url }}" class="shop-card">
+          <div class="shop-card-media">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+            {%- endif -%}
+            <span class="shop-card-badge">No. 001</span>
+          </div>
+          <div class="shop-card-body">
+            <div class="shop-card-meta">
+              <span class="shop-card-name">{{ product.title }}</span>
+              <span class="shop-card-price">{{ product.price | money }}</span>
+            </div>
+            <span class="shop-card-sub">Outerwear — Unisex</span>
+          </div>
+        </a>
+      {%- else -%}
+        <div class="shop-empty">No products found.</div>
+      {%- endfor -%}
+
+      <!-- Upcoming placeholder -->
+      <div class="shop-card">
+        <div class="shop-card-media" style="background:#EBEBEB;">
+          <span class="shop-card-badge">Announced 2026</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-meta">
+            <span class="shop-card-name">———</span>
+            <span class="shop-card-price">$—</span>
+          </div>
+          <span class="shop-card-sub">Not yet available</span>
+        </div>
+      </div>
+
+      <!-- Sold out placeholder -->
+      <div class="shop-card">
+        <div class="shop-card-media" style="background:#EBEBEB;">
+          <span class="shop-card-badge">Sold Out</span>
+        </div>
+        <div class="shop-card-body">
+          <div class="shop-card-meta">
+            <span class="shop-card-name">———</span>
+            <span class="shop-card-price">$—</span>
+          </div>
+          <span class="shop-card-sub">Sold out</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function sortCollection(value) {
+    var url = new URL(window.location.href);
+    url.searchParams.set('sort_by', value);
+    window.location.href = url.toString();
+  }
+</script>
+
+{% schema %}
+{
+  "name": "t:general.collection",
+  "settings": []
+}
+{% endschema %}
