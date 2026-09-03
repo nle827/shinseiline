@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page_title }} — Shinsei Line</title>
 
+  <link rel="icon" type="image/png" href="{{ 'website favicon.png' | asset_img_url: 'icon' }}" sizes="32x32">
+  <link rel="apple-touch-icon" href="{{ 'website favicon.png' | asset_img_url: 'compact' }}">
+
   {% render 'meta-tags' %}
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,9 +111,9 @@
     </div>
   </div>
 
-  {{ 'shinsei-preview.js' | asset_url | script_tag }}
+  <script src="{{ 'shinsei-preview.js' | asset_url }}" defer></script>
   {% if request.page_type == 'index' or request.page_type == 'product' %}
-    {{ 'shinsei-home.js' | asset_url | script_tag }}
+    <script src="{{ 'shinsei-home.js' | asset_url }}" defer></script>
   {% endif %}
 
 </body>

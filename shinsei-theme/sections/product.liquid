@@ -1,7 +1,14 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign available = product.available
-  assign url_param = request.path
+  assign show_request_access = false
+  assign show_soldout = false
+  unless product.available
+    if product.tags contains 'coming-soon'
+      assign show_request_access = true
+    else
+      assign show_soldout = true
+    endif
+  endunless
 -%}
 
 <section class="pdp-layout">
@@ -32,7 +39,20 @@
   <div class="pdp-gallery-track">
     {%- for image in product.images -%}
       <div class="pdp-stack-img">
-        <img src="{{ image | image_url: width: 900 }}" alt="{{ image.alt | default: product.title }}" draggable="false">
+        <img
+          src="{{ image | image_url: width: 900 }}"
+          srcset="
+            {{- image | image_url: width: 400 }} 400w,
+            {{ image | image_url: width: 600 }} 600w,
+            {{ image | image_url: width: 900 }} 900w,
+            {{ image | image_url: width: 1200 }} 1200w,
+            {{ image | image_url: width: 1800 }} 1800w
+          "
+          sizes="(max-width: 768px) 100vw, 50vw"
+          alt="{{ image.alt | default: product.title }}"
+          draggable="false"
+          {% unless forloop.first %}loading="lazy"{% endunless %}
+        >
       </div>
     {%- else -%}
       <div class="pdp-stack-img pdp-stack-img--placeholder"></div>
@@ -50,7 +70,7 @@
       </div>
 
       <!-- Variants -->
-      <div class="pdp-variants">
+      <div class="pdp-variants" {% if show_request_access %}style="display:none;"{% endif %}>
         <div class="pdp-variant-group">
           <span class="pdp-variant-label">Size</span>
           <div class="pdp-variant-options">
@@ -60,50 +80,130 @@
                 data-variant-id="{{ variant.id }}"
                 data-variant-title="{{ variant.title }}"
                 data-inventory="{{ variant.inventory_quantity }}"
+                data-inventory-management="{{ variant.inventory_management }}"
+                data-inventory-policy="{{ variant.inventory_policy }}"
                 onclick="selectVariant(this, 'size')"
                 {% unless variant.available %}disabled{% endunless %}
               >{{ variant.title }}</button>
             {%- endfor -%}
           </div>
         </div>
+
+        <div class="pdp-variant-group">
+          <span class="pdp-variant-label">Quantity</span>
+          <div class="pdp-quantity-stepper">
+            <button type="button" class="pdp-quantity-btn" onclick="changeQuantity(-1)" aria-label="Decrease quantity">−</button>
+            <input type="number" class="pdp-quantity-input" id="pdp-quantity-input" value="1" min="1" max="99" inputmode="numeric" onchange="clampQuantityInput()">
+            <button type="button" class="pdp-quantity-btn" onclick="changeQuantity(1)" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
       </div>
 
       <!-- Add to cart (normal available product) -->
-      <div class="pdp-actions" id="pdp-actions-available">
+      <div class="pdp-actions" id="pdp-actions-available" {% if show_request_access or show_soldout %}style="display:none;"{% endif %}>
         <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
+        <a href="/pages/policy" class="pdp-policy-link">Shipping & Returns →</a>
       </div>
 
       <!-- Request Access (unavailable) -->
-      <div class="pdp-actions pdp-request-access" id="pdp-actions-unavailable" style="display:none;">
+      <div class="pdp-actions pdp-request-access" id="pdp-actions-unavailable" {% unless show_request_access %}style="display:none;"{% endunless %}>
         <p class="pdp-unavailable-label">Not yet available</p>
-        <form class="pdp-access-form" onsubmit="submitRequestAccess(event)">
-          <div class="pdp-access-fields">
-            <input type="email" id="access-email" placeholder="Email address" autocomplete="email">
-            <input type="tel" id="access-phone" placeholder="Phone (optional)" autocomplete="tel">
+        <button type="button" class="pdp-add-to-cart" onclick="openRequestModal()">REQUEST ACCESS</button>
+      </div>
+
+      {%- liquid
+        assign request_success = false
+        assign request_error = false
+      -%}
+      {%- capture request_modal_form -%}
+        {%- form 'customer', id: 'RequestAccessForm', class: 'notify-modal-form' -%}
+          <input type="hidden" name="contact[tags]" value="request-access">
+          <input type="hidden" name="return_to" value="{{ request.path }}?requested=1">
+          {%- if form.posted_successfully? -%}
+            {%- assign request_success = true -%}
+          {%- else -%}
+            <input type="email" name="contact[email]" id="RequestAccessForm-email" placeholder="Email address" autocomplete="email" required>
+            <button type="submit">Request Access</button>
+            {%- if form.errors -%}
+              {%- assign request_error = true -%}
+              <p class="notify-modal-error">{{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      {%- endcapture -%}
+
+      <script type="application/json" id="request-status-data">{"success": {{ request_success | json }}, "error": {{ request_error | json }}}</script>
+
+      <div class="notify-modal-overlay{% if request_error or request_success %} open{% endif %}" id="request-modal-overlay">
+        <div class="notify-modal" id="request-modal">
+          <button type="button" class="notify-modal-close" onclick="closeRequestModal()" aria-label="Close">×</button>
+          <div class="notify-modal-content" id="request-modal-content"{% if request_success %} style="display:none;"{% endif %}>
+            <p class="notify-modal-label">Request access</p>
+            {{ request_modal_form }}
+            <div class="notify-loading" id="request-loading">
+              <div class="notify-loading-track">
+                <span class="notify-loading-dot notify-loading-dot--start"></span>
+                <div class="notify-loading-fill"></div>
+                <span class="notify-loading-dot notify-loading-dot--end"></span>
+              </div>
+              <span class="notify-loading-label">Sending</span>
+            </div>
           </div>
-          <button type="submit" class="pdp-add-to-cart">REQUEST ACCESS</button>
-          <p class="pdp-access-note">We'll notify you when this line becomes available.</p>
-        </form>
-        <div class="pdp-access-confirmed" id="pdp-access-confirmed" style="display:none;">
-          <p class="pdp-access-confirmed-msg">Request received.</p>
-          <p class="pdp-access-note">You'll be among the first to know.</p>
+          <div class="notify-modal-success" id="request-modal-success"{% unless request_success %} style="display:none;"{% endunless %}>
+            <p class="notify-modal-success-msg">Request received.</p>
+            <p class="notify-modal-success-note">You'll be among the first to know.</p>
+          </div>
         </div>
       </div>
 
       <!-- Notify Me (sold out) -->
-      <div class="pdp-actions pdp-request-access" id="pdp-actions-soldout" style="display:none;">
+      <div class="pdp-actions pdp-request-access" id="pdp-actions-soldout" {% unless show_soldout %}style="display:none;"{% endunless %}>
         <p class="pdp-unavailable-label">Sold out</p>
-        <form class="pdp-access-form" onsubmit="submitNotifyMe(event)">
-          <div class="pdp-access-fields">
-            <input type="email" id="notify-email" placeholder="Email address" autocomplete="email">
-            <input type="tel" id="notify-phone" placeholder="Phone (optional)" autocomplete="tel">
+        <button type="button" class="pdp-add-to-cart" onclick="openNotifyModal()">NOTIFY ME WHEN AVAILABLE</button>
+      </div>
+
+      {%- liquid
+        assign notify_success = false
+        assign notify_error = false
+      -%}
+      {%- capture notify_modal_form -%}
+        {%- form 'customer', id: 'NotifyMeForm', class: 'notify-modal-form' -%}
+          <input type="hidden" name="contact[tags]" value="notify-me">
+          <input type="hidden" name="return_to" value="{{ request.path }}?notified=1">
+          {%- if form.posted_successfully? -%}
+            {%- assign notify_success = true -%}
+          {%- else -%}
+            <input type="email" name="contact[email]" id="NotifyMeForm-email" placeholder="Email address" autocomplete="email" required>
+            <button type="submit">Notify Me</button>
+            {%- if form.errors -%}
+              {%- assign notify_error = true -%}
+              <p class="notify-modal-error">{{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      {%- endcapture -%}
+
+      <script type="application/json" id="notify-status-data">{"success": {{ notify_success | json }}, "error": {{ notify_error | json }}}</script>
+
+      <div class="notify-modal-overlay{% if notify_error or notify_success %} open{% endif %}" id="notify-modal-overlay">
+        <div class="notify-modal" id="notify-modal">
+          <button type="button" class="notify-modal-close" onclick="closeNotifyModal()" aria-label="Close">×</button>
+          <div class="notify-modal-content" id="notify-modal-content"{% if notify_success %} style="display:none;"{% endif %}>
+            <p class="notify-modal-label">Notify me when available</p>
+            {{ notify_modal_form }}
+            <div class="notify-loading" id="notify-loading">
+              <div class="notify-loading-track">
+                <span class="notify-loading-dot notify-loading-dot--start"></span>
+                <div class="notify-loading-fill"></div>
+                <span class="notify-loading-dot notify-loading-dot--end"></span>
+              </div>
+              <span class="notify-loading-label">Sending</span>
+            </div>
           </div>
-          <button type="submit" class="pdp-add-to-cart">NOTIFY ME</button>
-          <p class="pdp-access-note">We'll reach out if this line is restocked.</p>
-        </form>
-        <div class="pdp-access-confirmed" id="pdp-notify-confirmed" style="display:none;">
-          <p class="pdp-access-confirmed-msg">You're on the list.</p>
-          <p class="pdp-access-note">We'll be in touch if a restock happens.</p>
+          <div class="notify-modal-success" id="notify-modal-success"{% unless notify_success %} style="display:none;"{% endunless %}>
+            <p class="notify-modal-success-msg">You're on the list.</p>
+            <p class="notify-modal-success-note">You will be notified when this is available.</p>
+          </div>
         </div>
       </div>
 
@@ -134,7 +234,10 @@
             <span class="accordion-icon">+</span>
           </button>
           <div class="accordion-body">
-            <p>All orders ship within 10–14 business days of production confirmation. Returns accepted within 14 days of delivery in original, unworn condition.</p>
+            <p>Drop 01 is made to order. Orders ship within 10–14 business days of production confirmation.</p>
+            <p>All sales are final. Manufacturing defects are reviewed within 48 hours of delivery.</p>
+            <p>International orders are responsible for duties, customs fees, and local taxes collected at delivery.</p>
+            <p><a href="/pages/policy">Full shipping and returns terms</a></p>
           </div>
         </div>
       </div>
@@ -143,11 +246,6 @@
   </div>
 
 </section>
-
-<!-- Expose variant data to JS -->
-<script>
-  window.SHOPIFY_VARIANTS = {{ product.variants | json }};
-</script>
 
 {% schema %}
 {

@@ -653,16 +653,10 @@
       function goTo(index) {
         imgs.forEach((img, i) => {
           img.classList.toggle('card-gallery-img--active', i === index);
-          img.style.position = i === index ? 'relative' : 'absolute';
         });
         nodes.forEach((n, i) => n.classList.toggle('card-gallery-node--active', i === index));
         gallery.dataset.current = index;
       }
-
-      // Init positions
-      imgs.forEach((img, i) => {
-        img.style.position = i === 0 ? 'relative' : 'absolute';
-      });
 
       // Node dot click — direct jump
       nodes.forEach(node => {

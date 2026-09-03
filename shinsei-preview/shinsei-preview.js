@@ -70,23 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (typeof filterProducts === 'function') filterProducts();
     }
   }
-
-  // PDP: switch to unavailable mode if ?available=false or soldout
-  const params = new URLSearchParams(window.location.search);
-  const availState = params.get('available');
-  if (availState === 'false') {
-    const avail = document.getElementById('pdp-actions-available');
-    const unavail = document.getElementById('pdp-actions-unavailable');
-    const variants = document.querySelector('.pdp-variants');
-    if (avail) avail.style.display = 'none';
-    if (unavail) unavail.style.display = '';
-    if (variants) variants.style.display = 'none';
-  } else if (availState === 'soldout') {
-    const avail = document.getElementById('pdp-actions-available');
-    const soldout = document.getElementById('pdp-actions-soldout');
-    if (avail) avail.style.display = 'none';
-    if (soldout) soldout.style.display = '';
-  }
 });
 
 // --- Cart State ---
@@ -200,7 +183,7 @@ function selectVariant(btn, group) {
 // --- Store tile image when navigating to product page ---
 document.addEventListener('click', function(e) {
   const card = e.target.closest('[data-product-image]');
-  if (card) sessionStorage.setItem('pdp-tile-image', card.dataset.productImage);
+  if (card) localStorage.setItem('pdp-tile-image', card.dataset.productImage);
 });
 
 // --- Stock per size (simulate inventory) ---
@@ -212,8 +195,7 @@ function addToCart() {
   const priceText = document.querySelector('.pdp-price')?.textContent?.trim() || '$0.00';
   const price = parseFloat(priceText.replace(/[^0-9.]/g, '')) || 0;
   const activeSize = document.querySelector('.pdp-variant-btn--active')?.textContent?.trim() || '';
-  const urlImg = new URLSearchParams(window.location.search).get('img');
-  const image = urlImg || sessionStorage.getItem('pdp-tile-image') || document.querySelector('.pdp-stack-img img, .pdp-gallery img')?.src || '';
+  const image = localStorage.getItem('pdp-tile-image') || document.querySelector('.pdp-stack-img img, .pdp-gallery img')?.src || '';
 
   // Mandatory size check
   if (!activeSize) {

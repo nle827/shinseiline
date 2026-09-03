@@ -53,6 +53,13 @@ function toggleMobileNav() {
 document.addEventListener('DOMContentLoaded', function() {
   updateCartBadge();
 
+  // Shopify appends `#<form id>` to the redirect URL for named forms (to
+  // scroll back to them). We don't want that fragment lingering in the
+  // address bar, so strip it immediately for our known form IDs.
+  if (window.location.hash === '#NotifyMeForm' || window.location.hash === '#RequestAccessForm' || window.location.hash === '#PasswordSignupForm') {
+    window.history.replaceState({}, '', window.location.pathname + window.location.search);
+  }
+
   const input = document.getElementById('shop-search-input');
   if (input) {
     const params = new URLSearchParams(window.location.search);
@@ -63,28 +70,217 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // PDP: switch to unavailable mode if ?available=false or soldout
   const params = new URLSearchParams(window.location.search);
-  const availState = params.get('available');
-  if (availState === 'false') {
-    const avail = document.getElementById('pdp-actions-available');
-    const unavail = document.getElementById('pdp-actions-unavailable');
-    const variants = document.querySelector('.pdp-variants');
-    if (avail) avail.style.display = 'none';
-    if (unavail) unavail.style.display = '';
-    if (variants) variants.style.display = 'none';
-  } else if (availState === 'soldout') {
-    const avail = document.getElementById('pdp-actions-available');
-    const soldout = document.getElementById('pdp-actions-soldout');
-    if (avail) avail.style.display = 'none';
-    if (soldout) soldout.style.display = '';
+
+  // Move the Notify Me / Request Access overlays to be direct children of
+  // <body> so their `position: fixed` is always anchored to the real
+  // viewport, regardless of any ancestor (animations, transforms, etc.)
+  // that could otherwise turn it into a fixed-position containing block.
+  [notifyModal, requestModal].forEach(function (modal) {
+    const overlay = document.getElementById(modal.ids.overlay);
+    if (overlay && overlay.parentElement !== document.body) {
+      document.body.appendChild(overlay);
+    }
+    // If the page loaded already showing a result (no-JS fallback after a
+    // real form POST), lock scroll and auto-dismiss a success state.
+    const successEl = document.getElementById(modal.ids.success);
+    if (overlay && overlay.classList.contains('open')) {
+      document.body.style.overflow = 'hidden';
+      if (successEl && successEl.style.display !== 'none') {
+        setTimeout(modal.close, 3000);
+      }
+    }
+    const formEl = document.getElementById(modal.ids.formId);
+    if (formEl) formEl.addEventListener('submit', modal.handleSubmit);
+  });
+
+  // Confirmation after a real page reload (e.g. a captcha challenge that
+  // takes over the submission instead of our AJAX flow): Shopify's own
+  // "this just succeeded" flash state doesn't reliably survive that extra
+  // hop, so we don't depend on it. Instead the return_to URL carries a
+  // marker we control, checked here independent of any server-rendered
+  // state — this is what actually shows the confirmation in that case.
+  let urlMarkerFound = false;
+  if (params.get('notified') === '1') {
+    notifyModal.open();
+    notifyModal.showSuccess();
+    params.delete('notified');
+    urlMarkerFound = true;
+  }
+  if (params.get('requested') === '1') {
+    requestModal.open();
+    requestModal.showSuccess();
+    params.delete('requested');
+    urlMarkerFound = true;
+  }
+  if (urlMarkerFound) {
+    const qs = params.toString();
+    const cleanUrl = window.location.pathname + (qs ? '?' + qs : '');
+    window.history.replaceState({}, '', cleanUrl);
   }
 });
+
+// --- Notify Me / Request Access modals ---
+// Both flows are functionally and visually identical (same CSS classes,
+// same behavior) — only the element IDs, form, and copy differ — so they
+// share one controller implementation instead of duplicating it.
+function createModalController(ids) {
+  let settled = false;
+  let submitting = false;
+  let errorTimer = null;
+
+  function open() {
+    const overlay = document.getElementById(ids.overlay);
+    if (overlay) overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    settled = false;
+  }
+
+  function close() {
+    const overlay = document.getElementById(ids.overlay);
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    clearTimeout(errorTimer);
+    setTimeout(() => {
+      const formWrap = document.getElementById(ids.content);
+      const successWrap = document.getElementById(ids.success);
+      const formEl = document.getElementById(ids.formId);
+      const loadingEl = document.getElementById(ids.loading);
+      if (formWrap) {
+        const errorEl = formWrap.querySelector('.notify-modal-error');
+        if (errorEl) errorEl.remove();
+        formWrap.style.display = '';
+      }
+      if (successWrap) successWrap.style.display = 'none';
+      if (formEl) formEl.style.display = '';
+      if (loadingEl) loadingEl.style.display = 'none';
+      settled = false;
+    }, 300);
+  }
+
+  function showLoading() {
+    const formEl = document.getElementById(ids.formId);
+    const loadingEl = document.getElementById(ids.loading);
+    if (formEl) formEl.style.display = 'none';
+    if (loadingEl) loadingEl.style.display = 'flex';
+  }
+
+  function hideLoading() {
+    const formEl = document.getElementById(ids.formId);
+    const loadingEl = document.getElementById(ids.loading);
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (formEl) formEl.style.display = '';
+  }
+
+  function showSuccess() {
+    settled = true;
+    clearTimeout(errorTimer);
+    hideLoading();
+    const formWrap = document.getElementById(ids.content);
+    const successWrap = document.getElementById(ids.success);
+    if (formWrap) {
+      const errorEl = formWrap.querySelector('.notify-modal-error');
+      if (errorEl) errorEl.remove();
+      formWrap.style.display = 'none';
+    }
+    if (successWrap) successWrap.style.display = '';
+    setTimeout(close, 3000);
+  }
+
+  function showError(message) {
+    // Delay and bail if a success lands in the meantime, so a premature
+    // response (e.g. a first submit attempt that fires before an invisible
+    // captcha check finishes, ~1-2s) can't flash an error before the real
+    // result arrives. The loading indicator stays visible for this whole
+    // window so the page never looks like it stalled.
+    clearTimeout(errorTimer);
+    errorTimer = setTimeout(() => {
+      if (settled) return;
+      hideLoading();
+      const formWrap = document.getElementById(ids.content);
+      if (!formWrap) return;
+      let errorEl = formWrap.querySelector('.notify-modal-error');
+      if (!errorEl) {
+        errorEl = document.createElement('p');
+        errorEl.className = 'notify-modal-error';
+        formWrap.appendChild(errorEl);
+      }
+      errorEl.textContent = message;
+    }, 3000);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (submitting) return;
+    submitting = true;
+    showLoading();
+
+    const form = e.target;
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        credentials: 'same-origin'
+      });
+      const html = await res.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const statusEl = doc.getElementById(ids.statusDataId);
+      const status = statusEl ? JSON.parse(statusEl.textContent) : { success: false, error: true };
+
+      if (status.success) {
+        showSuccess();
+      } else {
+        const newErrorEl = doc.querySelector('#' + ids.content + ' .notify-modal-error');
+        showError(newErrorEl ? newErrorEl.textContent.trim() : 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      showError('Something went wrong. Please try again.');
+    } finally {
+      submitting = false;
+    }
+  }
+
+  return { ids, open, close, handleSubmit, showSuccess };
+}
+
+const notifyModal = createModalController({
+  overlay: 'notify-modal-overlay',
+  content: 'notify-modal-content',
+  success: 'notify-modal-success',
+  loading: 'notify-loading',
+  formId: 'NotifyMeForm',
+  statusDataId: 'notify-status-data'
+});
+
+const requestModal = createModalController({
+  overlay: 'request-modal-overlay',
+  content: 'request-modal-content',
+  success: 'request-modal-success',
+  loading: 'request-loading',
+  formId: 'RequestAccessForm',
+  statusDataId: 'request-status-data'
+});
+
+function openNotifyModal() { notifyModal.open(); }
+function closeNotifyModal() { notifyModal.close(); }
+function openRequestModal() { requestModal.open(); }
+function closeRequestModal() { requestModal.close(); }
 
 // --- Shopify AJAX Cart ---
 
 function formatMoney(cents) {
   return '$' + (cents / 100).toFixed(2);
+}
+
+// Cart line items are built with innerHTML below, so anything that came
+// from product/variant data (merchant-editable, not sanitized by Shopify's
+// cart API) must be escaped before it's interpolated — otherwise a title
+// containing markup would execute in every visitor's cart drawer.
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, (ch) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
 }
 
 async function fetchCart() {
@@ -121,10 +317,10 @@ async function renderCart() {
     <div class="cart-items">
       ${cart.items.map(item => `
         <div class="cart-item">
-          <div class="cart-item-thumb">${item.featured_image ? `<img src="${item.featured_image.url}" alt="${item.product_title}">` : ''}</div>
+          <div class="cart-item-thumb">${item.featured_image ? `<img src="${escapeHtml(item.featured_image.url)}" alt="${escapeHtml(item.product_title)}">` : ''}</div>
           <div class="cart-item-info">
-            <span class="cart-item-name">${item.product_title}</span>
-            <span class="cart-item-meta">${item.variant_title && item.variant_title !== 'Default Title' ? 'Size: ' + item.variant_title + ' — ' : ''}${formatMoney(item.price)}</span>
+            <span class="cart-item-name">${escapeHtml(item.product_title)}</span>
+            <span class="cart-item-meta">${item.variant_title && item.variant_title !== 'Default Title' ? 'Size: ' + escapeHtml(item.variant_title) + ' — ' : ''}${formatMoney(item.price)}</span>
           </div>
           <div class="cart-item-qty">
             <button class="cart-qty-btn" onclick="changeQty('${item.key}', ${item.quantity - 1})">−</button>
@@ -166,6 +362,42 @@ async function changeQty(key, newQty) {
   renderCart();
 }
 
+// Real stock ceiling for whichever size is currently selected. Only Shopify
+// variants that both track inventory ("shopify") and deny overselling have a
+// hard cap — anything else (untracked, or "continue selling") is treated as
+// unlimited from the UI's perspective, matching what Shopify itself allows.
+function getSelectedVariantCap() {
+  const activeBtn = document.querySelector('.pdp-variant-btn--active');
+  if (!activeBtn) return 99;
+  const management = activeBtn.dataset.inventoryManagement;
+  const policy = activeBtn.dataset.inventoryPolicy;
+  const qty = parseInt(activeBtn.dataset.inventory, 10);
+  if (management === 'shopify' && policy === 'deny' && !isNaN(qty)) {
+    return Math.max(0, qty);
+  }
+  return 99;
+}
+
+function changeQuantity(delta) {
+  const input = document.getElementById('pdp-quantity-input');
+  if (!input) return;
+  const cap = getSelectedVariantCap();
+  let val = parseInt(input.value, 10);
+  if (isNaN(val)) val = 1;
+  val = Math.max(1, Math.min(cap, val + delta));
+  input.value = val;
+}
+
+function clampQuantityInput() {
+  const input = document.getElementById('pdp-quantity-input');
+  if (!input) return;
+  const cap = getSelectedVariantCap();
+  let val = parseInt(input.value, 10);
+  if (isNaN(val) || val < 1) val = 1;
+  if (val > cap) val = cap;
+  input.value = val;
+}
+
 async function addToCart() {
   const activeBtn = document.querySelector('.pdp-variant-btn--active');
 
@@ -180,11 +412,17 @@ async function addToCart() {
 
   const variantId = parseInt(activeBtn.dataset.variantId);
   const btn = document.querySelector('.pdp-add-to-cart');
+  const qtyInput = document.getElementById('pdp-quantity-input');
+  // Final, authoritative clamp right before the request is built — the
+  // stepper and manual typing are both re-checked here so nothing can slip
+  // past the UI's own cap on its way to the network request.
+  const cap = getSelectedVariantCap();
+  const quantity = qtyInput ? Math.max(1, Math.min(cap, parseInt(qtyInput.value, 10) || 1)) : 1;
 
   const res = await fetch('/cart/add.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: variantId, quantity: 1 })
+    body: JSON.stringify({ id: variantId, quantity: quantity })
   });
 
   if (!res.ok) {
@@ -204,6 +442,7 @@ async function addToCart() {
     btn.disabled = true;
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 600);
   }
+  if (qtyInput) qtyInput.value = 1;
 
   updateCartBadge();
   await renderCart();
@@ -243,6 +482,17 @@ function selectVariant(btn, group) {
   if (!parent) return;
   parent.querySelectorAll('.pdp-variant-btn').forEach(b => b.classList.remove('pdp-variant-btn--active'));
   btn.classList.add('pdp-variant-btn--active');
+
+  // Different sizes can carry different stock levels — re-clamp the
+  // quantity stepper to whichever size is now selected so a quantity typed
+  // in for a well-stocked size can't carry over to one with less left.
+  const input = document.getElementById('pdp-quantity-input');
+  if (input) {
+    const cap = getSelectedVariantCap();
+    input.max = cap;
+    const current = parseInt(input.value, 10);
+    if (!isNaN(current) && current > cap) input.value = Math.max(1, cap);
+  }
 }
 
 // --- Contact form simulation ---
@@ -256,36 +506,6 @@ function handleContactSubmit(e) {
   setTimeout(() => {
     form.innerHTML = '<div style="padding: 24px; border: 1px solid #E2E2E2; font-family: \'Courier New\', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #666;">Message received. We\'ll be in touch.</div>';
   }, 800);
-}
-
-// --- Request Access ---
-function submitRequestAccess(e) {
-  e.preventDefault();
-  const email = document.getElementById('access-email').value.trim();
-  if (!email) { document.getElementById('access-email').focus(); return; }
-  const form = e.target;
-  const btn = form.querySelector('button[type="submit"]');
-  btn.textContent = 'Submitting...';
-  btn.disabled = true;
-  setTimeout(() => {
-    form.style.display = 'none';
-    document.getElementById('pdp-access-confirmed').style.display = '';
-  }, 600);
-}
-
-// --- Notify Me (soldout) ---
-function submitNotifyMe(e) {
-  e.preventDefault();
-  const email = document.getElementById('notify-email').value.trim();
-  if (!email) { document.getElementById('notify-email').focus(); return; }
-  const form = e.target;
-  const btn = form.querySelector('button[type="submit"]');
-  btn.textContent = 'Submitting...';
-  btn.disabled = true;
-  setTimeout(() => {
-    form.style.display = 'none';
-    document.getElementById('pdp-notify-confirmed').style.display = '';
-  }, 600);
 }
 
 // --- Header scroll transparency ---

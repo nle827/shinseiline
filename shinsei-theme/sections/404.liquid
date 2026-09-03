@@ -5,15 +5,13 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/404
 {% endcomment %}
 
-<h1>{{ '404.title' | t }}</h1>
-
-<p>
-  {{ '404.not_found' | t }}
-</p>
-
-<a href="{{ routes.all_products_collection_url }}">
-  {{ '404.back_to_shopping' | t }}
-</a>
+<section class="error-404-page">
+  <div class="error-404-inner">
+    <span class="error-404-code">{{ '404.title' | t }}</span>
+    <h1 class="error-404-heading">{{ '404.not_found' | t }}</h1>
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary">{{ '404.back_to_shopping' | t }}</a>
+  </div>
+</section>
 
 {% schema %}
 {
