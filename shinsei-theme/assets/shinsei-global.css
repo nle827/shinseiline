@@ -110,26 +110,42 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 }
 
 .nav-link {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #FFFFFF;
-  transition: color 0.2s;
-  padding-bottom: 2px;
-  border-bottom: 1px solid transparent;
+  position: relative;
+  transition: color 200ms ease;
 }
-.nav-link:hover, .nav-link.active {
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #FFFFFF;
+  transition: width 200ms ease;
+}
+.nav-link:hover,
+.nav-link.active {
   color: #FFFFFF;
-  border-bottom-color: #FFFFFF;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
 }
 .site-header.scrolled .nav-link {
   color: var(--ink);
 }
+.site-header.scrolled .nav-link::after {
+  background: var(--ink);
+}
 .site-header.scrolled .nav-link:hover,
 .site-header.scrolled .nav-link.active {
-  color: var(--ink);
-  border-bottom-color: var(--ink);
+  color: var(--ink-mid);
 }
 
 .header-actions {
@@ -140,9 +156,10 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 .cart-trigger,
 .search-trigger {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #FFFFFF;
   cursor: pointer;
@@ -300,7 +317,7 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   min-height: calc(100vh - var(--header-h));
 }
 
-/* --- Buttons --- */
+/* --- Buttons (boxless editorial link) --- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -309,21 +326,27 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 14px 32px;
-  transition: all 0.2s var(--ease);
+  padding: 0;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  border: 1px solid transparent;
+  position: relative;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.btn:hover::after {
+  width: 100%;
 }
 .btn--secondary {
-  background: transparent;
   color: var(--ink);
-  border-color: var(--ink);
-}
-.btn--secondary:hover { background: transparent; color: var(--ink); border-color: var(--ink); animation: ctaGlow 1.8s ease-out infinite; }
-@keyframes ctaGlow {
-  0%   { box-shadow: 0 0 0 0 rgba(13,13,13,0.35); }
-  70%  { box-shadow: 0 0 0 8px rgba(13,13,13,0); }
-  100% { box-shadow: 0 0 0 0 rgba(13,13,13,0); }
 }
 
 /* --- About --- */
@@ -522,8 +545,9 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
    rendered site-wide (it was being set by shinsei-home.css and applied to
    every page regardless of body class — consolidated here to one definition). */
 .site-footer { padding: var(--space-lg) var(--space-md); }
-.footer-inner { max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-md); }
+.footer-inner { max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; }
 .footer-brand { display: flex; align-items: center; gap: var(--space-md); }
+.footer-brand:empty { display: none; }
 .footer-nav { display: flex; flex-direction: row; gap: 32px; align-items: center; justify-content: flex-start; }
 .footer-nav a {
   font-family: var(--font-mono);
@@ -545,9 +569,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 }
 
 @media (max-width: 768px) {
-  .footer-inner { gap: 24px; }
-  .footer-nav { justify-content: center; width: 100%; }
-  .footer-meta { align-items: center; text-align: center; }
+  .footer-inner { gap: 16px 24px; }
+  .footer-nav { gap: 16px; }
 }
 
 /* --- Page fade-in --- */

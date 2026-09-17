@@ -102,7 +102,6 @@
       <!-- Add to cart (normal available product) -->
       <div class="pdp-actions" id="pdp-actions-available" {% if show_request_access or show_soldout %}style="display:none;"{% endif %}>
         <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
-        <a href="/pages/policy" class="pdp-policy-link">Shipping & Returns →</a>
       </div>
 
       <!-- Request Access (unavailable) -->
@@ -215,32 +214,42 @@
             <span class="accordion-icon">+</span>
           </button>
           <div class="accordion-body">
-            <table class="size-chart">
-              <thead>
-                <tr><th></th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
-              </thead>
-              <tbody>
-                <tr><td class="size-chart-dim">Chest</td><td>38 in</td><td>40 in</td><td>42 in</td><td>44 in</td><td>46 in</td></tr>
-                <tr><td class="size-chart-dim">Shoulder</td><td>17 in</td><td>18 in</td><td>19 in</td><td>20 in</td><td>21 in</td></tr>
-                <tr><td class="size-chart-dim">Length</td><td>50 in</td><td>51 in</td><td>52 in</td><td>53 in</td><td>54 in</td></tr>
-                <tr><td class="size-chart-dim">Sleeve</td><td>24 in</td><td>25 in</td><td>26 in</td><td>27 in</td><td>28 in</td></tr>
-              </tbody>
-            </table>
+            <div class="size-chart-wrap">
+              <div class="size-chart-unit-toggle" role="group" aria-label="Sizing units">
+                <button type="button" class="unit-toggle-btn unit-toggle-btn--active" onclick="setSizeChartUnit(this, 'in')" aria-pressed="true">IN</button>
+                <span class="unit-toggle-sep">/</span>
+                <button type="button" class="unit-toggle-btn" onclick="setSizeChartUnit(this, 'cm')" aria-pressed="false">CM</button>
+              </div>
+              <table class="size-chart">
+                <thead>
+                  <tr><th></th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="size-chart-dim">Chest</td><td data-in="38 in" data-cm="97 cm">38 in</td><td data-in="40 in" data-cm="102 cm">40 in</td><td data-in="42 in" data-cm="107 cm">42 in</td><td data-in="44 in" data-cm="112 cm">44 in</td><td data-in="46 in" data-cm="117 cm">46 in</td></tr>
+                  <tr><td class="size-chart-dim">Shoulder</td><td data-in="17 in" data-cm="43 cm">17 in</td><td data-in="18 in" data-cm="46 cm">18 in</td><td data-in="19 in" data-cm="48 cm">19 in</td><td data-in="20 in" data-cm="51 cm">20 in</td><td data-in="21 in" data-cm="53 cm">21 in</td></tr>
+                  <tr><td class="size-chart-dim">Length</td><td data-in="50 in" data-cm="127 cm">50 in</td><td data-in="51 in" data-cm="130 cm">51 in</td><td data-in="52 in" data-cm="132 cm">52 in</td><td data-in="53 in" data-cm="135 cm">53 in</td><td data-in="54 in" data-cm="137 cm">54 in</td></tr>
+                  <tr><td class="size-chart-dim">Sleeve</td><td data-in="24 in" data-cm="61 cm">24 in</td><td data-in="25 in" data-cm="64 cm">25 in</td><td data-in="26 in" data-cm="66 cm">26 in</td><td data-in="27 in" data-cm="69 cm">27 in</td><td data-in="28 in" data-cm="71 cm">28 in</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="accordion">
           <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span>Shipping & Returns</span>
+            <span>Info</span>
             <span class="accordion-icon">+</span>
           </button>
           <div class="accordion-body">
             <p>Drop 01 is made to order. Orders ship within 10–14 business days of production confirmation.</p>
-            <p>All sales are final. Manufacturing defects are reviewed within 48 hours of delivery.</p>
+            <p>Returns accepted within 14 days of delivery, unworn and unaltered. Exchanges are our preference.</p>
+            <p>Currently shipping to the United States, Canada, United Kingdom, France, Germany, Australia, Japan, and South Korea. More markets coming soon.</p>
             <p>International orders are responsible for duties, customs fees, and local taxes collected at delivery.</p>
             <p><a href="/pages/policy">Full shipping and returns terms</a></p>
           </div>
         </div>
       </div>
+
+      <a href="/pages/policy" class="pdp-policy-link">Policies →</a>
 
     </div>
   </div>

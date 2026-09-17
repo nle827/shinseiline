@@ -180,6 +180,20 @@ function selectVariant(btn, group) {
   btn.classList.add('pdp-variant-btn--active');
 }
 
+// --- Size chart unit toggle ---
+function setSizeChartUnit(btn, unit) {
+  const wrap = btn.closest('.size-chart-wrap');
+  if (!wrap) return;
+  wrap.querySelectorAll('.unit-toggle-btn').forEach(b => {
+    const active = b === btn;
+    b.classList.toggle('unit-toggle-btn--active', active);
+    b.setAttribute('aria-pressed', active);
+  });
+  wrap.querySelectorAll('td[data-in]').forEach(td => {
+    td.textContent = unit === 'cm' ? td.dataset.cm : td.dataset.in;
+  });
+}
+
 // --- Store tile image when navigating to product page ---
 document.addEventListener('click', function(e) {
   const card = e.target.closest('[data-product-image]');

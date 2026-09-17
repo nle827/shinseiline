@@ -4,7 +4,7 @@
    Open any .html file with Live Server in VS Code.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Raleway:wght@400;600&family=Space+Mono:wght@400;700&display=swap');
 
 /* --- Tokens --- */
 :root {
@@ -112,25 +112,40 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  font-size: 13px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #FFFFFF;
-  transition: color 0.2s;
-  padding-bottom: 2px;
-  border-bottom: 1px solid transparent;
+  position: relative;
+  transition: color 200ms ease;
 }
-.nav-link:hover, .nav-link.active {
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #FFFFFF;
+  transition: width 200ms ease;
+}
+.nav-link:hover,
+.nav-link.active {
   color: #FFFFFF;
-  border-bottom-color: #FFFFFF;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
 }
 .site-header.scrolled .nav-link {
   color: var(--ink);
 }
+.site-header.scrolled .nav-link::after {
+  background: var(--ink);
+}
 .site-header.scrolled .nav-link:hover,
 .site-header.scrolled .nav-link.active {
-  color: var(--ink);
-  border-bottom-color: var(--ink);
+  color: var(--ink-mid);
 }
 
 .header-actions {
@@ -142,8 +157,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 .cart-trigger,
 .search-trigger {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  font-size: 13px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #FFFFFF;
   cursor: pointer;
@@ -301,7 +316,7 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   min-height: calc(100vh - var(--header-h));
 }
 
-/* --- Buttons --- */
+/* --- Buttons (boxless editorial link) --- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -310,37 +325,34 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 14px 32px;
-  transition: all 0.2s var(--ease);
+  padding: 0;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  border: 1px solid transparent;
+  position: relative;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.btn:hover::after {
+  width: 100%;
 }
 .btn--primary {
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
-}
-.btn--primary:hover { background: var(--accent); border-color: var(--accent); }
-.btn--secondary {
-  background: transparent;
   color: var(--ink);
-  border-color: var(--ink);
 }
-.btn--secondary:hover { background: transparent; color: var(--ink); border-color: var(--ink); animation: ctaGlow 1.8s ease-out infinite; }
-@keyframes ctaGlow {
-  0%   { box-shadow: 0 0 0 0 rgba(13,13,13,0.35); }
-  70%  { box-shadow: 0 0 0 8px rgba(13,13,13,0); }
-  100% { box-shadow: 0 0 0 0 rgba(13,13,13,0); }
+.btn--secondary {
+  color: var(--ink);
 }
 .btn--full { width: 100%; }
 .btn--ghost {
-  background: transparent;
   color: #FFFFFF;
-  border-color: rgba(255,255,255,0.6);
-}
-.btn--ghost:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: #FFFFFF;
 }
 
 /* --- Hero --- */
@@ -625,26 +637,70 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 .accordion-body {
   display: none;
+  padding-top: 4px;
   padding-bottom: 8px;
   font-size: 0.85rem;
-  color: var(--ink-mid);
-  line-height: 1.6;
+  color: var(--ink);
+  line-height: 1.9;
 }
 .accordion-body.open { display: block; }
+.accordion-body p {
+  margin: 0 0 var(--space-sm);
+}
+.accordion-body p:last-child {
+  margin-bottom: 0;
+}
 
 /* Size chart table */
+.size-chart-unit-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.unit-toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.unit-toggle-btn:hover {
+  color: var(--ink-mid);
+}
+.unit-toggle-btn--active,
+.unit-toggle-btn--active:hover {
+  color: var(--ink);
+}
+.size-chart-unit-toggle .unit-toggle-sep {
+  font-family: var(--font-ui);
+  font-size: 0.62rem;
+  color: var(--border);
+}
 .size-chart {
   width: 100%;
   border-collapse: collapse;
   margin-top: 4px;
   margin-bottom: 12px;
 }
-.size-chart th,
-.size-chart td {
+.size-chart th {
   font-family: var(--font-ui);
   font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  text-align: center;
+  padding: 7px 6px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-mid);
+}
+.size-chart td {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
   text-align: center;
   padding: 7px 6px;
   border-bottom: 1px solid var(--border);

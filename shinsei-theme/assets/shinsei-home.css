@@ -94,7 +94,8 @@
 
 /* Nav links */
 .home-page .nav-link {
-  font-family: var(--font-ui);
+  font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -134,7 +135,8 @@
 /* Cart + Search triggers */
 .home-page .cart-trigger,
 .home-page .search-trigger {
-  font-family: var(--font-ui);
+  font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -224,7 +226,7 @@
 .city-clock-label {
   font-family: var(--font-ui);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-primary);
@@ -634,7 +636,7 @@ circle.map-node--locked {
   color: var(--text-ghost);
   line-height: 1.2;
   transition: color 0.25s;
-  font-weight: 600;
+  font-weight: 700;
 }
 .ls-node--active .ls-node-id {
   color: var(--text-primary);
@@ -782,7 +784,7 @@ circle.map-node--locked {
   padding: 14px 16px 16px 16px;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
@@ -815,10 +817,11 @@ circle.map-node--locked {
 }
 
 .line-card-name {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 200;
-  font-size: 14px;
-  letter-spacing: -0.01em;
+  font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0;
   color: var(--text-primary);
   display: block;
 }
@@ -835,57 +838,47 @@ circle.map-node--locked {
   display: block;
 }
 
-/* CTA Button — active card */
+/* CTA — active card (boxless editorial link) */
 .line-card-cta {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  padding: 0 16px;
+  padding: 0;
+  margin-top: 4px;
   white-space: nowrap;
   flex-shrink: 0;
-  border: 1px solid var(--text-primary);
+  border: none;
   font-family: var(--font-ui);
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-primary);
   background: transparent;
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
-  transition: color 250ms ease;
 }
 
-/* Fill slides up from bottom via pseudo-element */
-.line-card-cta::before {
-  display: none;
+/* Underline grows in from the left on approach */
+.line-card-cta::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: var(--text-primary);
+  transition: width 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
-.line-card-cta:hover {
-  animation: ctaGlow 1.8s ease-out infinite;
-  color: var(--text-primary);
-}
-@keyframes ctaGlow {
-  0%   { box-shadow: 0 0 0 0 rgba(13,13,13,0.35); }
-  70%  { box-shadow: 0 0 0 8px rgba(13,13,13,0); }
-  100% { box-shadow: 0 0 0 0 rgba(13,13,13,0); }
-}
-.line-card-cta span,
-.line-card-cta {
-  position: relative;
-  z-index: 1;
+.line-card-cta:hover::after {
+  width: 100%;
 }
 
 /* Disabled CTA state */
 .line-card-cta--disabled {
-  border-color: var(--text-primary);
   color: var(--text-primary);
   cursor: pointer;
   pointer-events: all;
-}
-.line-card-cta--disabled::before {
-  display: none;
 }
 
 /* Locked card */
@@ -1015,25 +1008,38 @@ circle.map-node--locked {
 }
 
 .home-page .cart-browse-btn {
-  border: 1px solid #2A2A2A;
+  border: none;
   color: #6A6A6A;
   background: transparent;
   font-family: var(--font-ui);
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 12px 24px;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   margin-top: 16px;
-  transition: border-color 200ms ease, color 200ms ease;
+  position: relative;
+  transition: color 200ms ease;
+}
+.home-page .cart-browse-btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .home-page .cart-browse-btn:hover {
-  border-color: #FFFFFF;
-  color: #FFFFFF;
+  color: #111111;
   background: transparent;
+}
+.home-page .cart-browse-btn:hover::after {
+  width: 100%;
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */

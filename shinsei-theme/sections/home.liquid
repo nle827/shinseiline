@@ -113,7 +113,7 @@
             <span class="line-card-name">Kagemi</span>
             <span class="line-card-price">{% if kagemi.price %}{{ kagemi.price | money }}{% else %}$485.00{% endif %}</span>
           </div>
-          <a href="/products/kagemi" class="line-card-cta">{% if kagemi.tags contains 'coming-soon' %}PREVIEW{% else %}VIEW NOW{% endif %}</a>
+          <a href="/products/kagemi" class="line-card-cta">{% if kagemi.tags contains 'coming-soon' and kagemi.available == false %}PREVIEW{% else %}VIEW NOW{% endif %}</a>
         </div>
       </div>
 
@@ -137,7 +137,7 @@
             <span class="line-card-name">———</span>
             <span class="line-card-price">$—</span>
           </div>
-          <a href="/products/kagemi?available=soldout" class="line-card-cta line-card-cta--disabled">PREVIEW</a>
+          <a href="/products/kagemi?available=soldout" class="line-card-cta line-card-cta--disabled">VIEW NOW</a>
         </div>
       </div>
 
