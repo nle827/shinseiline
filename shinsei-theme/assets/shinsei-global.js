@@ -269,6 +269,53 @@ function closeNotifyModal() { notifyModal.close(); }
 function openRequestModal() { requestModal.open(); }
 function closeRequestModal() { requestModal.close(); }
 
+// --- LINE 01 drop-window phase ---
+// Shared between the PDP passcode/departed gating (shinsei-pdp.js) and the
+// homepage line-card CTA (shinsei-home.js) so both read the same
+// drop-phase-data JSON (rendered server-side from the "LINE 01 drop" theme
+// settings) and land on the same phase.
+function readDropPhaseData(elementId) {
+  const el = document.getElementById(elementId || 'drop-phase-data');
+  if (!el) return null;
+  try { return JSON.parse(el.textContent); } catch (e) { return null; }
+}
+
+function computeDropDatePhase(data) {
+  const now = Date.now();
+  const early = new Date(data.earlyAccessStart).getTime();
+  const pub = new Date(data.publicOpen).getTime();
+  const close = new Date(data.closeAt).getTime();
+  if (now < early) return 'pre';
+  if (now < pub) return 'early';
+  if (now < close) return 'public';
+  return 'closed';
+}
+
+// Combines the date-driven phase with the product's real availability and
+// coming-soon tag (both baked into `data` server-side) into exactly one
+// phase, with a manual override for testing on an unpublished theme.
+function getDropPhase(data) {
+  if (data.phaseOverride && data.phaseOverride !== 'auto') return data.phaseOverride;
+  if (!data.available) return data.comingSoon ? 'pre' : 'closed';
+  const datePhase = computeDropDatePhase(data);
+  // An available product showing as date-phase "pre" shouldn't happen in
+  // practice (stock is set to 50 manually at early access) — early access
+  // is the closest real UI for that edge case.
+  return datePhase === 'pre' ? 'early' : datePhase;
+}
+
+const DROP_UNLOCK_KEY = 'shinseiLine01Unlocked';
+
+function isDropPasscodeUnlocked() {
+  try { return window.localStorage.getItem(DROP_UNLOCK_KEY) === '1'; }
+  catch (e) { return false; }
+}
+
+function setDropPasscodeUnlocked() {
+  try { window.localStorage.setItem(DROP_UNLOCK_KEY, '1'); }
+  catch (e) { /* storage blocked — unlock just won't persist across reloads */ }
+}
+
 // --- Shopify AJAX Cart ---
 
 function formatMoney(cents) {

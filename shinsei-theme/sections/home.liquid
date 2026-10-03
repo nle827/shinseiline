@@ -96,7 +96,14 @@
     <div class="lines-grid">
 
       <!-- CARD 1 — LINE 01 ACTIVE -->
-      {%- assign kagemi = all_products['kagemi'] -%}
+      {%- liquid
+        assign kagemi = all_products['kagemi']
+        assign kagemi_coming_soon = false
+        if kagemi.tags contains 'coming-soon'
+          assign kagemi_coming_soon = true
+        endif
+      -%}
+      <script type="application/json" id="drop-phase-data">{"earlyAccessStart": {{ settings.drop_early_access_start | json }}, "publicOpen": {{ settings.drop_public_open | json }}, "closeAt": {{ settings.drop_close | json }}, "passcodeHash": {{ settings.drop_passcode_hash | json }}, "phaseOverride": {{ settings.drop_phase_override | json }}, "available": {{ kagemi.available | json }}, "comingSoon": {{ kagemi_coming_soon | json }}}</script>
       <div class="line-card line-card--active">
         <a href="/products/kagemi" class="line-card-media card-gallery" data-current="0" style="display:block;" data-product-image="{{ 'kagemi-mockup-optimized.png' | asset_url }}">
           <img src="{{ 'kagemi-mockup-optimized.png' | asset_url }}" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false" loading="lazy">
@@ -113,7 +120,7 @@
             <span class="line-card-name">Kagemi</span>
             <span class="line-card-price">{% if kagemi.price %}{{ kagemi.price | money }}{% else %}$485.00{% endif %}</span>
           </div>
-          <a href="/products/kagemi" class="line-card-cta">{% if kagemi.tags contains 'coming-soon' and kagemi.available == false %}PREVIEW{% else %}VIEW NOW{% endif %}</a>
+          <a href="/products/kagemi" class="line-card-cta" id="line-card-cta-kagemi">{% if kagemi_coming_soon and kagemi.available == false %}PREVIEW{% else %}VIEW NOW{% endif %}</a>
         </div>
       </div>
 

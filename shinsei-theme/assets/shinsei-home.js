@@ -725,6 +725,20 @@
     });
   }
 
+  // LINE 01 drop-window CTA — swaps the server-rendered PREVIEW/VIEW NOW
+  // default for the phase-accurate label (FIRST ACCESS, DEPARTED) once JS
+  // can resolve the real phase. Uses the shared helpers from
+  // shinsei-global.js, which loads before this file.
+  function applyDropPhaseToHomeCard() {
+    const cta = document.getElementById('line-card-cta-kagemi');
+    if (!cta) return;
+    const data = readDropPhaseData();
+    if (!data) return;
+    const labels = { pre: 'PREVIEW', early: 'FIRST ACCESS', public: 'VIEW NOW', closed: 'DEPARTED' };
+    const label = labels[getDropPhase(data)];
+    if (label) cta.textContent = label;
+  }
+
   function init() {
     // Only run on the homepage
     if (!document.body.classList.contains('home-page')) return;
@@ -753,6 +767,9 @@
 
     // PDP scroll gallery
     initPDPGallery();
+
+    // LINE 01 drop-window CTA
+    applyDropPhaseToHomeCard();
 
     // Subline flip-up on load
     const subline = document.querySelector('.hero-subline');

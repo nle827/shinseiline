@@ -79,5 +79,64 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "LINE 01 drop",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Drop window"
+      },
+      {
+        "type": "paragraph",
+        "content": "Timestamps are UTC (e.g. 2026-11-15T17:00:00Z = 9:00am PT while PST is in effect)."
+      },
+      {
+        "type": "text",
+        "id": "drop_early_access_start",
+        "label": "Early access start (UTC)",
+        "default": "2026-11-15T17:00:00Z"
+      },
+      {
+        "type": "text",
+        "id": "drop_public_open",
+        "label": "Public open (UTC)",
+        "default": "2026-11-17T17:00:00Z"
+      },
+      {
+        "type": "text",
+        "id": "drop_close",
+        "label": "Drop close (UTC)",
+        "default": "2026-11-24T17:00:00Z"
+      },
+      {
+        "type": "header",
+        "content": "Passcode"
+      },
+      {
+        "type": "text",
+        "id": "drop_passcode_hash",
+        "label": "Passcode hash (SHA-256, lowercase hex)",
+        "info": "Never enter the plain passcode here — only its SHA-256 hash. See the theme's drop-gating notes for the command to generate it."
+      },
+      {
+        "type": "header",
+        "content": "Testing"
+      },
+      {
+        "type": "select",
+        "id": "drop_phase_override",
+        "label": "Phase override",
+        "info": "For testing on an unpublished theme only. Leave on Auto in production.",
+        "options": [
+          { "value": "auto", "label": "Auto (use dates above)" },
+          { "value": "pre", "label": "Force: Pre" },
+          { "value": "early", "label": "Force: Early access" },
+          { "value": "public", "label": "Force: Public" },
+          { "value": "closed", "label": "Force: Closed" }
+        ],
+        "default": "auto"
+      }
+    ]
   }
 ]

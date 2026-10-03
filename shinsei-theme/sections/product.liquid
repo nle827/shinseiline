@@ -9,7 +9,14 @@
       assign show_soldout = true
     endif
   endunless
+
+  assign drop_coming_soon = false
+  if product.tags contains 'coming-soon'
+    assign drop_coming_soon = true
+  endif
 -%}
+
+<script type="application/json" id="drop-phase-data">{"earlyAccessStart": {{ settings.drop_early_access_start | json }}, "publicOpen": {{ settings.drop_public_open | json }}, "closeAt": {{ settings.drop_close | json }}, "passcodeHash": {{ settings.drop_passcode_hash | json }}, "phaseOverride": {{ settings.drop_phase_override | json }}, "available": {{ product.available | json }}, "comingSoon": {{ drop_coming_soon | json }}}</script>
 
 <section class="pdp-layout">
 
@@ -69,8 +76,9 @@
         <p class="pdp-price">{{ product.price | money }}</p>
       </div>
 
-      <!-- Variants -->
-      <div class="pdp-variants" {% if show_request_access %}style="display:none;"{% endif %}>
+      <!-- Variants (hidden until JS resolves the drop phase — avoids a flash
+           of the wrong UI for early/closed states; see drop-phase-data) -->
+      <div class="pdp-variants" id="pdp-variants" style="display:none;">
         <div class="pdp-variant-group">
           <span class="pdp-variant-label">Size</span>
           <div class="pdp-variant-options">
@@ -99,9 +107,23 @@
         </div>
       </div>
 
-      <!-- Add to cart (normal available product) -->
-      <div class="pdp-actions" id="pdp-actions-available" {% if show_request_access or show_soldout %}style="display:none;"{% endif %}>
+      <!-- Add to cart (normal available product) — hidden until JS resolves
+           the drop phase (public, or early + already unlocked) -->
+      <div class="pdp-actions" id="pdp-actions-available" style="display:none;">
         <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
+      </div>
+
+      <!-- Passcode gate (early access, not yet unlocked on this device) -->
+      <div class="pdp-actions pdp-request-access" id="pdp-actions-passcode" style="display:none;">
+        <p class="pdp-unavailable-label">First access.</p>
+        <form class="pdp-access-form" id="PasscodeForm" onsubmit="return submitDropPasscode(event)">
+          <div class="pdp-access-fields">
+            <input type="password" id="pdp-passcode-input" placeholder="Passcode" autocomplete="off" required>
+          </div>
+          <button type="submit" class="pdp-add-to-cart">ENTER</button>
+        </form>
+        <p class="pdp-access-note" id="pdp-passcode-error" style="display:none;">Not recognized.</p>
+        <p class="pdp-access-note pdp-access-secondary">Not on the list? <a href="javascript:void(0)" onclick="openRequestModal()">Request access</a></p>
       </div>
 
       <!-- Request Access (unavailable) -->
@@ -155,10 +177,13 @@
         </div>
       </div>
 
-      <!-- Notify Me (sold out) -->
-      <div class="pdp-actions pdp-request-access" id="pdp-actions-soldout" {% unless show_soldout %}style="display:none;"{% endunless %}>
-        <p class="pdp-unavailable-label">Sold out</p>
-        <button type="button" class="pdp-add-to-cart" onclick="openNotifyModal()">NOTIFY ME WHEN AVAILABLE</button>
+      <!-- Departed: sold through (unavailable, no coming-soon tag) is
+           server-rendered immediately; closed-while-still-available is
+           revealed by JS once it resolves the drop phase. No restock
+           language — LINE 01 does not restock. -->
+      <div class="pdp-actions pdp-request-access" id="pdp-actions-departed" {% unless show_soldout %}style="display:none;"{% endunless %}>
+        <p class="pdp-unavailable-label">Departed.</p>
+        <p class="pdp-access-note">LINE 01 has closed.</p>
       </div>
 
       {%- liquid
@@ -240,7 +265,7 @@
             <span class="accordion-icon">+</span>
           </button>
           <div class="accordion-body">
-            <p>Drop 01 is made to order. Orders ship within 10–14 business days of production confirmation.</p>
+            <p>LINE 01 is made to order. Production begins when the preorder window closes; expect delivery about 6–7 weeks later.</p>
             <p>Returns accepted within 14 days of delivery, unworn and unaltered. Exchanges are our preference.</p>
             <p>Currently shipping to the United States, Canada, United Kingdom, France, Germany, Australia, Japan, and South Korea. More markets coming soon.</p>
             <p>International orders are responsible for duties, customs fees, and local taxes collected at delivery.</p>
