@@ -43,6 +43,12 @@ function clampQuantityInput() {
 }
 
 async function addToCart() {
+  if (dropPhaseData && dropPhaseData.available) {
+    const phase = getDropPhase(dropPhaseData);
+    if (phase === 'closed') return;
+    if (phase === 'early' && !isDropPasscodeUnlocked()) return;
+  }
+
   const activeBtn = document.querySelector('.pdp-variant-btn--active');
 
   if (!activeBtn) {
@@ -125,3 +131,77 @@ function setSizeChartUnit(btn, unit) {
     td.textContent = unit === 'cm' ? td.dataset.cm : td.dataset.in;
   });
 }
+
+// --- LINE 01 drop-window gating ---
+// `dropPhaseData` (from readDropPhaseData, in shinsei-global.js) is null on
+// any page without a #drop-phase-data block. Everything below no-ops in
+// that case.
+const dropPhaseData = readDropPhaseData();
+
+function revealDropAddToCart() {
+  const variants = document.getElementById('pdp-variants');
+  const actions = document.getElementById('pdp-actions-available');
+  const gate = document.getElementById('pdp-actions-passcode');
+  if (variants) variants.style.display = '';
+  if (actions) actions.style.display = '';
+  if (gate) gate.style.display = 'none';
+}
+
+function revealDropPasscodeGate() {
+  const gate = document.getElementById('pdp-actions-passcode');
+  if (gate) gate.style.display = '';
+}
+
+function revealDropDeparted() {
+  const departed = document.getElementById('pdp-actions-departed');
+  if (departed) departed.style.display = '';
+}
+
+// Pre (unavailable + coming-soon) and sold-through (unavailable, no tag)
+// are already correct from the server-rendered markup — only an available
+// product needs JS to pick between Add to Cart, the passcode gate, and the
+// closed/departed state.
+function applyDropPhase() {
+  if (!dropPhaseData || !dropPhaseData.available) return;
+  const phase = getDropPhase(dropPhaseData);
+  if (phase === 'public') {
+    revealDropAddToCart();
+  } else if (phase === 'early') {
+    if (isDropPasscodeUnlocked()) {
+      revealDropAddToCart();
+    } else {
+      revealDropPasscodeGate();
+    }
+  } else if (phase === 'closed') {
+    revealDropDeparted();
+  }
+}
+
+async function sha256Hex(message) {
+  const bytes = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function submitDropPasscode(event) {
+  event.preventDefault();
+  if (!dropPhaseData) return false;
+
+  const input = document.getElementById('pdp-passcode-input');
+  const errorEl = document.getElementById('pdp-passcode-error');
+  if (!input) return false;
+
+  const entered = input.value.trim().toLowerCase();
+  const hash = await sha256Hex(entered);
+
+  if (hash === dropPhaseData.passcodeHash) {
+    setDropPasscodeUnlocked();
+    if (errorEl) errorEl.style.display = 'none';
+    revealDropAddToCart();
+  } else if (errorEl) {
+    errorEl.style.display = '';
+  }
+  return false;
+}
+
+applyDropPhase();
