@@ -74,8 +74,8 @@
 /* Sticky gallery frame */
 .pdp-gallery {
   position: sticky;
-  top: 96px; /* header height */
-  height: calc(100vh - 96px);
+  top: var(--header-h); /* header height */
+  height: calc(100vh - var(--header-h));
   background: var(--bg-secondary);
   display: flex;
   align-items: center;
@@ -767,6 +767,25 @@
   text-transform: uppercase;
   color: var(--text-primary);
   margin: 0;
+}
+
+.pdp-access-note#pdp-passcode-error {
+  margin-top: 8px;
+}
+
+.pdp-access-secondary {
+  margin-top: 14px;
+  color: var(--text-secondary);
+}
+
+.pdp-access-secondary a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pdp-access-secondary a:hover {
+  color: var(--text-secondary);
 }
 
 .pdp-access-confirmed-msg {
