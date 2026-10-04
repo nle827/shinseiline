@@ -74,8 +74,8 @@
 /* Sticky gallery frame */
 .pdp-gallery {
   position: sticky;
-  top: 96px; /* header height */
-  height: calc(100vh - 96px);
+  top: var(--header-h); /* header height */
+  height: calc(100vh - var(--header-h));
   background: var(--bg-secondary);
   display: flex;
   align-items: center;

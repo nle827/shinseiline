@@ -22,6 +22,7 @@
   --node-empty:    #F8F8F9;
   --surface-card:  var(--bg-secondary);
   --locked:        #C8C8C8;
+  --header-h:      56px;
 
   --font-display: 'EB Garamond', Georgia, serif;
   --font-ui:      'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -56,7 +57,7 @@
 
 /* ── Header ─────────────────────────────────────────────────── */
 .home-page .site-header {
-  height: 96px;
+  height: var(--header-h);
   background: var(--bg-primary);
   border-bottom: none;
   backdrop-filter: none;
@@ -79,7 +80,7 @@
 
 /* Logo: bigger on homepage */
 .home-page .logo-img {
-  height: 64px;
+  height: 52px;
   margin-top: 0;
 }
 .home-page .logo-img--light {
@@ -92,12 +93,16 @@
 .home-page .site-header.scrolled .logo-img--light { opacity: 0; }
 .home-page .site-header.scrolled .logo-img--dark  { opacity: 1; }
 
+.home-page .header-nav {
+  gap: 32px;
+}
+
 /* Nav links */
 .home-page .nav-link {
   font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
   font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-primary);
   border-bottom: none;
@@ -132,13 +137,17 @@
   color: var(--text-secondary);
 }
 
+.home-page .header-actions {
+  gap: 24px;
+}
+
 /* Cart + Search triggers */
 .home-page .cart-trigger,
 .home-page .search-trigger {
   font-family: 'Raleway', 'Segoe UI', Arial, sans-serif;
   font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-primary);
   transition: color 200ms ease;
@@ -162,15 +171,15 @@
   background: var(--text-primary);
 }
 
-/* ── Main: offset for 72px header ──────────────────────── */
+/* ── Main: offset for header ──────────────────────────────── */
 .home-page #main-content {
   padding-top: 48px;
   padding-bottom: var(--space-xl);
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - var(--header-h));
 }
 
 .home-page.pdp-page #main-content {
-  padding-top: 96px;
+  padding-top: var(--header-h);
 }
 
 /* ── Hero Stage (hero + side clocks) ───────────────────────── */
@@ -181,7 +190,7 @@
   gap: 32px;
   width: 100%;
   max-width: 1280px;
-  margin: 96px auto 0;
+  margin: var(--header-h) auto 0;
   padding: 0 16px;
   box-sizing: border-box;
 }

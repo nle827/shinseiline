@@ -602,8 +602,10 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 }
 
 @media (max-width: 480px) {
-  /* Logo shrink */
-  .logo-img { height: 44px; }
+  /* Logo size on every real page is set unconditionally by
+     .home-page .logo-img in shinsei-home.css, which always wins
+     specificity over this rule — do not reintroduce a plain
+     .logo-img size rule here, it will have no effect. */
 
   /* Buttons full width */
   .btn { width: 100%; text-align: center; }

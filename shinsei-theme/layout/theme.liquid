@@ -15,9 +15,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Raleway:wght@400;600&family=Space+Mono:wght@400;700&display=swap">
 
   {{ 'shinsei-global.css' | asset_url | stylesheet_tag }}
-  {% if request.page_type == 'index' or request.page_type == 'product' %}
-    {{ 'shinsei-home.css' | asset_url | stylesheet_tag }}
-  {% endif %}
+  {{ 'shinsei-home.css' | asset_url | stylesheet_tag }}
   {% if request.page_type == 'product' %}
     {{ 'shinsei-pdp.css' | asset_url | stylesheet_tag }}
   {% endif %}
@@ -27,7 +25,7 @@
 
   {{ content_for_header }}
 </head>
-<body class="{% if request.page_type == 'index' %}home-page{% elsif request.page_type == 'product' %}home-page pdp-page{% endif %}">
+<body class="home-page{% if request.page_type == 'product' %} pdp-page{% endif %}">
 
   <!-- HEADER -->
   <header class="site-header">
@@ -119,9 +117,7 @@
   </div>
 
   <script src="{{ 'shinsei-global.js' | asset_url }}" defer></script>
-  {% if request.page_type == 'index' or request.page_type == 'product' %}
-    <script src="{{ 'shinsei-home.js' | asset_url }}" defer></script>
-  {% endif %}
+  <script src="{{ 'shinsei-home.js' | asset_url }}" defer></script>
   {% if request.page_type == 'product' %}
     <script src="{{ 'shinsei-pdp.js' | asset_url }}" defer></script>
   {% endif %}
