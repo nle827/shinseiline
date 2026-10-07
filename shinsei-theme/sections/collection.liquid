@@ -59,9 +59,7 @@
       {%- for product in collection.products -%}
         <a href="{{ product.url }}" class="shop-card">
           <div class="shop-card-media">
-            {%- if product.featured_image -%}
-              <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
-            {%- endif -%}
+            {%- render 'card-image', item: product, image: product.featured_image -%}
             <span class="shop-card-badge">No. 001</span>
           </div>
           <div class="shop-card-body">

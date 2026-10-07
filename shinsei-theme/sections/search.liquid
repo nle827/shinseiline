@@ -31,9 +31,7 @@
             {%- assign featured_image = result.featured_image | default: result.image -%}
             <a href="{{ result.url }}" class="shop-card">
               <div class="shop-card-media">
-                {%- if featured_image -%}
-                  <img src="{{ featured_image | image_url: width: 600 }}" alt="{{ featured_image.alt | escape }}" loading="lazy">
-                {%- endif -%}
+                {%- render 'card-image', item: result, image: featured_image -%}
               </div>
               <div class="shop-card-body">
                 <div class="shop-card-meta">

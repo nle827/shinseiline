@@ -1,0 +1,17 @@
+{% doc %}
+  Renders the image for a shop/search card. Uses the item's featured image;
+  Kagemi has no product media (its PDP stays imageless by design), so it
+  falls back to the theme's tile asset.
+
+  @param {object} item - The product (or search result) the card represents
+  @param {image} [image] - The image to render, if the item has one
+
+  @example
+  {% render 'card-image', item: product, image: product.featured_image %}
+{% enddoc %}
+
+{%- if image -%}
+  <img src="{{ image | image_url: width: 600 }}" alt="{{ image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy">
+{%- elsif item.handle == 'kagemi' -%}
+  <img src="{{ 'kagemi-tile.webp' | asset_url }}" alt="{{ item.title | escape }} — The Structured Overcoat" width="800" height="1200" loading="lazy">
+{%- endif -%}
