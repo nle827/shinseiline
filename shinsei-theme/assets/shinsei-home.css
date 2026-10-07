@@ -254,12 +254,13 @@
 
 /* ── Hero ─────────────────────────────────────────── */
 
-/* Background image */
+/* Background image — --hero-img is set in home.liquid (versioned asset_url, same
+   URL as the mobile <img> and the head preload, so it downloads once) */
 .home-page .hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('kagemi-hero.jpg') center center / cover no-repeat;
+  background: var(--hero-img) center center / cover no-repeat;
   filter: brightness(0.8);
   z-index: 0;
 }

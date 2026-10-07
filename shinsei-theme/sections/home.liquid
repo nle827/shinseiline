@@ -16,8 +16,8 @@
   </div>
 
   <!-- HERO -->
-  <section class="hero">
-    <img class="hero-mobile-img" src="{{ 'kagemi-hero.jpg' | asset_url }}" alt="Kagemi" aria-hidden="true">
+  <section class="hero" style="--hero-img: url('{{ 'kagemi-hero.jpg' | asset_url }}');">
+    <img class="hero-mobile-img" src="{{ 'kagemi-hero.jpg' | asset_url }}" alt="Kagemi" aria-hidden="true" fetchpriority="high">
     <div class="hero-overlay-text">
       <h1 class="hero-heading">KAGEMI</h1>
       <div class="hero-overlay-rule" aria-hidden="true"></div>
