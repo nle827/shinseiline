@@ -104,10 +104,21 @@
         endif
       -%}
       <script type="application/json" id="drop-phase-data">{"earlyAccessStart": {{ settings.drop_early_access_start | json }}, "publicOpen": {{ settings.drop_public_open | json }}, "closeAt": {{ settings.drop_close | json }}, "passcodeHash": {{ settings.drop_passcode_hash | json }}, "phaseOverride": {{ settings.drop_phase_override | json }}, "available": {{ kagemi.available | json }}, "comingSoon": {{ kagemi_coming_soon | json }}}</script>
+      {%- liquid
+        # Card images come from the product's media (1st + 2nd image); theme assets are fallbacks only
+        assign kagemi_img_1 = 'kagemi-mockup-optimized.png' | asset_url
+        assign kagemi_img_2 = 'kagemi-detail.jpg' | asset_url
+        if kagemi.images[0]
+          assign kagemi_img_1 = kagemi.images[0] | image_url: width: 900
+        endif
+        if kagemi.images[1]
+          assign kagemi_img_2 = kagemi.images[1] | image_url: width: 900
+        endif
+      -%}
       <div class="line-card line-card--active">
-        <a href="/products/kagemi" class="line-card-media card-gallery" data-current="0" style="display:block;" data-product-image="{{ 'kagemi-mockup-optimized.png' | asset_url }}">
-          <img src="{{ 'kagemi-mockup-optimized.png' | asset_url }}" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false" loading="lazy">
-          <img src="{{ 'kagemi-detail.jpg' | asset_url }}" alt="Kagemi — Detail" class="line-card-img card-gallery-img" draggable="false" loading="lazy">
+        <a href="/products/kagemi" class="line-card-media card-gallery" data-current="0" style="display:block;" data-product-image="{{ kagemi_img_1 }}">
+          <img src="{{ kagemi_img_1 }}" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false" loading="lazy">
+          <img src="{{ kagemi_img_2 }}" alt="Kagemi — Detail" class="line-card-img card-gallery-img" draggable="false" loading="lazy">
           <div class="card-gallery-track" aria-hidden="true">
             <div class="card-gallery-rail">
               <div class="card-gallery-node card-gallery-node--active" data-index="0"></div>
