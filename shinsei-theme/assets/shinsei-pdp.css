@@ -73,6 +73,11 @@
   background: var(--bg-secondary);
 }
 
+/* Swipe-row position counter — mobile only */
+.pdp-gallery-count {
+  display: none;
+}
+
 /* Sticky gallery frame */
 .pdp-gallery {
   position: sticky;
@@ -502,6 +507,18 @@
   margin: 0;
 }
 
+/* Product specifications accordion — mobile only (desktop shows the
+   left construction column instead) */
+.pdp-specs-accordion {
+  display: none;
+}
+
+.pdp-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 /* Notify Me / Request Access modal */
 .notify-modal-overlay {
   position: fixed;
@@ -823,6 +840,7 @@
 
   /* Reorder for mobile: images first, then buy info, then material details */
   .pdp-gallery-track { order: 1; }
+  .pdp-gallery-count { order: 1; }
   .pdp-info { order: 2; }
   .pdp-construction { order: 3; }
 
@@ -848,23 +866,73 @@
     max-width: none;
   }
 
+  /* Images sit in one horizontal row: swipe sideways through them,
+     or scroll straight past to the buy info. Each photo fills the
+     screen width at its own proportions, uncropped; shorter photos
+     align to the top. */
+  .pdp-gallery-track {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .pdp-gallery-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdp-stack-img {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
   .pdp-stack-img img {
     width: 100%;
+    height: auto;
     max-height: none;
+  }
+
+  .pdp-gallery-count {
+    display: block;
+    padding: 12px 16px 0;
+    text-align: center;
+    font-family: var(--font-ui);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
   }
 
   .pdp-variant-options {
     flex-wrap: wrap;
   }
 
-  .accordion-body {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  /* Construction details move into the Product specifications accordion */
+  .pdp-construction {
+    display: none;
   }
 
-  .size-chart {
-    width: auto;
-    min-width: 420px;
+  .pdp-specs-accordion {
+    display: block;
+  }
+
+  .pdp-access-secondary {
+    text-align: center;
+  }
+
+  /* Size chart fits the screen width — no sideways scroll */
+  .size-chart th,
+  .size-chart td {
+    padding: 7px 2px;
+    white-space: nowrap;
+  }
+
+  .size-chart td {
+    font-size: 0.75rem;
   }
 
   .notify-modal-overlay {

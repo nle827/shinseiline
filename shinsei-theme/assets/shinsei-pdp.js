@@ -204,4 +204,16 @@ async function submitDropPasscode(event) {
   return false;
 }
 
+// Mobile swipe row: keep the "01 / 04" counter in step with the image in view.
+function trackGalleryPosition() {
+  const track = document.querySelector('.pdp-gallery-track');
+  const current = document.getElementById('pdp-gallery-current');
+  if (!track || !current) return;
+  track.addEventListener('scroll', () => {
+    const index = Math.round(track.scrollLeft / track.clientWidth) + 1;
+    current.textContent = String(index).padStart(2, '0');
+  }, { passive: true });
+}
+
 applyDropPhase();
+trackGalleryPosition();

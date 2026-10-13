@@ -20,25 +20,28 @@
 
 <section class="pdp-layout">
 
-  <!-- LEFT: construction details -->
+  {%- capture construction_blocks -%}
+    <div class="pdp-construction-block">
+      <span class="pdp-construction-label">Material</span>
+      <p>Fine wool outerwear weight. Melton, gabardine, or wool-blend twill. Unstructured lining.</p>
+    </div>
+
+    <div class="pdp-construction-block">
+      <span class="pdp-construction-label">Construction</span>
+      <p>European overcoat construction fused with Japanese kosode shoulder treatment. Drop shoulder silhouette. Single-button closure.</p>
+    </div>
+
+    <div class="pdp-construction-block">
+      <span class="pdp-construction-label">Fit</span>
+      <p>Unisex. Oversized through the body and sleeve. Length falls below the knee.</p>
+    </div>
+  {%- endcapture -%}
+
+  <!-- LEFT: construction details (desktop; on mobile these sit in the
+       Product specifications accordion instead) -->
   <div class="pdp-construction">
     <div class="pdp-construction-inner">
-
-      <div class="pdp-construction-block">
-        <span class="pdp-construction-label">Material</span>
-        <p>Fine wool outerwear weight. Melton, gabardine, or wool-blend twill. Unstructured lining.</p>
-      </div>
-
-      <div class="pdp-construction-block">
-        <span class="pdp-construction-label">Construction</span>
-        <p>European overcoat construction fused with Japanese kosode shoulder treatment. Drop shoulder silhouette. Single-button closure.</p>
-      </div>
-
-      <div class="pdp-construction-block">
-        <span class="pdp-construction-label">Fit</span>
-        <p>Unisex. Oversized through the body and sleeve. Length falls below the knee.</p>
-      </div>
-
+      {{ construction_blocks }}
     </div>
   </div>
 
@@ -65,6 +68,13 @@
       <div class="pdp-stack-img pdp-stack-img--placeholder"></div>
     {%- endfor -%}
   </div>
+
+  {%- if product.images.size > 1 -%}
+    <!-- Mobile only: position counter for the swipe row -->
+    <div class="pdp-gallery-count" id="pdp-gallery-count" aria-hidden="true">
+      <span id="pdp-gallery-current">01</span> / {{ product.images.size | prepend: '0' | slice: -2, 2 }}
+    </div>
+  {%- endif -%}
 
   <!-- RIGHT: product info -->
   <div class="pdp-info">
@@ -233,6 +243,16 @@
 
       <!-- Accordions -->
       <div class="pdp-accordions">
+        <!-- Mobile only: the left construction column moves in here -->
+        <div class="accordion pdp-specs-accordion">
+          <button class="accordion-trigger" onclick="toggleAccordion(this)">
+            <span>Product specifications</span>
+            <span class="accordion-icon">+</span>
+          </button>
+          <div class="accordion-body">
+            <div class="pdp-specs">{{ construction_blocks }}</div>
+          </div>
+        </div>
         <div class="accordion">
           <button class="accordion-trigger" onclick="toggleAccordion(this)">
             <span>Sizing</span>
@@ -247,15 +267,16 @@
               </div>
               <table class="size-chart">
                 <thead>
-                  <tr><th></th><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
+                  <tr><th></th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td class="size-chart-dim">Chest</td><td data-in="38 in" data-cm="97 cm">38 in</td><td data-in="40 in" data-cm="102 cm">40 in</td><td data-in="42 in" data-cm="107 cm">42 in</td><td data-in="44 in" data-cm="112 cm">44 in</td><td data-in="46 in" data-cm="117 cm">46 in</td></tr>
-                  <tr><td class="size-chart-dim">Shoulder</td><td data-in="17 in" data-cm="43 cm">17 in</td><td data-in="18 in" data-cm="46 cm">18 in</td><td data-in="19 in" data-cm="48 cm">19 in</td><td data-in="20 in" data-cm="51 cm">20 in</td><td data-in="21 in" data-cm="53 cm">21 in</td></tr>
-                  <tr><td class="size-chart-dim">Length</td><td data-in="50 in" data-cm="127 cm">50 in</td><td data-in="51 in" data-cm="130 cm">51 in</td><td data-in="52 in" data-cm="132 cm">52 in</td><td data-in="53 in" data-cm="135 cm">53 in</td><td data-in="54 in" data-cm="137 cm">54 in</td></tr>
-                  <tr><td class="size-chart-dim">Sleeve</td><td data-in="24 in" data-cm="61 cm">24 in</td><td data-in="25 in" data-cm="64 cm">25 in</td><td data-in="26 in" data-cm="66 cm">26 in</td><td data-in="27 in" data-cm="69 cm">27 in</td><td data-in="28 in" data-cm="71 cm">28 in</td></tr>
+                  <tr><td class="size-chart-dim">Chest</td><td data-in="22 in" data-cm="56 cm">22 in</td><td data-in="23 in" data-cm="58 cm">23 in</td><td data-in="24 in" data-cm="61 cm">24 in</td><td data-in="25 in" data-cm="64 cm">25 in</td></tr>
+                  <tr><td class="size-chart-dim">Shoulder</td><td data-in="19.5 in" data-cm="50 cm">19.5 in</td><td data-in="20 in" data-cm="51 cm">20 in</td><td data-in="20.5 in" data-cm="52 cm">20.5 in</td><td data-in="21 in" data-cm="53 cm">21 in</td></tr>
+                  <tr><td class="size-chart-dim">Length</td><td data-in="47 in" data-cm="119 cm">47 in</td><td data-in="48 in" data-cm="122 cm">48 in</td><td data-in="49 in" data-cm="124 cm">49 in</td><td data-in="50 in" data-cm="127 cm">50 in</td></tr>
+                  <tr><td class="size-chart-dim">Sleeve</td><td data-in="23.5 in" data-cm="60 cm">23.5 in</td><td data-in="24 in" data-cm="61 cm">24 in</td><td data-in="24.5 in" data-cm="62 cm">24.5 in</td><td data-in="25 in" data-cm="64 cm">25 in</td></tr>
                 </tbody>
               </table>
+              <p class="size-chart-note">Unisex. Cut with room to layer. Women may prefer one size down. Measurements may vary ±1 cm.</p>
             </div>
           </div>
         </div>
