@@ -7,7 +7,7 @@
 
 .pdp-layout {
   display: grid;
-  grid-template-columns: 25fr 50fr 25fr;
+  grid-template-columns: 34fr 32fr 34fr;
   align-items: stretch;
   min-height: 100vh;
 }
@@ -15,7 +15,6 @@
 /* Left construction column */
 .pdp-construction {
   padding: 0 40px 96px 40px;
-  border-right: 1px solid var(--rule);
 }
 
 .pdp-construction-inner {
@@ -53,22 +52,25 @@
   position: relative;
 }
 
-/* Each stacked image cell — full viewport height */
+/* Each stacked image cell: photo sits directly on the page,
+   capped at screen height so full-length shots show head to toe. */
 .pdp-stack-img {
   width: 100%;
-  height: 100vh;
-  background: var(--bg-secondary);
   display: flex;
-  align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .pdp-stack-img img {
-  width: 70%;
-  height: 80%;
-  object-fit: contain;
-  object-position: center;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - var(--header-h));
+}
+
+.pdp-stack-img--placeholder {
+  aspect-ratio: 2 / 3;
+  background: var(--bg-secondary);
 }
 
 /* Sticky gallery frame */
@@ -165,7 +167,6 @@
 /* Right info panel */
 .pdp-info {
   padding: 24px 32px 48px 32px;
-  border-left: 1px solid var(--rule);
 }
 
 .pdp-info-inner {
@@ -847,14 +848,9 @@
     max-width: none;
   }
 
-  .pdp-stack-img {
-    height: auto;
-    aspect-ratio: 3 / 4;
-  }
-
   .pdp-stack-img img {
     width: 100%;
-    height: 100%;
+    max-height: none;
   }
 
   .pdp-variant-options {
