@@ -502,8 +502,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 .cart-item-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain; /* whole coat cutout visible, no crop */
+  object-position: center;
   display: block;
 }
 .cart-item-thumb-empty { width: 100%; height: 100%; background: #EBEBEB; }

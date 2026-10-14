@@ -347,6 +347,13 @@ function updateCartBadge() {
   });
 }
 
+// Kagemi uses the same tile image as its homepage and shop cards
+// (theme asset, passed in via data-kagemi-tile on #cart-body).
+function cartItemThumbUrl(item, body) {
+  if (item.handle === 'kagemi' && body.dataset.kagemiTile) return body.dataset.kagemiTile;
+  return item.featured_image ? item.featured_image.url : '';
+}
+
 async function renderCart() {
   const body = document.getElementById('cart-body');
   if (!body) return;
@@ -366,7 +373,7 @@ async function renderCart() {
     <div class="cart-items">
       ${cart.items.map(item => `
         <div class="cart-item">
-          <div class="cart-item-thumb">${item.featured_image ? `<img src="${escapeHtml(item.featured_image.url)}" alt="${escapeHtml(item.product_title)}">` : ''}</div>
+          <div class="cart-item-thumb">${cartItemThumbUrl(item, body) ? `<img src="${escapeHtml(cartItemThumbUrl(item, body))}" alt="${escapeHtml(item.product_title)}">` : ''}</div>
           <div class="cart-item-info">
             <span class="cart-item-name">${escapeHtml(item.product_title)}</span>
             <span class="cart-item-meta">${item.variant_title && item.variant_title !== 'Default Title' ? 'Size: ' + escapeHtml(item.variant_title) + ' — ' : ''}${formatMoney(item.price)}</span>
