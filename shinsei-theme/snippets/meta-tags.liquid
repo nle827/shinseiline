@@ -1,6 +1,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>
+  /* iOS Safari zooms into any form field under 16px when tapped. On iOS
+     only, maximum-scale=1 stops that zoom so fields keep their small type;
+     iOS ignores it for pinch-zoom, so people can still zoom by hand.
+     Not applied elsewhere because Android would block pinch-zoom. */
+  if (window.CSS && CSS.supports('-webkit-touch-callout', 'none')) {
+    document.querySelectorAll('meta[name="viewport"]').forEach(function (m) {
+      m.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1');
+    });
+  }
+</script>
 
 {%- liquid
   assign og_title = page_title | default: shop.name

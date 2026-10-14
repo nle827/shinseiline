@@ -47,17 +47,6 @@ a { color: inherit; text-decoration: none; }
 button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
 input, textarea { font: inherit; color: inherit; border-radius: 0; }
 
-/* iOS Safari zooms the page into any field whose text is under 16px.
-   On iOS only (-webkit-touch-callout is iOS-specific), lift text fields
-   to 16px so tapping them doesn't zoom. Desktop and Android unchanged. */
-@supports (-webkit-touch-callout: none) {
-  input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
-  select,
-  textarea {
-    font-size: 16px !important;
-  }
-}
-
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
   font-weight: 400;
