@@ -500,10 +500,11 @@
 }
 .size-chart-note {
   font-family: var(--font-ui);
-  font-size: 8px; /* matches .pdp-variant-label (Size / Quantity) */
-  letter-spacing: 0.08em;
+  /* size, tracking and colour match .pdp-variant-label (Size / Quantity) */
+  font-size: 8px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-light);
+  color: var(--text-ghost);
   margin: 0;
 }
 
