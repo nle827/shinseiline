@@ -282,6 +282,12 @@
   -moz-appearance: textfield;
 }
 
+/* iOS lifts field text to 16px to stop tap-zoom (see shinsei-global.css);
+   widen so two-digit quantities still fit */
+@supports (-webkit-touch-callout: none) {
+  .pdp-quantity-input { width: 22px; }
+}
+
 .pdp-quantity-input::-webkit-outer-spin-button,
 .pdp-quantity-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
