@@ -98,8 +98,8 @@ _Last updated 2026-10-21._
 | 2. Audit | Done | `docs/AUDIT.md`. Scope: four modules plus the rest of the PDP (eyebrow, drop-state copy, Info accordion). Notify me modal deleted |
 | 3. Tokens | Done | `snippets/nl-tokens.liquid` plus `nl_*` settings (Colors, Typography, Layout and spacing, body line height). Fonts moved from Google to Shopify's font library. Theme Check: 0 offenses |
 | 4.1 Specs module | Done | `blocks/nl-spec-list.liquid`, `blocks/_nl-spec-row.liquid`, `assets/nl-spec-list.{css,js}`. On 2026-10-21, with the user's approval, the `nl_spec` metaobject definition, the `nl_modules.specs` product metafield and Kagemi's four entries were created through the Shopify connector (Admin GraphQL). Both blocks now render from the metafield (`data-nl-source="metafield"`), pixel-identical to live. The fallback rows in `templates/product.json` stay as a safety net. Library copy is in `nl-modules/nl-spec-list/` |
-| 4.2 Size chart | Next | Planned design in `docs/AUDIT.md`: `nl_size_chart` + `nl_size_row` metaobjects, cm only (inches computed, verified for all 16 values), `<nl-size-chart>` toggle |
-| 4.3 Gallery | To do | |
+| 4.2 Size chart | Done | `blocks/nl-size-chart.liquid`, `assets/nl-size-chart.{css,js}`. Data created 2026-10-21 through the Shopify connector: `nl_size_row` + `nl_size_chart` metaobjects, the `nl_modules.size_chart` product metafield, and the Kagemi chart (cm; inches calculated). Pixel-identical to live in IN and CM at 390 and 1440. No sideways scroll down to 320px. Unit remembered (localStorage `nl-size-unit`). Fallback chart settings stay in `templates/product.json`. Library copy is in `nl-modules/nl-size-chart/` |
+| 4.3 Gallery | Next | |
 | 4.4 Password page | To do | |
 | PDP extras | To do | Eyebrow metafield `nl_modules.eyebrow`, drop-state copy, Info accordion |
 | 5. Portability (Dawn) | To do | Dawn's main-product can't host theme blocks; each module ships an `nl-*-section` wrapper. Test it here |
