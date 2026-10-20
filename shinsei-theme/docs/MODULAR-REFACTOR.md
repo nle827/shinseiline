@@ -87,6 +87,34 @@ Plus a root README that works as the portfolio case study: the problem with the 
 5. **Portability test.** Install one module (size chart) into a clean, unmodified Dawn theme to prove it's portable, and document the steps.
 6. **Case study.** Write the root README with before/after (including the cleanup: what was removed and why) and the screenshots from step 0.
 
+## Progress log
+
+_Last updated 2026-10-20, end of session. Paused by the user; resume from "Next" below._
+
+| Step | Status | Notes |
+|---|---|---|
+| 0. Setup | Done | Duplicate #131725852805. Nothing needed pushing to `master`: e8752b2 and b54d571 were already on origin. `nl-modules` is a **local-only** git repo at `D:\SHINSEI LINE\nl-modules`; the user will create the GitHub remote later. "Before" screenshots are in `nl-modules/case-study/before/` |
+| 1. Cleanup | Done | 15 small commits; see the README for the layout. Matches live pixel for pixel (`nl-modules/case-study/after-cleanup/`) |
+| 2. Audit | Done | `docs/AUDIT.md`. Scope: four modules plus the rest of the PDP (eyebrow, drop-state copy, Info accordion). Notify me modal deleted |
+| 3. Tokens | Done | `snippets/nl-tokens.liquid` plus `nl_*` settings (Colors, Typography, Layout and spacing, body line height). Fonts moved from Google to Shopify's font library. Theme Check: 0 offenses |
+| 4.1 Specs module | Built, verified | `blocks/nl-spec-list.liquid`, `blocks/_nl-spec-row.liquid`, `assets/nl-spec-list.{css,js}`. Pixel-identical to live; interaction test passed. Copied to `nl-modules/nl-spec-list/` with README, metafields.md and a Dawn wrapper section. **Waiting on the user** to create the `nl_spec` metaobject and `nl.specs` metafield in the admin (steps in `nl-modules/nl-spec-list/metafields.md`). Until then `templates/product.json` carries fallback rows |
+| 4.2 Size chart | Next | Planned design in `docs/AUDIT.md`: `nl_size_chart` + `nl_size_row` metaobjects, cm only (inches computed, verified for all 16 values), `<nl-size-chart>` toggle |
+| 4.3 Gallery | To do | |
+| 4.4 Password page | To do | |
+| PDP extras | To do | Eyebrow metafield `nl.eyebrow`, drop-state copy, Info accordion |
+| 5. Portability (Dawn) | To do | Dawn's main-product can't host theme blocks; each module ships an `nl-*-section` wrapper. Test it here |
+| 6. Case study | To do | |
+
+### Working notes for the next session
+
+- **Pushing to the duplicate:** first confirm it's `[unpublished]` in `shopify theme list`, then run `shopify theme push --theme 131725852805 --nodelete --ignore config/settings_data.json` from `shinsei-theme/`. Ignoring `settings_data.json` protects the duplicate's drop passcode hash. The user accepted duplicate pushes for verification.
+- **Don't** use `shopify theme dev --theme <dup>`: it uploads local `settings_data.json`.
+- **Visual checks:**
+  1. Run `SF_PW=<storefront password> node scripts/screenshots.js <out> [theme-id]` against live #131621257349 and the duplicate, then pixel-diff the two sets. Ask the user for the password; it isn't stored in the repo.
+  2. Expect two kinds of noise: the clocks and pulse animations, and the home line selector, which auto-advances every 5s, so a desktop home page differing by about 16% means a different stop. The desktop nav also shows ~20px of font anti-aliasing.
+  3. Run `npm install` inside `scripts/` before the first use.
+- The root `CLAUDE.md` is gitignored. Its pointer to this file exists only locally.
+
 ## Definition of done
 - The repo is organized with documented conventions, and no file was removed without my approval.
 - Every listed feature is editable in the theme editor on the duplicate, with no content hardcoded in Liquid.
