@@ -102,8 +102,8 @@ _Last updated 2026-10-21._
 | 4.3 Gallery | Done | `blocks/nl-gallery.liquid`, `assets/nl-gallery.{css,js}`. Renders product.media; stack on desktop, swipe + "01 / 05" counter on mobile. Wrapped in `.pdp-gallery-col` (min-width: 0) for the grid. Live-region announcement, arrow keys, carousel semantics only while swiping. Pixel-identical to live at 390 and 1440, including after a swipe. No store data needed. Library copy is in `nl-modules/nl-gallery/` |
 | 4.4 Password page | Done | `sections/nl-password.liquid` (renamed from `password.liquid`), `assets/nl-password.{css,js}`. Logo, tag, copy, signup, pulse, success message, customer tag, staff-login copy and page colours are section settings. Logo points at the identical `SHINSEI_LINE_LOGO_PNG-01.png` in Files. Pixel-identical to live at 1440x900 and 844x390; 390x844 differs only by CDN resampling of the logo. Library copy is in `nl-modules/nl-password/` |
 | PDP extras | Done | Eyebrow reads `nl_modules.eyebrow` (definition + Kagemi value created 2026-10-21), falling back to a section setting. All remaining PDP copy is section settings grouped by state; add-to-cart JS labels come from data attributes. The Info accordion is a new `nl-accordion` block (also in `nl-modules/nl-accordion/`). The theme's own accordion CSS/JS was removed as unused. Pixel-identical to live, including Info open and the Request access modal |
-| 5. Portability (Dawn) | Next | Dawn's main-product can't host theme blocks; each module ships an `nl-*-section` wrapper. Test it here |
-| 6. Case study | To do | |
+| 5. Portability (Dawn) | Done | Stock Dawn 16.0.0 uploaded unmodified as unpublished theme **#131735126149** "Dawn – nl-modules test" (user-approved 2026-10-21). nl-size-chart installed by its README in about 2 minutes and verified at 320/390/1440 (`nl-modules/case-study/PORTABILITY.md`). Found and fixed a rem bug (Dawn's 62.5% root): module text now uses `--nl-rem` / `--nl-font-size-base`. Shinsei Line re-verified pixel-identical. The test theme can be deleted any time |
+| 6. Case study | Next | |
 
 ### Working notes for the next session
 
@@ -115,6 +115,7 @@ _Last updated 2026-10-21._
   3. Run `npm install` inside `scripts/` before the first use.
 - **Metafield namespace is `nl_modules`**, not `nl`: Shopify rejects namespaces shorter than 3 characters. Metaobject types are `nl_*`.
 - **Shopify wraps every theme block** in `<div class="shopify-block">`, even when the block renders nothing. Give that wrapper `display: contents` inside flex/grid containers, and don't rely on `dl > dt` style parent/child HTML rules for block children.
+- **2026-10-21: `master` gained two password-page commits** (68c3902 "early access headline (Nov 15)", bec6db6 "sub-line in EB Garamond"), made outside this refactor while the main folder was switched to `master`. They need merging into `modular-refactor` and porting into `nl-password` (new `sub_line` setting, EB Garamond sub-line). Until then the duplicate's password page is behind live. Refactor work continued in a git worktree so `master` wasn't disturbed.
 - The root `CLAUDE.md` is gitignored. Its pointer to this file exists only locally.
 
 ## Definition of done
