@@ -28,26 +28,26 @@
 }
 
 .nl-spec-list__label {
-  font-family: var(--nl-font-sans);
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
   font-size: 9px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--nl-color-text-ghost);
+  color: var(--nl-color-text-ghost, #aaaaaa);
 }
 
 .nl-spec-list__body {
   margin: 0;
-  font-family: var(--nl-font-serif);
+  font-family: var(--nl-font-serif, "EB Garamond", Georgia, serif);
   font-size: 0.85rem;
   line-height: 1.9;
-  color: var(--nl-color-ink);
+  color: var(--nl-color-ink, #111111);
   overflow-wrap: anywhere;
 }
 
 /* Optional heading in list mode */
 .nl-spec-list__title {
-  margin: 0 0 var(--nl-space-sm);
-  font-family: var(--nl-font-sans);
+  margin: 0 0 var(--nl-space-sm, 16px);
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
   font-size: 0.65rem;
   font-weight: normal;
   letter-spacing: 0.14em;
@@ -56,7 +56,7 @@
 
 /* Accordion mode */
 .nl-spec-list--accordion {
-  border-bottom: 1px solid var(--nl-color-border);
+  border-bottom: 1px solid var(--nl-color-border, #e2e2e2);
 }
 
 .nl-spec-list__heading {
@@ -80,7 +80,7 @@
   background: none;
   color: inherit;
   font: inherit;
-  font-family: var(--nl-font-sans);
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
   font-size: 0.65rem;
   line-height: var(--nl-line-height, 1.65);
   letter-spacing: 0.14em;
@@ -91,17 +91,17 @@
 }
 
 .nl-spec-list__toggle:hover {
-  color: var(--nl-color-text-mid);
+  color: var(--nl-color-text-mid, #555555);
 }
 
 .nl-spec-list__toggle:focus-visible {
-  outline: 1px solid var(--nl-color-ink);
+  outline: 1px solid var(--nl-color-ink, #111111);
   outline-offset: 2px;
 }
 
 .nl-spec-list__icon {
   font-size: 1rem;
-  transition: transform 0.3s var(--nl-ease);
+  transition: transform 0.3s var(--nl-ease, cubic-bezier(0.25, 0.1, 0.25, 1));
 }
 
 .nl-spec-list__toggle[aria-expanded='true'] .nl-spec-list__icon {
@@ -113,7 +113,7 @@
   padding-bottom: 8px;
   font-size: 0.85rem;
   line-height: 1.9;
-  color: var(--nl-color-ink);
+  color: var(--nl-color-ink, #111111);
 }
 
 .nl-spec-list__panel[hidden] {
