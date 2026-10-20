@@ -96,6 +96,19 @@
           },
           "block_order": ["spec-design", "spec-material", "spec-construction", "spec-fit"]
         },
+        "gallery": {
+          "type": "nl-gallery",
+          "static": true,
+          "settings": {
+            "layout": "responsive",
+            "height_offset": 56,
+            "sizes": "(max-width: 768px) 100vw, 50vw",
+            "show_counter": true,
+            "counter_format": "padded",
+            "counter_visibility": "mobile",
+            "label": ""
+          }
+        },
         "size-chart": {
           "type": "nl-size-chart",
           "static": true,

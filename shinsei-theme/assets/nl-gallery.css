@@ -1,0 +1,132 @@
+/* nl-gallery: product media as a stack, a swipe row, or stack-on-desktop /
+   swipe-on-mobile, with an optional position counter. Swiping is pure CSS
+   (scroll snap); nl-gallery.js only adds the counter, arrow keys and the
+   screen-reader announcement. Uses --nl-* tokens, each with a fallback. */
+
+.nl-gallery {
+  display: block;
+  min-width: 0;
+}
+
+.nl-gallery__track {
+  position: relative;
+}
+
+.nl-gallery__track:focus-visible {
+  outline: 1px solid var(--nl-color-ink, #111111);
+  outline-offset: -1px;
+}
+
+.nl-gallery__slide {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.nl-gallery__media {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100vh - var(--nl-gallery-offset, 0px));
+}
+
+.nl-gallery__embed {
+  width: 100%;
+}
+
+.nl-gallery__embed iframe,
+.nl-gallery__embed video,
+.nl-gallery__embed model-viewer {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border: 0;
+}
+
+.nl-gallery__slide--placeholder {
+  aspect-ratio: 2 / 3;
+  background: var(--nl-color-bg-alt, #f5f5f5);
+}
+
+/* Counter */
+.nl-gallery__count {
+  margin: 0;
+  padding: 12px 16px 0;
+  text-align: center;
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--nl-color-text-secondary, #6a6a6a);
+}
+
+/* Screen-reader-only live region */
+.nl-gallery__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Swipe row: always for --swipe, on mobile for --responsive */
+.nl-gallery--swipe .nl-gallery__track {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nl-gallery--swipe .nl-gallery__track::-webkit-scrollbar { display: none; }
+.nl-gallery--swipe .nl-gallery__slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.nl-gallery--swipe .nl-gallery__media {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+
+@media (max-width: 768px) {
+  .nl-gallery--responsive .nl-gallery__track {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nl-gallery--responsive .nl-gallery__track::-webkit-scrollbar { display: none; }
+  .nl-gallery--responsive .nl-gallery__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  .nl-gallery--responsive .nl-gallery__media {
+    width: 100%;
+    height: auto;
+    max-height: none;
+  }
+}
+
+/* Counter only where the gallery swipes */
+@media (min-width: 769px) {
+  .nl-gallery--counter-mobile .nl-gallery__count { display: none; }
+}
+.nl-gallery--stack .nl-gallery__count { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nl-gallery__track { scroll-behavior: auto; }
+}

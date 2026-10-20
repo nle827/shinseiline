@@ -1,0 +1,192 @@
+{% doc %}
+  Product media gallery: a vertical stack, a swipe row with scroll snap, or
+  both (stack on desktop, swipe on mobile), with an optional "01 / 05"
+  position counter.
+
+  Content is the product's own media (images, videos, 3D models), so no
+  metafield is needed. Swiping works with CSS alone; assets/nl-gallery.js
+  (custom element <nl-gallery>) adds the counter, arrow-key navigation and
+  a screen-reader announcement of the current slide.
+
+  Styles: assets/nl-gallery.css. Uses only the --nl-* design tokens.
+
+  @example
+  {% content_for 'block', type: 'nl-gallery', id: 'gallery' %}
+{% enddoc %}
+
+{%- liquid
+  assign product_ref = closest.product
+  assign media_count = product_ref.media.size
+  assign layout = block.settings.layout
+
+  assign classes = 'nl-gallery nl-gallery--' | append: layout
+  if block.settings.counter_visibility != 'all'
+    assign classes = classes | append: ' nl-gallery--counter-' | append: block.settings.counter_visibility
+  endif
+
+  assign total = media_count | append: ''
+  if block.settings.counter_format == 'padded'
+    assign total = media_count | prepend: '0' | slice: -2, 2
+  endif
+-%}
+
+{{ 'nl-gallery.css' | asset_url | stylesheet_tag }}
+{%- if media_count > 1 -%}
+  <script src="{{ 'nl-gallery.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+<nl-gallery
+  class="{{ classes }}"
+  style="--nl-gallery-offset: {{ block.settings.height_offset }}px;"
+  data-counter-format="{{ block.settings.counter_format }}"
+  {{ block.shopify_attributes }}
+>
+  <div
+    class="nl-gallery__track"
+    {% if media_count > 1 %}
+      tabindex="0"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="{{ block.settings.label | default: product_ref.title | escape }}"
+    {% endif %}
+  >
+    {%- for media in product_ref.media -%}
+      <div
+        class="nl-gallery__slide"
+        {% if media_count > 1 %}
+          role="group"
+          aria-roledescription="slide"
+          aria-label="{{ forloop.index }} of {{ media_count }}"
+        {% endif %}
+      >
+        {%- case media.media_type -%}
+          {%- when 'image' -%}
+            <img
+              class="nl-gallery__media"
+              src="{{ media | image_url: width: 900 }}"
+              srcset="
+                {{- media | image_url: width: 400 }} 400w,
+                {{ media | image_url: width: 600 }} 600w,
+                {{ media | image_url: width: 900 }} 900w,
+                {{ media | image_url: width: 1200 }} 1200w,
+                {{ media | image_url: width: 1800 }} 1800w
+              "
+              sizes="{{ block.settings.sizes | default: '100vw' }}"
+              alt="{{ media.alt | default: product_ref.title | escape }}"
+              width="{{ media.width }}"
+              height="{{ media.height }}"
+              draggable="false"
+              {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+            >
+          {%- when 'video' -%}
+            {{ media | video_tag: class: 'nl-gallery__media', controls: true, playsinline: true, preload: 'metadata' }}
+          {%- when 'external_video' -%}
+            <div class="nl-gallery__embed">{{ media | external_video_tag }}</div>
+          {%- else -%}
+            <div class="nl-gallery__embed">{{ media | media_tag }}</div>
+        {%- endcase -%}
+      </div>
+    {%- else -%}
+      <div class="nl-gallery__slide nl-gallery__slide--placeholder"></div>
+    {%- endfor -%}
+  </div>
+
+  {%- if block.settings.show_counter and media_count > 1 -%}
+    <p class="nl-gallery__count" aria-hidden="true">
+      <span data-current>{% if block.settings.counter_format == 'padded' %}01{% else %}1{% endif %}</span>
+      {%- if block.settings.counter_format == 'of' %} of {% else %} / {% endif -%}
+      {{ total }}
+    </p>
+  {%- endif -%}
+  <p class="nl-gallery__status" aria-live="polite" data-status></p>
+</nl-gallery>
+
+{% schema %}
+{
+  "name": "Gallery",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the product's media in the order set on the product."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "responsive", "label": "Stack on desktop, swipe on mobile" },
+        { "value": "swipe", "label": "Swipe on all screens" },
+        { "value": "stack", "label": "Stack on all screens" }
+      ],
+      "default": "responsive"
+    },
+    {
+      "type": "range",
+      "id": "height_offset",
+      "label": "Desktop image height: screen height minus",
+      "info": "Usually your header's height, so each image fits on screen.",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "text",
+      "id": "sizes",
+      "label": "Image sizes attribute",
+      "info": "How wide the gallery is on screen, for responsive images. Example: (max-width: 768px) 100vw, 50vw",
+      "default": "(max-width: 768px) 100vw, 50vw"
+    },
+    {
+      "type": "header",
+      "content": "Counter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_counter",
+      "label": "Show position counter",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "counter_format",
+      "label": "Format",
+      "options": [
+        { "value": "padded", "label": "01 / 05" },
+        { "value": "plain", "label": "1 / 5" },
+        { "value": "of", "label": "1 of 5" }
+      ],
+      "default": "padded",
+      "visible_if": "{{ block.settings.show_counter }}"
+    },
+    {
+      "type": "select",
+      "id": "counter_visibility",
+      "label": "Show counter on",
+      "options": [
+        { "value": "mobile", "label": "Mobile only (where it swipes)" },
+        { "value": "all", "label": "All screens" }
+      ],
+      "default": "mobile",
+      "visible_if": "{{ block.settings.show_counter }}"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Gallery label",
+      "info": "Read by screen readers. Defaults to the product title."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

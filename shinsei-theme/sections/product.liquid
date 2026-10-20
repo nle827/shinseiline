@@ -28,38 +28,10 @@
     </div>
   </div>
 
-  <!-- MIDDLE: image stack -->
-  <div class="pdp-gallery-track">
-    {%- for image in product.images -%}
-      <div class="pdp-stack-img">
-        <img
-          src="{{ image | image_url: width: 900 }}"
-          srcset="
-            {{- image | image_url: width: 400 }} 400w,
-            {{ image | image_url: width: 600 }} 600w,
-            {{ image | image_url: width: 900 }} 900w,
-            {{ image | image_url: width: 1200 }} 1200w,
-            {{ image | image_url: width: 1800 }} 1800w
-          "
-          sizes="(max-width: 768px) 100vw, 50vw"
-          alt="{{ image.alt | default: product.title }}"
-          width="{{ image.width }}"
-          height="{{ image.height }}"
-          draggable="false"
-          {% unless forloop.first %}loading="lazy"{% endunless %}
-        >
-      </div>
-    {%- else -%}
-      <div class="pdp-stack-img pdp-stack-img--placeholder"></div>
-    {%- endfor -%}
+  <!-- MIDDLE: gallery (stack on desktop, swipe row + counter on mobile) -->
+  <div class="pdp-gallery-col">
+    {% content_for 'block', type: 'nl-gallery', id: 'gallery' %}
   </div>
-
-  {%- if product.images.size > 1 -%}
-    <!-- Mobile only: position counter for the swipe row -->
-    <div class="pdp-gallery-count" id="pdp-gallery-count" aria-hidden="true">
-      <span id="pdp-gallery-current">01</span> / {{ product.images.size | prepend: '0' | slice: -2, 2 }}
-    </div>
-  {%- endif -%}
 
   <!-- RIGHT: product info -->
   <div class="pdp-info">
