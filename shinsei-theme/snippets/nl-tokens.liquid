@@ -40,6 +40,9 @@
 
     --nl-font-sans: {{ settings.nl_font_sans }};
     --nl-line-height: {{ settings.nl_line_height | divided_by: 100.0 }};
+    /* Base for module text sizes (--nl-rem). 1rem keeps browser text-size
+       preferences; in themes whose root is 62.5% (e.g. Dawn) use 1.6rem. */
+    --nl-font-size-base: 1rem;
     --nl-font-serif: {{ serif.family }}, {{ serif.fallback_families }};
     --nl-font-serif-weight: {{ serif.weight }};
     --nl-font-nav: {{ nav.family }}, {{ nav.fallback_families }};

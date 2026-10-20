@@ -2,7 +2,10 @@
    Uses --nl-* design tokens (snippets/nl-tokens.liquid), each with a
    fallback so the module also works without them. Mobile first. */
 
+/* Text sizes scale from --nl-rem, not rem: some themes (e.g. Dawn) set the
+   root font size to 62.5%, which would shrink rem-based text. */
 .nl-size-chart {
+  --nl-rem: var(--nl-font-size-base, 16px);
   display: block;
 }
 
@@ -41,7 +44,7 @@
   color: inherit;
   font: inherit;
   font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  font-size: 0.65rem;
+  font-size: calc(0.65 * var(--nl-rem));
   line-height: var(--nl-line-height, 1.65);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -61,7 +64,7 @@
 }
 
 .nl-size-chart__icon {
-  font-size: 1rem;
+  font-size: calc(1 * var(--nl-rem));
   transition: transform 0.3s var(--nl-ease, cubic-bezier(0.25, 0.1, 0.25, 1));
 }
 
@@ -72,7 +75,7 @@
 .nl-size-chart--accordion .nl-size-chart__panel {
   padding-top: 4px;
   padding-bottom: 8px;
-  font-size: 0.85rem;
+  font-size: calc(0.85 * var(--nl-rem));
   line-height: 1.9;
   color: var(--nl-color-ink, #111111);
 }
@@ -85,7 +88,7 @@
 .nl-size-chart__title {
   margin: 0 0 var(--nl-space-sm, 16px);
   font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  font-size: 0.65rem;
+  font-size: calc(0.65 * var(--nl-rem));
   font-weight: normal;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -109,7 +112,7 @@
   background: none;
   font: inherit;
   font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  font-size: 0.62rem;
+  font-size: calc(0.62 * var(--nl-rem));
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--nl-color-text-light, #999999);
@@ -128,7 +131,7 @@
 
 .nl-size-chart__sep {
   font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  font-size: 0.62rem;
+  font-size: calc(0.62 * var(--nl-rem));
   color: var(--nl-color-border, #e2e2e2);
 }
 
@@ -156,7 +159,7 @@
 .nl-size-chart__table thead th,
 .nl-size-chart__table thead td {
   font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
-  font-size: 0.65rem;
+  font-size: calc(0.65 * var(--nl-rem));
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-align: center;
@@ -168,7 +171,7 @@
 .nl-size-chart__table tbody td,
 .nl-size-chart__table tbody th {
   font-family: var(--nl-font-serif, "EB Garamond", Georgia, serif);
-  font-size: 0.85rem;
+  font-size: calc(0.85 * var(--nl-rem));
   font-weight: normal;
   text-align: center;
   padding: 7px 6px;
@@ -200,7 +203,7 @@
   }
   .nl-size-chart__table tbody td,
   .nl-size-chart__table tbody th {
-    font-size: 0.75rem;
+    font-size: calc(0.75 * var(--nl-rem));
   }
 }
 
