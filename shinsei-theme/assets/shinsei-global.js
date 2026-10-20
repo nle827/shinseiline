@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Shopify appends `#<form id>` to the redirect URL for named forms (to
   // scroll back to them). We don't want that fragment lingering in the
   // address bar, so strip it immediately for our known form IDs.
-  if (window.location.hash === '#RequestAccessForm' || window.location.hash === '#PasswordSignupForm') {
+  if (window.location.hash === '#RequestAccessForm') {
     window.history.replaceState({}, '', window.location.pathname + window.location.search);
   }
 
