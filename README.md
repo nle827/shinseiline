@@ -6,7 +6,7 @@ The storefront for Shinsei Line, an apparel brand I run. I designed the site and
 
 I worked in two stages so the design was locked before any Shopify code was written.
 
-1. **Static preview** (`shinsei-preview/`). Plain HTML, CSS, and JavaScript versions of every page (home, shop, product, about, contact, policy). This is where the design, layout, and interactions were worked out.
+1. **Static preview** (now in `archive/static-preview/`). Plain HTML, CSS, and JavaScript versions of every page (home, shop, product, about, contact, policy). This is where the design, layout, and interactions were worked out.
 2. **Shopify theme** (`shinsei-theme/`). The approved preview converted into a Liquid theme, built on Shopify's Skeleton theme as a starting point. Custom sections, templates, and assets carry over the preview's design.
 
 ## What's custom
@@ -15,7 +15,7 @@ I worked in two stages so the design was locked before any Shopify code was writ
 - **Password page with a notify-me signup**, including a confirmation state after someone signs up.
 - **Product page** with variant selection, a size chart with a unit toggle, and accordions.
 - **AJAX cart drawer** and shared interactions in `shinsei-global.js`.
-- **Home page motion.** A draggable hero carousel and animated transit-map graphics in `shinsei-home.js`.
+- **Home page motion.** A transit-style line selector that switches the hero, live city clocks and swipeable product cards in `shinsei-home.js`.
 - **Email template** (`emails/`). A table-based HTML email with inline CSS so it renders in mail clients.
 
 CSS and JS are split by purpose (`shinsei-global`, `shinsei-home`, `shinsei-pdp`, `shinsei-shop`). The product and shop files only load on those pages.
@@ -23,10 +23,16 @@ CSS and JS are split by purpose (`shinsei-global`, `shinsei-home`, `shinsei-pdp`
 ## Structure
 
 ```
-shinsei-preview/   Static HTML/CSS/JS design preview
-shinsei-theme/     Shopify Liquid theme (sections, templates, snippets, assets, config)
+shinsei-theme/     Shopify Liquid theme (see shinsei-theme/README.md)
+  docs/            Refactor brief and reference docs (not uploaded to Shopify)
 emails/            Marketing email template
+scripts/           Maintenance scripts, e.g. read-only theme screenshots
+archive/
+  static-preview/  The original HTML/CSS/JS design preview, kept for reference
+  theme-assets/    Images no longer used by the theme
 ```
+
+Conventions: kebab-case file names with no spaces; `shinsei-` prefix for brand-specific theme files; `nl-` prefix for portable modules. Anything that shouldn't ship to Shopify lives outside `shinsei-theme/`.
 
 ## Running the theme locally
 
@@ -37,4 +43,4 @@ cd shinsei-theme
 shopify theme dev --store <your-store>.myshopify.com
 ```
 
-The preview needs no build step. Open `shinsei-preview/index.html` in a browser.
+The archived preview needs no build step. Open `archive/static-preview/index.html` in a browser.
