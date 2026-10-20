@@ -44,9 +44,7 @@
   <div
     class="nl-gallery__track"
     {% if media_count > 1 %}
-      tabindex="0"
       role="region"
-      aria-roledescription="carousel"
       aria-label="{{ block.settings.label | default: product_ref.title | escape }}"
     {% endif %}
   >
@@ -55,7 +53,6 @@
         class="nl-gallery__slide"
         {% if media_count > 1 %}
           role="group"
-          aria-roledescription="slide"
           aria-label="{{ forloop.index }} of {{ media_count }}"
         {% endif %}
       >
