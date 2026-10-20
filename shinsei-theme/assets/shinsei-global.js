@@ -20,13 +20,6 @@ function toggleSearch() {
   }
 }
 
-function submitSearch(e) {
-  e.preventDefault();
-  const query = document.getElementById('search-overlay-input').value.trim();
-  if (!query) return;
-  window.location.href = 'shop.html?q=' + encodeURIComponent(query);
-}
-
 // Close overlay on Escape
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
@@ -51,7 +44,6 @@ function toggleMobileNav() {
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 
-// On shop page: read ?q= param and populate search
 document.addEventListener('DOMContentLoaded', function() {
   updateCartBadge();
 
@@ -60,16 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // address bar, so strip it immediately for our known form IDs.
   if (window.location.hash === '#NotifyMeForm' || window.location.hash === '#RequestAccessForm' || window.location.hash === '#PasswordSignupForm') {
     window.history.replaceState({}, '', window.location.pathname + window.location.search);
-  }
-
-  const input = document.getElementById('shop-search-input');
-  if (input) {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get('q');
-    if (q) {
-      input.value = q;
-      if (typeof filterProducts === 'function') filterProducts();
-    }
   }
 
   const params = new URLSearchParams(window.location.search);
@@ -264,7 +246,6 @@ const requestModal = createModalController({
   statusDataId: 'request-status-data'
 });
 
-function openNotifyModal() { notifyModal.open(); }
 function closeNotifyModal() { notifyModal.close(); }
 function openRequestModal() { requestModal.open(); }
 function closeRequestModal() { requestModal.close(); }
