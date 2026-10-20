@@ -253,41 +253,6 @@
 /* Sizing / Shipping & Returns accordions */
 .pdp-accordions { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
 
-.accordion { border-bottom: 1px solid var(--border); }
-
-.accordion-trigger {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.accordion-trigger:hover { color: var(--ink-mid); }
-.accordion-icon { transition: transform 0.3s var(--ease); font-size: 1rem; }
-.accordion-trigger.open .accordion-icon { transform: rotate(45deg); }
-
-.accordion-body {
-  display: none;
-  padding-top: 4px;
-  padding-bottom: 8px;
-  font-size: 0.85rem;
-  color: var(--ink);
-  line-height: 1.9;
-}
-.accordion-body.open { display: block; }
-.accordion-body p {
-  margin: 0 0 var(--space-sm);
-}
-.accordion-body p:last-child {
-  margin-bottom: 0;
-}
-
 /* Notify Me / Request Access modal */
 .notify-modal-overlay {
   position: fixed;

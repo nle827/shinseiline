@@ -9,6 +9,8 @@
     endif
   endunless
 
+  assign eyebrow = product.metafields.nl_modules.eyebrow.value | default: section.settings.eyebrow
+
   assign drop_coming_soon = false
   if product.tags contains 'coming-soon'
     assign drop_coming_soon = true
@@ -38,7 +40,7 @@
     <div class="pdp-info-inner">
 
       <div class="pdp-info-top">
-        <span class="pdp-label">Shinsei Line — No. 001</span>
+        {%- if eyebrow != blank -%}<span class="pdp-label">{{ eyebrow | escape }}</span>{%- endif -%}
         <h1 class="pdp-title">{{ product.title }}</h1>
         <p class="pdp-price">{{ product.price | money }}</p>
       </div>
@@ -47,7 +49,7 @@
            of the wrong UI for early/closed states; see drop-phase-data) -->
       <div class="pdp-variants" id="pdp-variants" style="display:none;">
         <div class="pdp-variant-group">
-          <span class="pdp-variant-label">Size</span>
+          <span class="pdp-variant-label">{{ section.settings.size_label | escape }}</span>
           <div class="pdp-variant-options">
             {%- for variant in product.variants -%}
               <button
@@ -65,7 +67,7 @@
         </div>
 
         <div class="pdp-variant-group">
-          <span class="pdp-variant-label">Quantity</span>
+          <span class="pdp-variant-label">{{ section.settings.quantity_label | escape }}</span>
           <div class="pdp-quantity-stepper">
             <button type="button" class="pdp-quantity-btn" onclick="changeQuantity(-1)" aria-label="Decrease quantity">−</button>
             <input type="number" class="pdp-quantity-input" id="pdp-quantity-input" value="1" min="1" max="99" inputmode="numeric" onchange="clampQuantityInput()">
@@ -77,26 +79,26 @@
       <!-- Add to cart (normal available product) — hidden until JS resolves
            the drop phase (public, or early + already unlocked) -->
       <div class="pdp-actions" id="pdp-actions-available" style="display:none;">
-        <button class="pdp-add-to-cart" onclick="addToCart()">ADD TO CART</button>
+        <button class="pdp-add-to-cart" onclick="addToCart()" data-added-label="{{ section.settings.added_label | escape }}" data-limit-label="{{ section.settings.limit_label | escape }}">{{ section.settings.add_to_cart_label | escape }}</button>
       </div>
 
       <!-- Passcode gate (early access, not yet unlocked on this device) -->
       <div class="pdp-actions pdp-request-access" id="pdp-actions-passcode" style="display:none;">
-        <p class="pdp-unavailable-label">First access.</p>
+        <p class="pdp-unavailable-label">{{ section.settings.passcode_heading | escape }}</p>
         <form class="pdp-access-form" id="PasscodeForm" onsubmit="return submitDropPasscode(event)">
           <div class="pdp-access-fields">
-            <input type="password" id="pdp-passcode-input" placeholder="Passcode" autocomplete="off" required>
+            <input type="password" id="pdp-passcode-input" placeholder="{{ section.settings.passcode_placeholder | escape }}" aria-label="{{ section.settings.passcode_placeholder | escape }}" autocomplete="off" required>
           </div>
-          <button type="submit" class="pdp-add-to-cart">ENTER</button>
+          <button type="submit" class="pdp-add-to-cart">{{ section.settings.passcode_button | escape }}</button>
         </form>
-        <p class="pdp-access-note" id="pdp-passcode-error" style="display:none;">Not recognized.</p>
-        <p class="pdp-access-note pdp-access-secondary">Not on the list? <a href="javascript:void(0)" onclick="openRequestModal()">Request access</a></p>
+        <p class="pdp-access-note" id="pdp-passcode-error" style="display:none;">{{ section.settings.passcode_error | escape }}</p>
+        <p class="pdp-access-note pdp-access-secondary">{{ section.settings.request_prompt | escape }} <a href="javascript:void(0)" onclick="openRequestModal()">{{ section.settings.request_link | escape }}</a></p>
       </div>
 
       <!-- Request Access (unavailable) -->
       <div class="pdp-actions pdp-request-access" id="pdp-actions-unavailable" {% unless show_request_access %}style="display:none;"{% endunless %}>
-        <p class="pdp-unavailable-label">Not yet available</p>
-        <button type="button" class="pdp-add-to-cart" onclick="openRequestModal()">REQUEST ACCESS</button>
+        <p class="pdp-unavailable-label">{{ section.settings.unavailable_heading | escape }}</p>
+        <button type="button" class="pdp-add-to-cart" onclick="openRequestModal()">{{ section.settings.unavailable_button | escape }}</button>
       </div>
 
       {%- liquid
@@ -105,13 +107,13 @@
       -%}
       {%- capture request_modal_form -%}
         {%- form 'customer', id: 'RequestAccessForm', class: 'notify-modal-form' -%}
-          <input type="hidden" name="contact[tags]" value="request-access">
+          <input type="hidden" name="contact[tags]" value="{{ section.settings.request_customer_tag | escape }}">
           <input type="hidden" name="return_to" value="{{ request.path }}?requested=1">
           {%- if form.posted_successfully? -%}
             {%- assign request_success = true -%}
           {%- else -%}
-            <input type="email" name="contact[email]" id="RequestAccessForm-email" placeholder="Email address" autocomplete="email" required>
-            <button type="submit">Request Access</button>
+            <input type="email" name="contact[email]" id="RequestAccessForm-email" placeholder="{{ section.settings.request_email_placeholder | escape }}" aria-label="{{ section.settings.request_email_placeholder | escape }}" autocomplete="email" required>
+            <button type="submit">{{ section.settings.request_submit | escape }}</button>
             {%- if form.errors -%}
               {%- assign request_error = true -%}
               <p class="notify-modal-error">{{ form.errors.messages.email }}</p>
@@ -126,7 +128,7 @@
         <div class="notify-modal" id="request-modal">
           <button type="button" class="notify-modal-close" onclick="closeRequestModal()" aria-label="Close">×</button>
           <div class="notify-modal-content" id="request-modal-content"{% if request_success %} style="display:none;"{% endif %}>
-            <p class="notify-modal-label">Request access</p>
+            <p class="notify-modal-label">{{ section.settings.request_heading | escape }}</p>
             {{ request_modal_form }}
             <div class="notify-loading" id="request-loading">
               <div class="notify-loading-track">
@@ -134,12 +136,12 @@
                 <div class="notify-loading-fill"></div>
                 <span class="notify-loading-dot notify-loading-dot--end"></span>
               </div>
-              <span class="notify-loading-label">Sending</span>
+              <span class="notify-loading-label">{{ section.settings.request_sending | escape }}</span>
             </div>
           </div>
           <div class="notify-modal-success" id="request-modal-success"{% unless request_success %} style="display:none;"{% endunless %}>
-            <p class="notify-modal-success-msg">Request received.</p>
-            <p class="notify-modal-success-note">You'll be among the first to know.</p>
+            <p class="notify-modal-success-msg">{{ section.settings.request_success | escape }}</p>
+            <p class="notify-modal-success-note">{{ section.settings.request_success_note | escape }}</p>
           </div>
         </div>
       </div>
@@ -149,8 +151,8 @@
            revealed by JS once it resolves the drop phase. No restock
            language — LINE 01 does not restock. -->
       <div class="pdp-actions pdp-request-access" id="pdp-actions-departed" {% unless show_soldout %}style="display:none;"{% endunless %}>
-        <p class="pdp-unavailable-label">Departed.</p>
-        <p class="pdp-access-note">LINE 01 has closed.</p>
+        <p class="pdp-unavailable-label">{{ section.settings.departed_heading | escape }}</p>
+        <p class="pdp-access-note">{{ section.settings.departed_note | escape }}</p>
       </div>
 
       <!-- Accordions -->
@@ -158,25 +160,15 @@
         <!-- Mobile only: the left specifications column moves in here -->
         {% content_for 'block', type: 'nl-spec-list', id: 'specs-accordion' %}
         {% content_for 'block', type: 'nl-size-chart', id: 'size-chart' %}
-        <div class="accordion">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span>Info</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-body">
-            <p>LINE 01 is made to order. Production begins when the preorder window closes; expect delivery about 6–7 weeks later.</p>
-            <p>Returns accepted within 14 days of delivery, unworn and unaltered. Exchanges are our preference.</p>
-            <p>Currently shipping to the United States, Canada, United Kingdom, France, Germany, Australia, Japan, and South Korea. More markets coming soon.</p>
-            <p>International orders are responsible for duties, customs fees, and local taxes collected at delivery.</p>
-            <p><a href="/pages/policy">Full shipping and returns terms</a></p>
-          </div>
-        </div>
+        {% content_for 'block', type: 'nl-accordion', id: 'info' %}
       </div>
 
       {%- comment -%} Extra blocks added in the theme editor {%- endcomment -%}
       {% content_for 'blocks' %}
 
-      <a href="/pages/policy" class="pdp-policy-link">Policies →</a>
+      {%- if section.settings.policy_link_label != blank -%}
+        <a href="{{ section.settings.policy_link_url | default: '/pages/policy' }}" class="pdp-policy-link">{{ section.settings.policy_link_label | escape }}</a>
+      {%- endif -%}
 
     </div>
   </div>
@@ -187,7 +179,52 @@
 {
   "name": "Product",
   "blocks": [{ "type": "@theme" }, { "type": "@app" }],
-  "settings": [],
+  "settings": [
+    { "type": "header", "content": "Product details" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shinsei Line — No. 001",
+      "info": "Shown above the title. The product's Eyebrow metafield (nl_modules.eyebrow) overrides it. Leave both empty to hide."
+    },
+    { "type": "text", "id": "size_label", "label": "Size label", "default": "Size" },
+    { "type": "text", "id": "quantity_label", "label": "Quantity label", "default": "Quantity" },
+
+    { "type": "header", "content": "Add to cart" },
+    { "type": "text", "id": "add_to_cart_label", "label": "Button", "default": "ADD TO CART" },
+    { "type": "text", "id": "added_label", "label": "After adding", "default": "Added" },
+    { "type": "text", "id": "limit_label", "label": "Quantity limit reached", "default": "MAX QTY REACHED", "info": "Shown if Shopify doesn't return its own message." },
+
+    { "type": "header", "content": "Early access (passcode)" },
+    { "type": "text", "id": "passcode_heading", "label": "Heading", "default": "First access." },
+    { "type": "text", "id": "passcode_placeholder", "label": "Passcode placeholder", "default": "Passcode" },
+    { "type": "text", "id": "passcode_button", "label": "Button", "default": "ENTER" },
+    { "type": "text", "id": "passcode_error", "label": "Wrong passcode", "default": "Not recognized." },
+    { "type": "text", "id": "request_prompt", "label": "Request prompt", "default": "Not on the list?" },
+    { "type": "text", "id": "request_link", "label": "Request link", "default": "Request access" },
+
+    { "type": "header", "content": "Not yet available" },
+    { "type": "text", "id": "unavailable_heading", "label": "Heading", "default": "Not yet available" },
+    { "type": "text", "id": "unavailable_button", "label": "Button", "default": "REQUEST ACCESS" },
+
+    { "type": "header", "content": "Request access form" },
+    { "type": "text", "id": "request_heading", "label": "Heading", "default": "Request access" },
+    { "type": "text", "id": "request_email_placeholder", "label": "Email placeholder", "default": "Email address" },
+    { "type": "text", "id": "request_submit", "label": "Submit button", "default": "Request Access" },
+    { "type": "text", "id": "request_sending", "label": "Sending", "default": "Sending" },
+    { "type": "text", "id": "request_success", "label": "Success", "default": "Request received." },
+    { "type": "text", "id": "request_success_note", "label": "Success note", "default": "You'll be among the first to know." },
+    { "type": "text", "id": "request_customer_tag", "label": "Customer tag", "default": "request-access", "info": "Added to everyone who requests access." },
+
+    { "type": "header", "content": "Closed" },
+    { "type": "text", "id": "departed_heading", "label": "Heading", "default": "Departed." },
+    { "type": "text", "id": "departed_note", "label": "Note", "default": "LINE 01 has closed." },
+
+    { "type": "header", "content": "Footer link" },
+    { "type": "text", "id": "policy_link_label", "label": "Label", "default": "Policies →", "info": "Leave empty to hide." },
+    { "type": "url", "id": "policy_link_url", "label": "Link" }
+  ],
   "disabled_on": {
     "groups": ["header", "footer"]
   }

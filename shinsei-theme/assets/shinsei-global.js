@@ -1,7 +1,7 @@
 /* ============================================================
    SHINSEI LINE — Global JS
    Site-wide chrome: search overlay, mobile nav, header scroll
-   state, accordions, the Request Access modal, and the
+   state, the Request Access modal, and the
    Shopify AJAX cart drawer. Loaded on every page.
    ============================================================ */
 
@@ -391,36 +391,6 @@ function toggleCart() {
   document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
   if (drawer.classList.contains('open')) renderCart();
 }
-
-// --- Accordions ---
-function toggleAccordion(trigger) {
-  const isOpen = trigger.classList.contains('open');
-  const body = trigger.nextElementSibling;
-
-  // Close all
-  document.querySelectorAll('.accordion-trigger.open').forEach(t => {
-    t.classList.remove('open');
-    t.nextElementSibling.classList.remove('open');
-  });
-
-  // Open clicked if it wasn't already open
-  if (!isOpen) {
-    trigger.classList.add('open');
-    body.classList.add('open');
-    // Let nl- module accordions (e.g. nl-spec-list) close themselves
-    document.dispatchEvent(new CustomEvent('nl:accordion-open', { detail: { source: trigger } }));
-  }
-}
-
-// When an nl- module accordion opens, close the theme's own accordions
-document.addEventListener('nl:accordion-open', function (e) {
-  const source = e.detail && e.detail.source;
-  if (source && source.classList && source.classList.contains('accordion-trigger')) return;
-  document.querySelectorAll('.accordion-trigger.open').forEach(t => {
-    t.classList.remove('open');
-    t.nextElementSibling.classList.remove('open');
-  });
-});
 
 // --- Header scroll transparency ---
 (function () {

@@ -1,0 +1,66 @@
+{% doc %}
+  A collapsible row: heading plus rich text (shipping notes, care, FAQ).
+
+  Opening one closes the others through the shared `nl:accordion-open`
+  event (nl-spec-list, nl-size-chart and any theme accordions wired in).
+
+  Styles: assets/nl-accordion.css. Behaviour: assets/nl-accordion.js
+  (custom element <nl-accordion>). Uses only the --nl-* design tokens.
+
+  @example
+  {% content_for 'block', type: 'nl-accordion', id: 'info' %}
+{% enddoc %}
+
+{%- assign panel_id = 'NlAccordion-' | append: block.id -%}
+
+{{ 'nl-accordion.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'nl-accordion.js' | asset_url }}" defer></script>
+
+<nl-accordion class="nl-accordion"{% if block.settings.open %} data-open{% endif %} {{ block.shopify_attributes }}>
+  <h3 class="nl-accordion__heading">
+    <button
+      type="button"
+      class="nl-accordion__toggle"
+      aria-expanded="{% if block.settings.open %}true{% else %}false{% endif %}"
+      aria-controls="{{ panel_id }}"
+    >
+      <span>{{ block.settings.heading | escape }}</span>
+      <span class="nl-accordion__icon" aria-hidden="true">+</span>
+    </button>
+  </h3>
+  <div class="nl-accordion__panel" id="{{ panel_id }}"{% unless block.settings.open %} hidden{% endunless %}>
+    {{ block.settings.content }}
+  </div>
+</nl-accordion>
+
+{% schema %}
+{
+  "name": "Collapsible row",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shipping"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Describe shipping, returns or care.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "open",
+      "label": "Open by default",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collapsible row",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

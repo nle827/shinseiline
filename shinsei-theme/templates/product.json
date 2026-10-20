@@ -109,6 +109,15 @@
             "label": ""
           }
         },
+        "info": {
+          "type": "nl-accordion",
+          "static": true,
+          "settings": {
+            "heading": "Info",
+            "content": "<p>LINE 01 is made to order. Production begins when the preorder window closes; expect delivery about 6–7 weeks later.</p><p>Returns accepted within 14 days of delivery, unworn and unaltered. Exchanges are our preference.</p><p>Currently shipping to the United States, Canada, United Kingdom, France, Germany, Australia, Japan, and South Korea. More markets coming soon.</p><p>International orders are responsible for duties, customs fees, and local taxes collected at delivery.</p><p><a href=\"/pages/policy\" title=\"Full shipping and returns terms\">Full shipping and returns terms</a></p>",
+            "open": false
+          }
+        },
         "size-chart": {
           "type": "nl-size-chart",
           "static": true,

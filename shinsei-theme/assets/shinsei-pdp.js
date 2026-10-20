@@ -79,7 +79,7 @@ async function addToCart() {
     const err = await res.json();
     if (btn) {
       const orig = btn.textContent;
-      btn.textContent = err.description || 'MAX QTY REACHED';
+      btn.textContent = err.description || btn.dataset.limitLabel || 'MAX QTY REACHED';
       btn.disabled = true;
       setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1800);
     }
@@ -88,7 +88,7 @@ async function addToCart() {
 
   if (btn) {
     const orig = btn.textContent;
-    btn.textContent = 'Added';
+    btn.textContent = btn.dataset.addedLabel || 'Added';
     btn.disabled = true;
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 600);
   }

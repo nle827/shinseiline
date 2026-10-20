@@ -1,0 +1,95 @@
+/* nl-accordion: heading + rich text collapsible row.
+   Uses --nl-* design tokens, each with a fallback. */
+
+.nl-accordion {
+  display: block;
+  border-bottom: 1px solid var(--nl-color-border, #e2e2e2);
+}
+
+.nl-accordion__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.nl-accordion__toggle {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 0.65rem;
+  line-height: var(--nl-line-height, 1.65);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nl-accordion__toggle:hover {
+  color: var(--nl-color-text-mid, #555555);
+}
+
+.nl-accordion__toggle:focus-visible {
+  outline: 1px solid var(--nl-color-ink, #111111);
+  outline-offset: 2px;
+}
+
+.nl-accordion__icon {
+  font-size: 1rem;
+  transition: transform 0.3s var(--nl-ease, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+.nl-accordion__toggle[aria-expanded='true'] .nl-accordion__icon {
+  transform: rotate(45deg);
+}
+
+.nl-accordion__panel {
+  padding-top: 4px;
+  padding-bottom: 8px;
+  font-family: var(--nl-font-serif, "EB Garamond", Georgia, serif);
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--nl-color-ink, #111111);
+}
+
+.nl-accordion__panel[hidden] {
+  display: none;
+}
+
+.nl-accordion__panel p {
+  margin: 0 0 var(--nl-space-sm, 16px);
+}
+
+.nl-accordion__panel > :last-child {
+  margin-bottom: 0;
+}
+
+.nl-accordion__panel a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nl-accordion__panel a:hover,
+.nl-accordion__panel a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nl-accordion__toggle,
+  .nl-accordion__icon {
+    transition: none;
+  }
+}
