@@ -65,6 +65,8 @@
           "
           sizes="(max-width: 768px) 100vw, 50vw"
           alt="{{ image.alt | default: product.title }}"
+          width="{{ image.width }}"
+          height="{{ image.height }}"
           draggable="false"
           {% unless forloop.first %}loading="lazy"{% endunless %}
         >

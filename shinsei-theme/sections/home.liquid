@@ -17,7 +17,7 @@
 
   <!-- HERO -->
   <section class="hero" style="--hero-img: url('{{ 'kagemi-hero.jpg' | asset_url }}');">
-    <img class="hero-mobile-img" src="{{ 'kagemi-hero.jpg' | asset_url }}" alt="Kagemi" aria-hidden="true" fetchpriority="high">
+    <img class="hero-mobile-img" src="{{ 'kagemi-hero.jpg' | asset_url }}" alt="Kagemi" aria-hidden="true" fetchpriority="high" width="1264" height="842">
     <div class="hero-overlay-text">
       <h1 class="hero-heading">KAGEMI</h1>
       <div class="hero-overlay-rule" aria-hidden="true"></div>
@@ -106,8 +106,8 @@
       <script type="application/json" id="drop-phase-data">{"earlyAccessStart": {{ settings.drop_early_access_start | json }}, "publicOpen": {{ settings.drop_public_open | json }}, "closeAt": {{ settings.drop_close | json }}, "passcodeHash": {{ settings.drop_passcode_hash | json }}, "phaseOverride": {{ settings.drop_phase_override | json }}, "available": {{ kagemi.available | json }}, "comingSoon": {{ kagemi_coming_soon | json }}}</script>
       <div class="line-card line-card--active">
         <a href="/products/kagemi" class="line-card-media card-gallery" data-current="0" style="display:block;" data-product-image="{{ 'kagemi-tile.webp' | asset_url }}">
-          <img src="{{ 'kagemi-tile.webp' | asset_url }}" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false" loading="lazy">
-          <img src="{{ 'kagemi-detail.jpg' | asset_url }}" alt="Kagemi — Detail" class="line-card-img card-gallery-img" draggable="false" loading="lazy">
+          <img src="{{ 'kagemi-tile.webp' | asset_url }}" alt="Kagemi — The Structured Overcoat" class="line-card-img card-gallery-img card-gallery-img--active" draggable="false" loading="lazy" width="800" height="1200">
+          <img src="{{ 'kagemi-detail.jpg' | asset_url }}" alt="Kagemi — Detail" class="line-card-img card-gallery-img" draggable="false" loading="lazy" width="768" height="1376">
           <div class="card-gallery-track" aria-hidden="true">
             <div class="card-gallery-rail">
               <div class="card-gallery-node card-gallery-node--active" data-index="0"></div>
