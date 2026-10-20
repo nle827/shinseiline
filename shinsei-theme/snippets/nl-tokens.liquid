@@ -1,0 +1,58 @@
+{% doc %}
+  Outputs the theme's design tokens as CSS custom properties on :root,
+  read from Theme settings › Colors / Typography / Layout and spacing.
+
+  Every nl- module uses only these --nl-* variables, so another theme
+  restyles a module by changing settings, not CSS. Also loads the serif
+  and navigation fonts from Shopify's CDN.
+
+  @example
+  {% render 'nl-tokens' %}
+{% enddoc %}
+
+{%- liquid
+  assign serif = settings.nl_font_serif
+  assign nav = settings.nl_font_nav
+-%}
+
+{% style %}
+  {{ serif | font_face: font_display: 'swap' }}
+  {{ serif | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ nav | font_face: font_display: 'swap' }}
+
+  :root {
+    --nl-color-bg: {{ settings.nl_color_bg }};
+    --nl-color-bg-alt: {{ settings.nl_color_bg_alt }};
+    --nl-color-white: {{ settings.nl_color_white }};
+    --nl-color-placeholder: {{ settings.nl_color_placeholder }};
+    --nl-color-card: {{ settings.nl_color_card }};
+    --nl-color-text: {{ settings.nl_color_text }};
+    --nl-color-ink: {{ settings.nl_color_ink }};
+    --nl-color-text-mid: {{ settings.nl_color_text_mid }};
+    --nl-color-text-secondary: {{ settings.nl_color_text_secondary }};
+    --nl-color-text-light: {{ settings.nl_color_text_light }};
+    --nl-color-text-ghost: {{ settings.nl_color_text_ghost }};
+    --nl-color-on-dark: {{ settings.nl_color_on_dark }};
+    --nl-color-rule: {{ settings.nl_color_rule }};
+    --nl-color-border: {{ settings.nl_color_border }};
+    --nl-color-accent: {{ settings.nl_color_accent }};
+    --nl-color-error: {{ settings.nl_color_error }};
+
+    --nl-font-sans: {{ settings.nl_font_sans }};
+    --nl-font-serif: {{ serif.family }}, {{ serif.fallback_families }};
+    --nl-font-serif-weight: {{ serif.weight }};
+    --nl-font-nav: {{ nav.family }}, {{ nav.fallback_families }};
+    --nl-font-nav-weight: {{ nav.weight }};
+
+    --nl-page-width: {{ settings.nl_page_width }}px;
+    --nl-text-width: {{ settings.nl_text_width }}px;
+    --nl-space-xs: {{ settings.nl_space_xs }}px;
+    --nl-space-sm: {{ settings.nl_space_sm }}px;
+    --nl-space-md: {{ settings.nl_space_md }}px;
+    --nl-space-lg: {{ settings.nl_space_lg }}px;
+    --nl-space-xl: {{ settings.nl_space_xl }}px;
+
+    --nl-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --nl-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  }
+{% endstyle %}
