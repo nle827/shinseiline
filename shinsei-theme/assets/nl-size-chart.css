@@ -1,0 +1,219 @@
+/* nl-size-chart: size table with an IN/CM toggle, as an accordion or inline.
+   Uses --nl-* design tokens (snippets/nl-tokens.liquid), each with a
+   fallback so the module also works without them. Mobile first. */
+
+.nl-size-chart {
+  display: block;
+}
+
+/* Visibility (breakpoint matches the theme's 768px mobile layout) */
+@media (min-width: 769px) {
+  .nl-size-chart--mobile-only { display: none; }
+}
+@media (max-width: 768px) {
+  .nl-size-chart--desktop-only { display: none; }
+}
+
+/* Accordion */
+.nl-size-chart--accordion {
+  border-bottom: 1px solid var(--nl-color-border, #e2e2e2);
+}
+
+.nl-size-chart__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.nl-size-chart__toggle {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 0.65rem;
+  line-height: var(--nl-line-height, 1.65);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nl-size-chart__toggle:hover {
+  color: var(--nl-color-text-mid, #555555);
+}
+
+.nl-size-chart__toggle:focus-visible,
+.nl-size-chart__unit:focus-visible {
+  outline: 1px solid var(--nl-color-ink, #111111);
+  outline-offset: 2px;
+}
+
+.nl-size-chart__icon {
+  font-size: 1rem;
+  transition: transform 0.3s var(--nl-ease, cubic-bezier(0.25, 0.1, 0.25, 1));
+}
+
+.nl-size-chart__toggle[aria-expanded='true'] .nl-size-chart__icon {
+  transform: rotate(45deg);
+}
+
+.nl-size-chart--accordion .nl-size-chart__panel {
+  padding-top: 4px;
+  padding-bottom: 8px;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--nl-color-ink, #111111);
+}
+
+.nl-size-chart__panel[hidden] {
+  display: none;
+}
+
+/* Heading in inline mode */
+.nl-size-chart__title {
+  margin: 0 0 var(--nl-space-sm, 16px);
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 0.65rem;
+  font-weight: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Unit toggle */
+.nl-size-chart__units {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.nl-size-chart__unit {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nl-color-text-light, #999999);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nl-size-chart__unit:hover {
+  color: var(--nl-color-text-mid, #555555);
+}
+
+.nl-size-chart__unit[aria-pressed='true'],
+.nl-size-chart__unit[aria-pressed='true']:hover {
+  color: var(--nl-color-ink, #111111);
+}
+
+.nl-size-chart__sep {
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 0.62rem;
+  color: var(--nl-color-border, #e2e2e2);
+}
+
+/* Table */
+.nl-size-chart__table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.nl-size-chart__caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nl-size-chart__table thead th,
+.nl-size-chart__table thead td {
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 7px 6px;
+  color: var(--nl-color-ink, #111111);
+  border-bottom: 1px solid var(--nl-color-ink, #111111);
+}
+
+.nl-size-chart__table tbody td,
+.nl-size-chart__table tbody th {
+  font-family: var(--nl-font-serif, "EB Garamond", Georgia, serif);
+  font-size: 0.85rem;
+  font-weight: normal;
+  text-align: center;
+  padding: 7px 6px;
+  border-bottom: 1px solid var(--nl-color-border, #e2e2e2);
+  color: var(--nl-color-text-mid, #555555);
+}
+
+.nl-size-chart__table tbody th.nl-size-chart__dim {
+  text-align: left;
+  color: var(--nl-color-ink, #111111);
+}
+
+.nl-size-chart__note {
+  margin: 0;
+  font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nl-color-text-ghost, #aaaaaa);
+}
+
+@media (max-width: 768px) {
+  .nl-size-chart__table th,
+  .nl-size-chart__table td {
+    padding: 7px 2px;
+    white-space: nowrap;
+  }
+  .nl-size-chart__table tbody td,
+  .nl-size-chart__table tbody th {
+    font-size: 0.75rem;
+  }
+}
+
+/* Very narrow screens: let cells wrap rather than scroll sideways */
+@media (max-width: 340px) {
+  .nl-size-chart__table th,
+  .nl-size-chart__table td {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nl-size-chart__toggle,
+  .nl-size-chart__icon,
+  .nl-size-chart__unit {
+    transition: none;
+  }
+}

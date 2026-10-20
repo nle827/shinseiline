@@ -118,20 +118,6 @@ function selectVariant(btn, group) {
   }
 }
 
-// --- Size chart unit toggle ---
-function setSizeChartUnit(btn, unit) {
-  const wrap = btn.closest('.size-chart-wrap');
-  if (!wrap) return;
-  wrap.querySelectorAll('.unit-toggle-btn').forEach(b => {
-    const active = b === btn;
-    b.classList.toggle('unit-toggle-btn--active', active);
-    b.setAttribute('aria-pressed', active);
-  });
-  wrap.querySelectorAll('td[data-in]').forEach(td => {
-    td.textContent = unit === 'cm' ? td.dataset.cm : td.dataset.in;
-  });
-}
-
 // --- LINE 01 drop-window gating ---
 // `dropPhaseData` (from readDropPhaseData, in shinsei-global.js) is null on
 // any page without a #drop-phase-data block. Everything below no-ops in

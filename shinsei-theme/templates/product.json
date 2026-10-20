@@ -95,6 +95,19 @@
             }
           },
           "block_order": ["spec-design", "spec-material", "spec-construction", "spec-fit"]
+        },
+        "size-chart": {
+          "type": "nl-size-chart",
+          "static": true,
+          "settings": {
+            "display": "accordion",
+            "heading": "Sizing",
+            "visibility": "all",
+            "sizes": "S, M, L, XL",
+            "rows": "Chest: 56, 58, 61, 64\nShoulder: 50, 51, 52, 53\nLength: 119, 122, 124, 127\nSleeve: 60, 61, 62, 64",
+            "note": "Unisex. Cut with room to layer. Women may prefer one size down. Measurements may vary ±1 cm.",
+            "default_unit": "in"
+          }
         }
       },
       "block_order": [],

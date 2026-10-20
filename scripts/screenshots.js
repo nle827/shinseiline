@@ -65,10 +65,11 @@ const url = (p) => `${BASE}${p}${p.includes('?') ? '&' : '?'}preview_theme_id=${
     await shot('product-page');
     await shot('gallery', false);
 
-    const trigger = page.locator('.accordion-trigger', { hasText: 'Sizing' });
+    // Old markup (.accordion-trigger) or the nl-size-chart module
+    const trigger = page.locator('.accordion-trigger, .nl-size-chart__toggle', { hasText: 'Sizing' }).first();
     await trigger.scrollIntoViewIfNeeded();
     await trigger.click();
-    await page.locator('.size-chart-wrap').scrollIntoViewIfNeeded();
+    await page.locator('.size-chart-wrap, .nl-size-chart__panel').first().scrollIntoViewIfNeeded();
     await shot('size-chart-open', false);
 
     await ctx.close();

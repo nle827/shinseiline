@@ -1,0 +1,213 @@
+{% doc %}
+  Size chart with an IN/CM toggle, shown as an accordion or inline.
+
+  Content comes from the product metafield nl_modules.size_chart, which
+  references an nl_size_chart metaobject (sizes, rows of nl_size_row with a
+  label and centimetre values, a fit note and a default unit). If that
+  metafield is empty, the chart is built from this block's fallback settings.
+
+  Values are stored in centimetres; inches are calculated (cm / 2.54,
+  rounded to the nearest half inch).
+
+  Styles: assets/nl-size-chart.css. Behaviour: assets/nl-size-chart.js
+  (custom element <nl-size-chart>). Uses only the --nl-* design tokens.
+
+  @example
+  {% content_for 'block', type: 'nl-size-chart', id: 'size-chart' %}
+{% enddoc %}
+
+{%- liquid
+  assign chart = closest.product.metafields.nl_modules.size_chart.value
+  assign mode = block.settings.display
+  assign panel_id = 'NlSizeChart-' | append: block.id
+
+  if chart != blank
+    assign source = 'metafield'
+    assign sizes = chart.sizes.value
+    assign row_entries = chart.rows.value
+    assign note = chart.note.value
+    assign default_unit = chart.default_unit.value | default: block.settings.default_unit
+  else
+    assign source = 'fallback'
+    assign sizes = block.settings.sizes | split: ','
+    assign row_entries = block.settings.rows | newline_to_br | split: '<br />'
+    assign note = block.settings.note
+    assign default_unit = block.settings.default_unit
+  endif
+
+  unless default_unit == 'cm'
+    assign default_unit = 'in'
+  endunless
+
+  assign classes = 'nl-size-chart nl-size-chart--' | append: mode
+  unless block.settings.visibility == 'all'
+    assign classes = classes | append: ' nl-size-chart--' | append: block.settings.visibility | append: '-only'
+  endunless
+-%}
+
+{{ 'nl-size-chart.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'nl-size-chart.js' | asset_url }}" defer></script>
+
+<nl-size-chart
+  class="{{ classes }}"
+  data-default-unit="{{ default_unit }}"
+  data-nl-source="{{ source }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if mode == 'accordion' -%}
+    <h3 class="nl-size-chart__heading">
+      <button type="button" class="nl-size-chart__toggle" aria-expanded="false" aria-controls="{{ panel_id }}">
+        <span>{{ block.settings.heading | escape }}</span>
+        <span class="nl-size-chart__icon" aria-hidden="true">+</span>
+      </button>
+    </h3>
+  {%- elsif block.settings.heading != blank -%}
+    <h3 class="nl-size-chart__title">{{ block.settings.heading | escape }}</h3>
+  {%- endif -%}
+  <div class="nl-size-chart__panel" id="{{ panel_id }}"{% if mode == 'accordion' %} hidden{% endif %}>
+    <div class="nl-size-chart__units" role="group" aria-label="Measurement units">
+      <button type="button" class="nl-size-chart__unit" data-unit="in" aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}">IN</button>
+      <span class="nl-size-chart__sep" aria-hidden="true">/</span>
+      <button type="button" class="nl-size-chart__unit" data-unit="cm" aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}">CM</button>
+    </div>
+
+    <table class="nl-size-chart__table">
+      <caption class="nl-size-chart__caption">
+        {{ block.settings.heading | escape }}. Measurements in
+        <span data-unit-name>{% if default_unit == 'cm' %}centimetres{% else %}inches{% endif %}</span>.
+      </caption>
+      <thead>
+        <tr>
+          <td></td>
+          {%- for size in sizes -%}
+            <th scope="col">{{ size | strip | escape }}</th>
+          {%- endfor -%}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for entry in row_entries -%}
+          {%- liquid
+            if source == 'metafield'
+              assign label = entry.label.value
+              assign values = entry.values_cm.value
+            else
+              assign line = entry | strip_newlines | strip
+              if line == blank
+                continue
+              endif
+              assign label = line | split: ':' | first | strip
+              assign values = line | split: ':' | last | split: ','
+            endif
+          -%}
+          <tr>
+            <th scope="row" class="nl-size-chart__dim">{{ label | escape }}</th>
+            {%- for value in values -%}
+              {%- liquid
+                assign cm = value | strip | plus: 0
+                assign inch = cm | divided_by: 2.54 | times: 2 | round | divided_by: 2.0
+
+                assign cm_text = cm | append: ''
+                assign tail = cm_text | slice: -2, 2
+                if tail == '.0'
+                  assign cm_text = cm_text | remove_last: '.0'
+                endif
+
+                assign in_text = inch | append: ''
+                assign tail = in_text | slice: -2, 2
+                if tail == '.0'
+                  assign in_text = in_text | remove_last: '.0'
+                endif
+
+                assign in_text = in_text | append: ' in'
+                assign cm_text = cm_text | append: ' cm'
+              -%}
+              <td data-in="{{ in_text }}" data-cm="{{ cm_text }}">{% if default_unit == 'cm' %}{{ cm_text }}{% else %}{{ in_text }}{% endif %}</td>
+            {%- endfor -%}
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+
+    {%- if note != blank -%}
+      <p class="nl-size-chart__note">{{ note | escape }}</p>
+    {%- endif -%}
+  </div>
+</nl-size-chart>
+
+{% schema %}
+{
+  "name": "Size chart",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reads the product's Size chart metafield (nl_modules.size_chart). The fallback chart below is used for products without one."
+    },
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Display",
+      "options": [
+        { "value": "accordion", "label": "Accordion" },
+        { "value": "inline", "label": "Inline" }
+      ],
+      "default": "accordion"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sizing"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Show on",
+      "options": [
+        { "value": "all", "label": "All screens" },
+        { "value": "desktop", "label": "Desktop only (769px and up)" },
+        { "value": "mobile", "label": "Mobile only (up to 768px)" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Fallback chart"
+    },
+    {
+      "type": "text",
+      "id": "sizes",
+      "label": "Sizes",
+      "info": "Comma-separated, in order.",
+      "default": "S, M, L, XL"
+    },
+    {
+      "type": "textarea",
+      "id": "rows",
+      "label": "Measurements (cm)",
+      "info": "One per line: label, colon, one value per size in centimetres. Inches are calculated.",
+      "default": "Chest: 56, 58, 61, 64\nLength: 119, 122, 124, 127"
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "Fit note"
+    },
+    {
+      "type": "select",
+      "id": "default_unit",
+      "label": "Default unit",
+      "options": [
+        { "value": "in", "label": "Inches" },
+        { "value": "cm", "label": "Centimetres" }
+      ],
+      "default": "in"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Size chart",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

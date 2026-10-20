@@ -185,33 +185,7 @@
       <div class="pdp-accordions">
         <!-- Mobile only: the left specifications column moves in here -->
         {% content_for 'block', type: 'nl-spec-list', id: 'specs-accordion' %}
-        <div class="accordion">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span>Sizing</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-body">
-            <div class="size-chart-wrap">
-              <div class="size-chart-unit-toggle" role="group" aria-label="Sizing units">
-                <button type="button" class="unit-toggle-btn unit-toggle-btn--active" onclick="setSizeChartUnit(this, 'in')" aria-pressed="true">IN</button>
-                <span class="unit-toggle-sep">/</span>
-                <button type="button" class="unit-toggle-btn" onclick="setSizeChartUnit(this, 'cm')" aria-pressed="false">CM</button>
-              </div>
-              <table class="size-chart">
-                <thead>
-                  <tr><th></th><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td class="size-chart-dim">Chest</td><td data-in="22 in" data-cm="56 cm">22 in</td><td data-in="23 in" data-cm="58 cm">23 in</td><td data-in="24 in" data-cm="61 cm">24 in</td><td data-in="25 in" data-cm="64 cm">25 in</td></tr>
-                  <tr><td class="size-chart-dim">Shoulder</td><td data-in="19.5 in" data-cm="50 cm">19.5 in</td><td data-in="20 in" data-cm="51 cm">20 in</td><td data-in="20.5 in" data-cm="52 cm">20.5 in</td><td data-in="21 in" data-cm="53 cm">21 in</td></tr>
-                  <tr><td class="size-chart-dim">Length</td><td data-in="47 in" data-cm="119 cm">47 in</td><td data-in="48 in" data-cm="122 cm">48 in</td><td data-in="49 in" data-cm="124 cm">49 in</td><td data-in="50 in" data-cm="127 cm">50 in</td></tr>
-                  <tr><td class="size-chart-dim">Sleeve</td><td data-in="23.5 in" data-cm="60 cm">23.5 in</td><td data-in="24 in" data-cm="61 cm">24 in</td><td data-in="24.5 in" data-cm="62 cm">24.5 in</td><td data-in="25 in" data-cm="64 cm">25 in</td></tr>
-                </tbody>
-              </table>
-              <p class="size-chart-note">Unisex. Cut with room to layer. Women may prefer one size down. Measurements may vary ±1 cm.</p>
-            </div>
-          </div>
-        </div>
+        {% content_for 'block', type: 'nl-size-chart', id: 'size-chart' %}
         <div class="accordion">
           <button class="accordion-trigger" onclick="toggleAccordion(this)">
             <span>Info</span>
