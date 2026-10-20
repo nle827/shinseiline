@@ -20,7 +20,7 @@ Audited 2026-10-19 on branch `modular-refactor`, after the step 1 cleanup.
 
 **Convert to:**
 - A theme block `blocks/nl-spec-list.liquid` that renders a list of spec rows. It's placed in the product section and has its own heading setting ("Product specifications").
-- **Data:** a product metafield `nl.specs`, a list of references to an `nl_spec` metaobject (label + body). Any number of rows, in any order, editable per product in the admin.
+- **Data:** a product metafield `nl_modules.specs`, a list of references to an `nl_spec` metaobject (label + body). Any number of rows, in any order, editable per product in the admin.
 - **Fallback:** nested `nl-spec-row` blocks (label + body settings) for themes or products with no metafield set.
 - The desktop column and the mobile accordion render from the same block, so the copy lives in one place.
 
@@ -30,7 +30,7 @@ Audited 2026-10-19 on branch `modular-refactor`, after the step 1 cleanup.
 
 **Convert to:**
 - A theme block `blocks/nl-size-chart.liquid` plus a custom element `<nl-size-chart>` for the IN/CM toggle. The toggle uses `aria-pressed`, works from the keyboard, and remembers the choice in `localStorage`.
-- **Data:** a metaobject `nl_size_chart` referenced from the product metafield `nl.size_chart`. One chart can be shared by many products.
+- **Data:** a metaobject `nl_size_chart` referenced from the product metafield `nl_modules.size_chart`. One chart can be shared by many products.
 - **Store centimetres only.** I checked all 16 current values: rounding cm ÷ 2.54 to the nearest half inch reproduces every inch value exactly, so a merchant enters one set of numbers.
 - No sideways scroll: the table is fixed-layout at mobile widths, with the measurement label column wrapping.
 - **Fallback:** if no metaobject is set, the block shows nothing in the storefront and a hint in the editor.
@@ -61,7 +61,7 @@ Audited 2026-10-19 on branch `modular-refactor`, after the step 1 cleanup.
 
 | Where | What's hardcoded | Suggested conversion |
 |---|---|---|
-| `product.liquid` L90 | Eyebrow "Shinsei Line — No. 001" | Product metafield `nl.eyebrow` (single line), falling back to a section setting |
+| `product.liquid` L90 | Eyebrow "Shinsei Line — No. 001" | Product metafield `nl_modules.eyebrow` (single line), falling back to a section setting |
 | `product.liquid` L134–148, 196–203 | Drop-gating copy: "First access.", "Not recognized.", "Not yet available", "Departed.", "LINE 01 has closed." | Section settings (text) under a "Drop states" header |
 | `product.liquid` L289–301 | Info accordion: production lead time, returns, shipping countries, duties | Rich-text block `nl-accordion-item`, so you can add or remove accordions in the editor |
 | `product.liquid` L174–248 | Modal labels and success copy | Section settings; delete the unreachable Notify me modal |
@@ -86,7 +86,7 @@ The exact admin steps go in each module's `metafields.md` in step 4. These are t
 
 Display name: `label`. Storefront access: on.
 
-### Product metafield `nl.specs`
+### Product metafield `nl_modules.specs`
 Type: list of metaobject references → `nl_spec`. Name "Specifications". Storefront access: on.
 
 Kagemi entries: Design / Material / Construction / Fit, with the brief's copy.
@@ -106,7 +106,7 @@ Kagemi entries: Design / Material / Construction / Fit, with the brief's copy.
 | `note` | Fit note | Multi-line text | Optional |
 | `default_unit` | Default unit | Single line text, choices `in` / `cm` | Default `in` |
 
-### Product metafield `nl.size_chart`
+### Product metafield `nl_modules.size_chart`
 Type: metaobject reference → `nl_size_chart`. Name "Size chart". Storefront access: on.
 
 Kagemi chart:
@@ -120,10 +120,10 @@ Kagemi chart:
 
 Note: "Unisex. Cut with room to layer. Women may prefer one size down. Measurements may vary ±1 cm."
 
-### Product metafield `nl.eyebrow` (in scope)
+### Product metafield `nl_modules.eyebrow` (in scope)
 Single line text, e.g. "Shinsei Line — No. 001".
 
 ## Naming
 
-- Metafield namespace `nl`, metaobject types prefixed `nl_`. Shopify allows letters, numbers, underscores and hyphens there; underscores match how setting IDs have to work.
+- Metafield namespace `nl_modules` (Shopify requires namespaces of at least 3 characters, so plain `nl` was rejected on 2026-10-21). Metaobject types are prefixed `nl_`. Underscores match how setting IDs have to work.
 - Files and custom elements: `nl-spec-list`, `nl-size-chart`, `nl-gallery`, `nl-password`.

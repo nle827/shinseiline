@@ -2,7 +2,7 @@
   Product specifications as label/body rows, shown as an open list or an
   accordion.
 
-  Content comes from the product metafield nl.specs (a list of nl_spec
+  Content comes from the product metafield nl_modules.specs (a list of nl_spec
   metaobjects with label and body fields). If that metafield is empty, the
   block's child Spec row blocks are shown instead.
 
@@ -14,7 +14,7 @@
 {% enddoc %}
 
 {%- liquid
-  assign nl_specs = closest.product.metafields.nl.specs.value
+  assign nl_specs = closest.product.metafields.nl_modules.specs.value
   assign mode = block.settings.display
   assign panel_id = 'NlSpecList-' | append: block.id
 
@@ -32,6 +32,7 @@
 <nl-spec-list
   class="{{ classes }}"
   style="--nl-spec-list-gap: {{ block.settings.row_gap }}px;"
+  data-nl-source="{% if nl_specs != blank %}metafield{% else %}fallback{% endif %}"
   {{ block.shopify_attributes }}
 >
   {%- if mode == 'accordion' -%}
@@ -45,15 +46,15 @@
     <h3 class="nl-spec-list__title">{{ block.settings.heading | escape }}</h3>
   {%- endif -%}
     <div class="nl-spec-list__panel" id="{{ panel_id }}"{% if mode == 'accordion' %} hidden{% endif %}>
-      <dl class="nl-spec-list__rows">
+      <div class="nl-spec-list__rows">
         {%- for spec in nl_specs -%}
           <div class="nl-spec-list__row">
-            <dt class="nl-spec-list__label">{{ spec.label.value | escape }}</dt>
-            <dd class="nl-spec-list__body">{{ spec.body.value | escape | newline_to_br }}</dd>
+            <p class="nl-spec-list__label">{{ spec.label.value | escape }}</p>
+            <p class="nl-spec-list__body">{{ spec.body.value | escape | newline_to_br }}</p>
           </div>
         {%- endfor -%}
         {% content_for 'blocks' %}
-      </dl>
+      </div>
     </div>
 </nl-spec-list>
 
@@ -64,7 +65,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Reads the product's Specifications metafield (nl.specs). Add Spec rows below as a fallback for products without it."
+      "content": "Reads the product's Specifications metafield (nl_modules.specs). Add Spec rows below as a fallback for products without it."
     },
     {
       "type": "select",

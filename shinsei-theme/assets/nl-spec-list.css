@@ -21,6 +21,13 @@
   margin: 0;
 }
 
+/* Shopify wraps each child Spec row block in <div class="shopify-block">.
+   Let rows inside it act as direct flex items, and let empty wrappers
+   (rows switched off because the metafield is set) take no space. */
+.nl-spec-list__rows > .shopify-block {
+  display: contents;
+}
+
 .nl-spec-list__row {
   display: flex;
   flex-direction: column;
@@ -28,6 +35,7 @@
 }
 
 .nl-spec-list__label {
+  margin: 0;
   font-family: var(--nl-font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
   font-size: 9px;
   letter-spacing: 0.2em;

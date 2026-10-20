@@ -89,7 +89,7 @@ Plus a root README that works as the portfolio case study: the problem with the 
 
 ## Progress log
 
-_Last updated 2026-10-20, end of session. Paused by the user; resume from "Next" below._
+_Last updated 2026-10-21._
 
 | Step | Status | Notes |
 |---|---|---|
@@ -97,11 +97,11 @@ _Last updated 2026-10-20, end of session. Paused by the user; resume from "Next"
 | 1. Cleanup | Done | 15 small commits; see the README for the layout. Matches live pixel for pixel (`nl-modules/case-study/after-cleanup/`) |
 | 2. Audit | Done | `docs/AUDIT.md`. Scope: four modules plus the rest of the PDP (eyebrow, drop-state copy, Info accordion). Notify me modal deleted |
 | 3. Tokens | Done | `snippets/nl-tokens.liquid` plus `nl_*` settings (Colors, Typography, Layout and spacing, body line height). Fonts moved from Google to Shopify's font library. Theme Check: 0 offenses |
-| 4.1 Specs module | Built, verified | `blocks/nl-spec-list.liquid`, `blocks/_nl-spec-row.liquid`, `assets/nl-spec-list.{css,js}`. Pixel-identical to live; interaction test passed. Copied to `nl-modules/nl-spec-list/` with README, metafields.md and a Dawn wrapper section. **Waiting on the user** to create the `nl_spec` metaobject and `nl.specs` metafield in the admin (steps in `nl-modules/nl-spec-list/metafields.md`). Until then `templates/product.json` carries fallback rows |
+| 4.1 Specs module | Done | `blocks/nl-spec-list.liquid`, `blocks/_nl-spec-row.liquid`, `assets/nl-spec-list.{css,js}`. On 2026-10-21, with the user's approval, the `nl_spec` metaobject definition, the `nl_modules.specs` product metafield and Kagemi's four entries were created through the Shopify connector (Admin GraphQL). Both blocks now render from the metafield (`data-nl-source="metafield"`), pixel-identical to live. The fallback rows in `templates/product.json` stay as a safety net. Library copy is in `nl-modules/nl-spec-list/` |
 | 4.2 Size chart | Next | Planned design in `docs/AUDIT.md`: `nl_size_chart` + `nl_size_row` metaobjects, cm only (inches computed, verified for all 16 values), `<nl-size-chart>` toggle |
 | 4.3 Gallery | To do | |
 | 4.4 Password page | To do | |
-| PDP extras | To do | Eyebrow metafield `nl.eyebrow`, drop-state copy, Info accordion |
+| PDP extras | To do | Eyebrow metafield `nl_modules.eyebrow`, drop-state copy, Info accordion |
 | 5. Portability (Dawn) | To do | Dawn's main-product can't host theme blocks; each module ships an `nl-*-section` wrapper. Test it here |
 | 6. Case study | To do | |
 
@@ -113,6 +113,8 @@ _Last updated 2026-10-20, end of session. Paused by the user; resume from "Next"
   1. Run `SF_PW=<storefront password> node scripts/screenshots.js <out> [theme-id]` against live #131621257349 and the duplicate, then pixel-diff the two sets. Ask the user for the password; it isn't stored in the repo.
   2. Expect two kinds of noise: the clocks and pulse animations, and the home line selector, which auto-advances every 5s, so a desktop home page differing by about 16% means a different stop. The desktop nav also shows ~20px of font anti-aliasing.
   3. Run `npm install` inside `scripts/` before the first use.
+- **Metafield namespace is `nl_modules`**, not `nl`: Shopify rejects namespaces shorter than 3 characters. Metaobject types are `nl_*`.
+- **Shopify wraps every theme block** in `<div class="shopify-block">`, even when the block renders nothing. Give that wrapper `display: contents` inside flex/grid containers, and don't rely on `dl > dt` style parent/child HTML rules for block children.
 - The root `CLAUDE.md` is gitignored. Its pointer to this file exists only locally.
 
 ## Definition of done

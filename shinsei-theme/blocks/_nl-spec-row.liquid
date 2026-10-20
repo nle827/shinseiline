@@ -1,16 +1,16 @@
 {% doc %}
   One specification row (label + body) inside an nl-spec-list block.
 
-  Editor fallback only: when the product's nl.specs metafield has entries,
+  Editor fallback only: when the product's nl_modules.specs metafield has entries,
   the parent list renders those and every Spec row renders nothing.
 {% enddoc %}
 
-{%- assign nl_specs = closest.product.metafields.nl.specs.value -%}
+{%- assign nl_specs = closest.product.metafields.nl_modules.specs.value -%}
 
 {%- if nl_specs == blank and block.settings.label != blank -%}
   <div class="nl-spec-list__row" {{ block.shopify_attributes }}>
-    <dt class="nl-spec-list__label">{{ block.settings.label | escape }}</dt>
-    <dd class="nl-spec-list__body">{{ block.settings.body | escape | newline_to_br }}</dd>
+    <p class="nl-spec-list__label">{{ block.settings.label | escape }}</p>
+    <p class="nl-spec-list__body">{{ block.settings.body | escape | newline_to_br }}</p>
   </div>
 {%- endif -%}
 
@@ -20,7 +20,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Used only when the product has no Specifications metafield (nl.specs)."
+      "content": "Used only when the product has no Specifications metafield (nl_modules.specs)."
     },
     {
       "type": "text",
