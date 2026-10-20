@@ -46,6 +46,17 @@
         "info": "A CSS font stack. Helvetica Neue isn't in Shopify's font library, so it's set here as system fonts."
       },
       {
+        "type": "range",
+        "id": "nl_line_height",
+        "label": "Body line height",
+        "info": "Percent of the font size (165 = 1.65).",
+        "min": 120,
+        "max": 220,
+        "step": 5,
+        "unit": "%",
+        "default": 165
+      },
+      {
         "type": "font_picker",
         "id": "nl_font_serif",
         "label": "Serif (display, product names)",

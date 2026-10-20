@@ -82,6 +82,7 @@
   font: inherit;
   font-family: var(--nl-font-sans);
   font-size: 0.65rem;
+  line-height: var(--nl-line-height, 1.65);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-align: left;
@@ -110,6 +111,9 @@
 .nl-spec-list--accordion .nl-spec-list__panel {
   padding-top: 4px;
   padding-bottom: 8px;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--nl-color-ink);
 }
 
 .nl-spec-list__panel[hidden] {

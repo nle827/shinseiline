@@ -39,6 +39,7 @@
     --nl-color-error: {{ settings.nl_color_error }};
 
     --nl-font-sans: {{ settings.nl_font_sans }};
+    --nl-line-height: {{ settings.nl_line_height | divided_by: 100.0 }};
     --nl-font-serif: {{ serif.family }}, {{ serif.fallback_families }};
     --nl-font-serif-weight: {{ serif.weight }};
     --nl-font-nav: {{ nav.family }}, {{ nav.fallback_families }};
