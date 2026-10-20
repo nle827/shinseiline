@@ -191,8 +191,10 @@
 }
 
 @media (max-width: 768px) {
-  .nl-size-chart__table th,
-  .nl-size-chart__table td {
+  .nl-size-chart__table thead th,
+  .nl-size-chart__table thead td,
+  .nl-size-chart__table tbody th,
+  .nl-size-chart__table tbody td {
     padding: 7px 2px;
     white-space: nowrap;
   }
@@ -204,8 +206,10 @@
 
 /* Very narrow screens: let cells wrap rather than scroll sideways */
 @media (max-width: 340px) {
-  .nl-size-chart__table th,
-  .nl-size-chart__table td {
+  .nl-size-chart__table thead th,
+  .nl-size-chart__table thead td,
+  .nl-size-chart__table tbody th,
+  .nl-size-chart__table tbody td {
     white-space: normal;
   }
 }
