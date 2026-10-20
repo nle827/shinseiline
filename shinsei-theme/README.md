@@ -23,6 +23,19 @@ Custom Online Store 2.0 theme for [theshinseiline.com](https://theshinseiline.co
 - **JS:** vanilla only. Global page scripts in `assets/`; new modules ship one custom element each.
 - **Theme Check:** `shopify theme check` must report zero errors before anything is pushed.
 
+## Design tokens
+
+Colours, fonts, widths and spacing are theme settings (Theme settings › Colors / Typography / Layout and spacing). `snippets/nl-tokens.liquid` outputs them as CSS variables on `:root` in every layout:
+
+| Group | Variables |
+|---|---|
+| Colours | `--nl-color-bg`, `-bg-alt`, `-white`, `-placeholder`, `-card`, `-text`, `-ink`, `-text-mid`, `-text-secondary`, `-text-light`, `-text-ghost`, `-on-dark`, `-rule`, `-border`, `-accent`, `-error` |
+| Type | `--nl-font-sans` (text stack), `--nl-font-serif` and `--nl-font-nav` (Shopify font pickers), plus `-weight` variants |
+| Layout | `--nl-page-width`, `--nl-text-width`, `--nl-space-xs` … `--nl-space-xl` |
+| Motion | `--nl-ease`, `--nl-ease-out` |
+
+New `nl-` modules use only `--nl-*` variables. The older names in `shinsei-global.css` and `shinsei-home.css` (`--ink`, `--bg-primary`, `--font-ui` …) are aliases of these, kept so existing rules didn't have to change. Values left literal on purpose: black/white overlays at fixed opacity, and three greys inside the dark cart drawer.
+
 ## Working on it
 
 ```bash
