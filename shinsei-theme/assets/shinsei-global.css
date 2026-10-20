@@ -99,9 +99,6 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   display: block;
   transition: opacity 0.4s ease;
 }
-.logo-img--dark { position: absolute; opacity: 0; }
-.site-header.scrolled .logo-img--light { opacity: 0; }
-.site-header.scrolled .logo-img--dark { opacity: 1; }
 
 .header-nav {
   display: flex;
@@ -352,9 +349,6 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 /* --- About --- */
 .about-page { padding: calc(var(--header-h) + var(--space-md)) var(--space-md) var(--space-xl); }
 .about-inner { max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-md); }
-.about-header { display: flex; flex-direction: column; gap: var(--space-sm); max-width: var(--max-w-text); }
-.about-eyebrow { font-family: var(--font-serif); font-size: 1.1rem; color: var(--ink-light); }
-.about-heading { font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-style: italic; }
 
 .about-body { display: grid; grid-template-columns: 320px 280px; gap: 96px; align-items: start; justify-content: center; }
 
@@ -363,12 +357,8 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 
 .about-text { display: flex; flex-direction: column; gap: var(--space-md); font-size: 0.8rem; line-height: 1.8; color: var(--ink-mid); }
 
-.about-principles { display: flex; flex-direction: column; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-
 .principle { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) 0; border-bottom: 1px solid var(--border); }
 .principle:last-child { border-bottom: none; }
-.principle-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; color: var(--ink-light); width: 32px; flex-shrink: 0; }
-.principle-text { font-size: clamp(1.1rem, 2vw, 1.5rem); font-style: italic; }
 
 /* --- Contact --- */
 .contact-page { padding: calc(var(--header-h) + var(--space-md)) var(--space-md) var(--space-xl); }
@@ -376,9 +366,7 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 /* --- Policy --- */
 .policy-page { padding: calc(var(--header-h) + var(--space-md)) var(--space-md) var(--space-xl); }
 .policy-inner { max-width: 680px; margin: 0 auto; }
-.policy-header { margin-bottom: var(--space-lg); }
-.policy-eyebrow { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-light); display: block; margin-bottom: var(--space-xs); }
-.policy-title { font-family: var(--font-mono); font-size: 0.9rem; letter-spacing: 0.14em; text-transform: uppercase; font-style: normal; }
+
 .policy-body { display: flex; flex-direction: column; gap: var(--space-lg); }
 .policy-section { display: flex; flex-direction: column; gap: var(--space-md); }
 .policy-section-title { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink); padding-bottom: var(--space-sm); border-bottom: 1px solid var(--border); }
@@ -410,10 +398,10 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
 /* --- Contact page content --- */
 .contact-inner { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-md); align-items: center; text-align: center; }
 .contact-header { display: flex; flex-direction: column; gap: 6px; align-items: center; }
-.contact-eyebrow { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-light); }
+
 .contact-heading { font-size: clamp(1rem, 2vw, 1.3rem); font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; font-family: var(--font-mono); }
 .contact-info { display: flex; flex-direction: column; gap: var(--space-sm); align-items: center; }
-.contact-intro { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.7; max-width: 38ch; }
+
 .contact-email { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em; border-bottom: 1px solid var(--ink); padding-bottom: 2px; align-self: center; }
 .contact-form { width: 100%; display: flex; flex-direction: column; }
 
@@ -506,7 +494,7 @@ h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
   object-position: center;
   display: block;
 }
-.cart-item-thumb-empty { width: 100%; height: 100%; background: #EBEBEB; }
+
 .cart-item-info { display: flex; flex-direction: column; gap: 4px; }
 .cart-item-name { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #111111; }
 .cart-item-meta { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; color: #555555; }
