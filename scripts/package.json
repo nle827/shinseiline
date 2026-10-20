@@ -1,0 +1,11 @@
+{
+  "name": "shinsei-scripts",
+  "private": true,
+  "description": "Maintenance scripts for the Shinsei Line theme (not uploaded to Shopify).",
+  "scripts": {
+    "screenshots": "node screenshots.js"
+  },
+  "devDependencies": {
+    "playwright": "1.49.1"
+  }
+}

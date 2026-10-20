@@ -3,3 +3,6 @@
 # Private working notes (kept in the private-notes repo)
 /CLAUDE.md
 /website-preview-to-shopify-process.txt
+
+# Script dependencies
+node_modules/
