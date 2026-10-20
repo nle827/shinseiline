@@ -1,0 +1,125 @@
+{% doc %}
+  Product specifications as label/body rows, shown as an open list or an
+  accordion.
+
+  Content comes from the product metafield nl.specs (a list of nl_spec
+  metaobjects with label and body fields). If that metafield is empty, the
+  block's child Spec row blocks are shown instead.
+
+  Styles: assets/nl-spec-list.css. Accordion behaviour: assets/nl-spec-list.js
+  (loaded only in accordion mode). Uses only the --nl-* design tokens.
+
+  @example
+  {% content_for 'block', type: 'nl-spec-list', id: 'specs' %}
+{% enddoc %}
+
+{%- liquid
+  assign nl_specs = closest.product.metafields.nl.specs.value
+  assign mode = block.settings.display
+  assign panel_id = 'NlSpecList-' | append: block.id
+
+  assign classes = 'nl-spec-list nl-spec-list--' | append: mode
+  unless block.settings.visibility == 'all'
+    assign classes = classes | append: ' nl-spec-list--' | append: block.settings.visibility | append: '-only'
+  endunless
+-%}
+
+{{ 'nl-spec-list.css' | asset_url | stylesheet_tag }}
+{%- if mode == 'accordion' -%}
+  <script src="{{ 'nl-spec-list.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+<nl-spec-list
+  class="{{ classes }}"
+  style="--nl-spec-list-gap: {{ block.settings.row_gap }}px;"
+  {{ block.shopify_attributes }}
+>
+  {%- if mode == 'accordion' -%}
+    <h3 class="nl-spec-list__heading">
+      <button type="button" class="nl-spec-list__toggle" aria-expanded="false" aria-controls="{{ panel_id }}">
+        <span>{{ block.settings.heading | escape }}</span>
+        <span class="nl-spec-list__icon" aria-hidden="true">+</span>
+      </button>
+    </h3>
+  {%- elsif block.settings.show_heading and block.settings.heading != blank -%}
+    <h3 class="nl-spec-list__title">{{ block.settings.heading | escape }}</h3>
+  {%- endif -%}
+    <div class="nl-spec-list__panel" id="{{ panel_id }}"{% if mode == 'accordion' %} hidden{% endif %}>
+      <dl class="nl-spec-list__rows">
+        {%- for spec in nl_specs -%}
+          <div class="nl-spec-list__row">
+            <dt class="nl-spec-list__label">{{ spec.label.value | escape }}</dt>
+            <dd class="nl-spec-list__body">{{ spec.body.value | escape | newline_to_br }}</dd>
+          </div>
+        {%- endfor -%}
+        {% content_for 'blocks' %}
+      </dl>
+    </div>
+</nl-spec-list>
+
+{% schema %}
+{
+  "name": "Specifications",
+  "blocks": [{ "type": "_nl-spec-row" }],
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reads the product's Specifications metafield (nl.specs). Add Spec rows below as a fallback for products without it."
+    },
+    {
+      "type": "select",
+      "id": "display",
+      "label": "Display",
+      "options": [
+        { "value": "list", "label": "Open list" },
+        { "value": "accordion", "label": "Accordion" }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Product specifications"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_heading",
+      "label": "Show heading above the list",
+      "default": false,
+      "visible_if": "{{ block.settings.display == 'list' }}"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Show on",
+      "options": [
+        { "value": "all", "label": "All screens" },
+        { "value": "desktop", "label": "Desktop only (769px and up)" },
+        { "value": "mobile", "label": "Mobile only (up to 768px)" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Space between rows",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Specifications",
+      "category": "Product",
+      "blocks": [
+        { "type": "_nl-spec-row", "settings": { "label": "Material", "body": "Shell: 100% wool." } },
+        { "type": "_nl-spec-row", "settings": { "label": "Fit", "body": "Relaxed through the body." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

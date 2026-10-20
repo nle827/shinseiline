@@ -1,0 +1,124 @@
+/* nl-spec-list: product specifications as an open list or an accordion.
+   Uses only --nl-* design tokens (snippets/nl-tokens.liquid). Mobile first. */
+
+.nl-spec-list {
+  display: block;
+}
+
+/* Visibility (breakpoint matches the theme's 768px mobile layout) */
+@media (min-width: 769px) {
+  .nl-spec-list--mobile-only { display: none; }
+}
+@media (max-width: 768px) {
+  .nl-spec-list--desktop-only { display: none; }
+}
+
+/* Rows */
+.nl-spec-list__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nl-spec-list-gap, 36px);
+  margin: 0;
+}
+
+.nl-spec-list__row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nl-spec-list__label {
+  font-family: var(--nl-font-sans);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--nl-color-text-ghost);
+}
+
+.nl-spec-list__body {
+  margin: 0;
+  font-family: var(--nl-font-serif);
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: var(--nl-color-ink);
+  overflow-wrap: anywhere;
+}
+
+/* Optional heading in list mode */
+.nl-spec-list__title {
+  margin: 0 0 var(--nl-space-sm);
+  font-family: var(--nl-font-sans);
+  font-size: 0.65rem;
+  font-weight: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Accordion mode */
+.nl-spec-list--accordion {
+  border-bottom: 1px solid var(--nl-color-border);
+}
+
+.nl-spec-list__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.nl-spec-list__toggle {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-family: var(--nl-font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nl-spec-list__toggle:hover {
+  color: var(--nl-color-text-mid);
+}
+
+.nl-spec-list__toggle:focus-visible {
+  outline: 1px solid var(--nl-color-ink);
+  outline-offset: 2px;
+}
+
+.nl-spec-list__icon {
+  font-size: 1rem;
+  transition: transform 0.3s var(--nl-ease);
+}
+
+.nl-spec-list__toggle[aria-expanded='true'] .nl-spec-list__icon {
+  transform: rotate(45deg);
+}
+
+.nl-spec-list--accordion .nl-spec-list__panel {
+  padding-top: 4px;
+  padding-bottom: 8px;
+}
+
+.nl-spec-list__panel[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nl-spec-list__toggle,
+  .nl-spec-list__icon {
+    transition: none;
+  }
+}

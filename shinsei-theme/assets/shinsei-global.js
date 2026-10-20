@@ -407,8 +407,20 @@ function toggleAccordion(trigger) {
   if (!isOpen) {
     trigger.classList.add('open');
     body.classList.add('open');
+    // Let nl- module accordions (e.g. nl-spec-list) close themselves
+    document.dispatchEvent(new CustomEvent('nl:accordion-open', { detail: { source: trigger } }));
   }
 }
+
+// When an nl- module accordion opens, close the theme's own accordions
+document.addEventListener('nl:accordion-open', function (e) {
+  const source = e.detail && e.detail.source;
+  if (source && source.classList && source.classList.contains('accordion-trigger')) return;
+  document.querySelectorAll('.accordion-trigger.open').forEach(t => {
+    t.classList.remove('open');
+    t.nextElementSibling.classList.remove('open');
+  });
+});
 
 // --- Header scroll transparency ---
 (function () {

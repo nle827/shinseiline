@@ -19,33 +19,12 @@
 
 <section class="pdp-layout">
 
-  {%- capture construction_blocks -%}
-    <div class="pdp-construction-block">
-      <span class="pdp-construction-label">Design</span>
-      <p>Structured like a European overcoat. Shaped like a traditional kimono and hakama, with an obi-style belt, pleats and a wide hem.</p>
-    </div>
-
-    <div class="pdp-construction-block">
-      <span class="pdp-construction-label">Material</span>
-      <p>Shell: 100% wool twill, black. Lining: 100% viscose. Imported.</p>
-    </div>
-
-    <div class="pdp-construction-block">
-      <span class="pdp-construction-label">Construction</span>
-      <p>Double-breasted, four-button front with notch lapel. Structured shoulder. Waist panel with self belt. Front pockets. Fully lined.</p>
-    </div>
-
-    <div class="pdp-construction-block">
-      <span class="pdp-construction-label">Fit</span>
-      <p>Unisex. Relaxed through the body and sleeve. Falls below the knee. Model is 6'1" and wears size M.</p>
-    </div>
-  {%- endcapture -%}
-
-  <!-- LEFT: construction details (desktop; on mobile these sit in the
-       Product specifications accordion instead) -->
+  <!-- LEFT: specifications (desktop; on mobile the same content shows in
+       the Product specifications accordion instead). Both read the
+       product's nl.specs metafield. -->
   <div class="pdp-construction">
     <div class="pdp-construction-inner">
-      {{ construction_blocks }}
+      {% content_for 'block', type: 'nl-spec-list', id: 'specs-column' %}
     </div>
   </div>
 
@@ -204,16 +183,8 @@
 
       <!-- Accordions -->
       <div class="pdp-accordions">
-        <!-- Mobile only: the left construction column moves in here -->
-        <div class="accordion pdp-specs-accordion">
-          <button class="accordion-trigger" onclick="toggleAccordion(this)">
-            <span>Product specifications</span>
-            <span class="accordion-icon">+</span>
-          </button>
-          <div class="accordion-body">
-            <div class="pdp-specs">{{ construction_blocks }}</div>
-          </div>
-        </div>
+        <!-- Mobile only: the left specifications column moves in here -->
+        {% content_for 'block', type: 'nl-spec-list', id: 'specs-accordion' %}
         <div class="accordion">
           <button class="accordion-trigger" onclick="toggleAccordion(this)">
             <span>Sizing</span>
@@ -256,6 +227,9 @@
         </div>
       </div>
 
+      {%- comment -%} Extra blocks added in the theme editor {%- endcomment -%}
+      {% content_for 'blocks' %}
+
       <a href="/pages/policy" class="pdp-policy-link">Policies →</a>
 
     </div>
@@ -266,6 +240,7 @@
 {% schema %}
 {
   "name": "Product",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
   "settings": [],
   "disabled_on": {
     "groups": ["header", "footer"]

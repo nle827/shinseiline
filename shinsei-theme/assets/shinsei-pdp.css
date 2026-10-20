@@ -25,28 +25,6 @@
   gap: 36px;
 }
 
-.pdp-construction-block {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pdp-construction-label {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-ghost);
-}
-
-.pdp-construction-block p {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  line-height: 1.9;
-  color: var(--ink);
-  margin: 0;
-}
-
 /* Middle scroll track — images stack vertically, info stays sticky on right */
 .pdp-gallery-track {
   position: relative;
@@ -420,18 +398,6 @@
   margin: 0;
 }
 
-/* Product specifications accordion — mobile only (desktop shows the
-   left construction column instead) */
-.pdp-specs-accordion {
-  display: none;
-}
-
-.pdp-specs {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
 /* Notify Me / Request Access modal */
 .notify-modal-overlay {
   position: fixed;
@@ -802,10 +768,6 @@
   /* Construction details move into the Product specifications accordion */
   .pdp-construction {
     display: none;
-  }
-
-  .pdp-specs-accordion {
-    display: block;
   }
 
   .pdp-access-secondary {
