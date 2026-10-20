@@ -72,7 +72,7 @@ Audited 2026-10-19 on branch `modular-refactor`, after the step 1 cleanup.
 | `page-policy.liquid` | 31 hardcoded paragraphs (returns, shipping, terms, privacy) | Shopify's built-in policies (`shop.policies`, edited in Admin › Settings › Policies), so legal copy stops living in code |
 | `collection.liquid` | "All Lines", sort and filter labels, "Outerwear", card statuses | Section settings; filters from Shopify's storefront filtering |
 
-The four modules are the portfolio deliverables. Whether the rest is in scope is your call: see the questions at the end.
+**Decision (2026-10-19):** in scope are the four modules plus the rest of the product page (eyebrow, drop-state copy, Info accordion, modal copy). Home, header/footer, About, Contact, Policy and Collection stay hardcoded for now. The unreachable Notify me modal was deleted.
 
 ## Proposed metafield and metaobject definitions
 
@@ -120,7 +120,7 @@ Kagemi chart:
 
 Note: "Unisex. Cut with room to layer. Women may prefer one size down. Measurements may vary ±1 cm."
 
-### Product metafield `nl.eyebrow` (optional, only if the PDP extras are in scope)
+### Product metafield `nl.eyebrow` (in scope)
 Single line text, e.g. "Shinsei Line — No. 001".
 
 ## Naming
