@@ -1,7 +1,7 @@
 /* ============================================================
    SHINSEI LINE — Global JS
    Site-wide chrome: search overlay, mobile nav, header scroll
-   state, accordions, Notify Me / Request Access modals, and the
+   state, accordions, the Request Access modal, and the
    Shopify AJAX cart drawer. Loaded on every page.
    ============================================================ */
 
@@ -50,17 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
   // Shopify appends `#<form id>` to the redirect URL for named forms (to
   // scroll back to them). We don't want that fragment lingering in the
   // address bar, so strip it immediately for our known form IDs.
-  if (window.location.hash === '#NotifyMeForm' || window.location.hash === '#RequestAccessForm' || window.location.hash === '#PasswordSignupForm') {
+  if (window.location.hash === '#RequestAccessForm' || window.location.hash === '#PasswordSignupForm') {
     window.history.replaceState({}, '', window.location.pathname + window.location.search);
   }
 
   const params = new URLSearchParams(window.location.search);
 
-  // Move the Notify Me / Request Access overlays to be direct children of
-  // <body> so their `position: fixed` is always anchored to the real
-  // viewport, regardless of any ancestor (animations, transforms, etc.)
-  // that could otherwise turn it into a fixed-position containing block.
-  [notifyModal, requestModal].forEach(function (modal) {
+  // Move the Request Access overlay to be a direct child of <body> so its
+  // `position: fixed` is always anchored to the real viewport, regardless
+  // of any ancestor (animations, transforms, etc.) that could otherwise
+  // turn it into a fixed-position containing block.
+  [requestModal].forEach(function (modal) {
     const overlay = document.getElementById(modal.ids.overlay);
     if (overlay && overlay.parentElement !== document.body) {
       document.body.appendChild(overlay);
@@ -85,12 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // marker we control, checked here independent of any server-rendered
   // state — this is what actually shows the confirmation in that case.
   let urlMarkerFound = false;
-  if (params.get('notified') === '1') {
-    notifyModal.open();
-    notifyModal.showSuccess();
-    params.delete('notified');
-    urlMarkerFound = true;
-  }
   if (params.get('requested') === '1') {
     requestModal.open();
     requestModal.showSuccess();
@@ -228,15 +222,6 @@ function createModalController(ids) {
   return { ids, open, close, handleSubmit, showSuccess };
 }
 
-const notifyModal = createModalController({
-  overlay: 'notify-modal-overlay',
-  content: 'notify-modal-content',
-  success: 'notify-modal-success',
-  loading: 'notify-loading',
-  formId: 'NotifyMeForm',
-  statusDataId: 'notify-status-data'
-});
-
 const requestModal = createModalController({
   overlay: 'request-modal-overlay',
   content: 'request-modal-content',
@@ -246,7 +231,6 @@ const requestModal = createModalController({
   statusDataId: 'request-status-data'
 });
 
-function closeNotifyModal() { notifyModal.close(); }
 function openRequestModal() { requestModal.open(); }
 function closeRequestModal() { requestModal.close(); }
 

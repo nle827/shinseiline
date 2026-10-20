@@ -202,51 +202,6 @@
         <p class="pdp-access-note">LINE 01 has closed.</p>
       </div>
 
-      {%- liquid
-        assign notify_success = false
-        assign notify_error = false
-      -%}
-      {%- capture notify_modal_form -%}
-        {%- form 'customer', id: 'NotifyMeForm', class: 'notify-modal-form' -%}
-          <input type="hidden" name="contact[tags]" value="notify-me">
-          <input type="hidden" name="return_to" value="{{ request.path }}?notified=1">
-          {%- if form.posted_successfully? -%}
-            {%- assign notify_success = true -%}
-          {%- else -%}
-            <input type="email" name="contact[email]" id="NotifyMeForm-email" placeholder="Email address" autocomplete="email" required>
-            <button type="submit">Notify Me</button>
-            {%- if form.errors -%}
-              {%- assign notify_error = true -%}
-              <p class="notify-modal-error">{{ form.errors.messages.email }}</p>
-            {%- endif -%}
-          {%- endif -%}
-        {%- endform -%}
-      {%- endcapture -%}
-
-      <script type="application/json" id="notify-status-data">{"success": {{ notify_success | json }}, "error": {{ notify_error | json }}}</script>
-
-      <div class="notify-modal-overlay{% if notify_error or notify_success %} open{% endif %}" id="notify-modal-overlay">
-        <div class="notify-modal" id="notify-modal">
-          <button type="button" class="notify-modal-close" onclick="closeNotifyModal()" aria-label="Close">×</button>
-          <div class="notify-modal-content" id="notify-modal-content"{% if notify_success %} style="display:none;"{% endif %}>
-            <p class="notify-modal-label">Notify me when available</p>
-            {{ notify_modal_form }}
-            <div class="notify-loading" id="notify-loading">
-              <div class="notify-loading-track">
-                <span class="notify-loading-dot notify-loading-dot--start"></span>
-                <div class="notify-loading-fill"></div>
-                <span class="notify-loading-dot notify-loading-dot--end"></span>
-              </div>
-              <span class="notify-loading-label">Sending</span>
-            </div>
-          </div>
-          <div class="notify-modal-success" id="notify-modal-success"{% unless notify_success %} style="display:none;"{% endunless %}>
-            <p class="notify-modal-success-msg">You're on the list.</p>
-            <p class="notify-modal-success-note">You will be notified when this is available.</p>
-          </div>
-        </div>
-      </div>
-
       <!-- Accordions -->
       <div class="pdp-accordions">
         <!-- Mobile only: the left construction column moves in here -->
