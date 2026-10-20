@@ -115,7 +115,8 @@ _Last updated 2026-10-21._
   3. Run `npm install` inside `scripts/` before the first use.
 - **Metafield namespace is `nl_modules`**, not `nl`: Shopify rejects namespaces shorter than 3 characters. Metaobject types are `nl_*`.
 - **Shopify wraps every theme block** in `<div class="shopify-block">`, even when the block renders nothing. Give that wrapper `display: contents` inside flex/grid containers, and don't rely on `dl > dt` style parent/child HTML rules for block children.
-- **2026-10-21: `master` gained two password-page commits** (68c3902 "early access headline (Nov 15)", bec6db6 "sub-line in EB Garamond"), made outside this refactor while the main folder was switched to `master`. They need merging into `modular-refactor` and porting into `nl-password` (new `sub_line` setting, EB Garamond sub-line). Until then the duplicate's password page is behind live. Refactor work continued in a git worktree so `master` wasn't disturbed.
+- **2026-10-21: merged `master` into `modular-refactor`** (2aeed4f). Brought in the password-page headline "First access, Nov 15." and the EB Garamond sub-line (68c3902, bec6db6), ported into `nl-password` as a `sub_line` setting. The duplicate's password page matches live again. The user works on `master` in the main folder; refactor work happens in a separate worktree of `modular-refactor`.
+- **Push guard:** `shopify theme list` truncates long theme IDs, so check by theme **name** + `[unpublished]`, delete old logs before pushing, and verify by pulling or diffing the theme afterwards. An ID-based check silently skipped two pushes on 2026-10-21; they were caught and re-pushed.
 - The root `CLAUDE.md` is gitignored. Its pointer to this file exists only locally.
 
 ## Definition of done
