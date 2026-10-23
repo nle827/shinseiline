@@ -6,7 +6,7 @@ The storefront for Shinsei Line, an apparel brand I run. I designed the site and
 
 I worked in two stages so the design was locked before any Shopify code was written.
 
-1. **Static preview** (now in `archive/static-preview/`). Plain HTML, CSS, and JavaScript versions of every page (home, shop, product, about, contact, policy). This is where the design, layout, and interactions were worked out.
+1. **Static preview.** Plain HTML, CSS, and JavaScript versions of every page (home, shop, product, about, contact, policy). This is where the design, layout, and interactions were worked out. Retired once the theme replaced it; it's still in git history.
 2. **Shopify theme** (`shinsei-theme/`). The approved preview converted into a Liquid theme, built on Shopify's Skeleton theme as a starting point. Custom sections, templates, and assets carry over the preview's design.
 
 ## What's custom
@@ -27,10 +27,9 @@ shinsei-theme/     Shopify Liquid theme (see shinsei-theme/README.md)
   docs/            Refactor brief and reference docs (not uploaded to Shopify)
 emails/            Marketing email template
 scripts/           Maintenance scripts, e.g. read-only theme screenshots
-archive/
-  static-preview/  The original HTML/CSS/JS design preview, kept for reference
-  theme-assets/    Images no longer used by the theme
 ```
+
+The theme's editable features are packaged as portable modules in [nl-modules](https://github.com/nle827/nl-modules).
 
 Conventions: kebab-case file names with no spaces; `shinsei-` prefix for brand-specific theme files; `nl-` prefix for portable modules. Anything that shouldn't ship to Shopify lives outside `shinsei-theme/`.
 
@@ -42,5 +41,3 @@ With the [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) installed:
 cd shinsei-theme
 shopify theme dev --store <your-store>.myshopify.com
 ```
-
-The archived preview needs no build step. Open `archive/static-preview/index.html` in a browser.
