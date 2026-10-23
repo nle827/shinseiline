@@ -89,7 +89,7 @@ Plus a root README that works as the portfolio case study: the problem with the 
 
 ## Progress log
 
-_Last updated 2026-10-21._
+_Last updated 2026-10-23. **The refactor is complete and merged into `master`** (fast-forward, user's choice). The `modular-refactor` branch and the old branches were deleted (all merged). `archive/` was removed (it remains in git history). The stale `D:SHINSEI LINEshinsei-theme` April copy was zipped to `D:SHINSEI LINE_oldshinsei-theme-april-2026.zip` and deleted. The branch-only hard rules below are historical: work now happens on `master`, and the next push of `master` to the live theme is the go-live._
 
 | Step | Status | Notes |
 |---|---|---|
