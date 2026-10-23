@@ -21,38 +21,7 @@
             "show_heading": false,
             "visibility": "desktop",
             "row_gap": 36
-          },
-          "blocks": {
-            "spec-design": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Design",
-                "body": "Structured like a European overcoat. Shaped like a traditional kimono and hakama, with an obi-style belt, pleats and a wide hem."
-              }
-            },
-            "spec-material": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Material",
-                "body": "Shell: 100% wool twill, black. Lining: 100% viscose. Imported."
-              }
-            },
-            "spec-construction": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Construction",
-                "body": "Double-breasted, four-button front with notch lapel. Structured shoulder. Waist panel with self belt. Front pockets. Fully lined."
-              }
-            },
-            "spec-fit": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Fit",
-                "body": "Unisex. Relaxed through the body and sleeve. Falls below the knee. Model is 6'1\" and wears size M."
-              }
-            }
-          },
-          "block_order": ["spec-design", "spec-material", "spec-construction", "spec-fit"]
+          }
         },
         "specs-accordion": {
           "type": "nl-spec-list",
@@ -63,38 +32,7 @@
             "show_heading": false,
             "visibility": "mobile",
             "row_gap": 20
-          },
-          "blocks": {
-            "spec-design": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Design",
-                "body": "Structured like a European overcoat. Shaped like a traditional kimono and hakama, with an obi-style belt, pleats and a wide hem."
-              }
-            },
-            "spec-material": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Material",
-                "body": "Shell: 100% wool twill, black. Lining: 100% viscose. Imported."
-              }
-            },
-            "spec-construction": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Construction",
-                "body": "Double-breasted, four-button front with notch lapel. Structured shoulder. Waist panel with self belt. Front pockets. Fully lined."
-              }
-            },
-            "spec-fit": {
-              "type": "_nl-spec-row",
-              "settings": {
-                "label": "Fit",
-                "body": "Unisex. Relaxed through the body and sleeve. Falls below the knee. Model is 6'1\" and wears size M."
-              }
-            }
-          },
-          "block_order": ["spec-design", "spec-material", "spec-construction", "spec-fit"]
+          }
         },
         "gallery": {
           "type": "nl-gallery",
@@ -125,9 +63,9 @@
             "display": "accordion",
             "heading": "Sizing",
             "visibility": "all",
-            "sizes": "S, M, L, XL",
-            "rows": "Chest: 56, 58, 61, 64\nShoulder: 50, 51, 52, 53\nLength: 119, 122, 124, 127\nSleeve: 60, 61, 62, 64",
-            "note": "Unisex. Cut with room to layer. Women may prefer one size down. Measurements may vary ±1 cm.",
+            "sizes": "",
+            "rows": "",
+            "note": "",
             "default_unit": "in"
           }
         }
